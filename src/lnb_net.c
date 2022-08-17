@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- network functions' replacements.
  *
- * Copyright (C) 2011-2015 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2017 Bogdan Drozdowski, bogdandr (at) op.pl
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -32,6 +32,8 @@
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
+
+#include <stdio.h>
 
 #ifdef HAVE_ERRNO_H
 # include <errno.h>
@@ -101,6 +103,8 @@ socket (
 	int protocol;
 #endif
 {
+	LNB_MAKE_ERRNO_VAR(err);
+
 	__lnb_main ();
 #ifdef LNB_DEBUG
 	fprintf (stderr, "libnetblock: socket(%d, %d, %d)\n", domain, type, protocol);
@@ -109,28 +113,24 @@ socket (
 
 	if ( __lnb_real_socket_location () == NULL )
 	{
-		SET_ERRNO_MISSING();
+		LNB_SET_ERRNO_MISSING();
 		return -1;
 	}
 
 	if ( (__lnb_check_prog_ban () != 0)
 		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = 0;
-#endif
+		LNB_SET_ERRNO(err);
 		return (*__lnb_real_socket_location ()) (domain, type, protocol);
 	}
 
 	if ( __lnb_is_allowed_socket (domain) == 1 )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = 0;
-#endif
+		LNB_SET_ERRNO(err);
 		return (*__lnb_real_socket_location ()) (domain, type, protocol);
 	}
 
-	SET_ERRNO_PERM();
+	LNB_SET_ERRNO_PERM();
 	return -1;
 }
 
@@ -147,6 +147,8 @@ recvmsg (
 	int flags;
 #endif
 {
+	LNB_MAKE_ERRNO_VAR(err);
+
 	__lnb_main ();
 #ifdef LNB_DEBUG
 	fprintf (stderr, "libnetblock: recvmsg(%d)\n", s);
@@ -155,20 +157,18 @@ recvmsg (
 
 	if ( __lnb_real_recvmsg_location () == NULL )
 	{
-		SET_ERRNO_MISSING();
+		LNB_SET_ERRNO_MISSING();
 		return -1;
 	}
 
 	if ( (__lnb_check_prog_ban () != 0)
 		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = 0;
-#endif
+		LNB_SET_ERRNO(err);
 		return (*__lnb_real_recvmsg_location ()) (s, msg, flags);
 	}
 
-	SET_ERRNO_PERM();
+	LNB_SET_ERRNO_PERM();
 	return -1;
 }
 
@@ -185,6 +185,8 @@ sendmsg (
 	int flags;
 #endif
 {
+	LNB_MAKE_ERRNO_VAR(err);
+
 	__lnb_main ();
 #ifdef LNB_DEBUG
 	fprintf (stderr, "libnetblock: sendmsg(%d)\n", s);
@@ -193,20 +195,18 @@ sendmsg (
 
 	if ( __lnb_real_sendmsg_location () == NULL )
 	{
-		SET_ERRNO_MISSING();
+		LNB_SET_ERRNO_MISSING();
 		return -1;
 	}
 
 	if ( (__lnb_check_prog_ban () != 0)
 		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = 0;
-#endif
+		LNB_SET_ERRNO(err);
 		return (*__lnb_real_sendmsg_location ()) (s, msg, flags);
 	}
 
-	SET_ERRNO_PERM();
+	LNB_SET_ERRNO_PERM();
 	return -1;
 }
 
@@ -223,9 +223,7 @@ bind (
 	socklen_t addrlen;
 #endif
 {
-#ifdef HAVE_ERRNO_H
-	int err = 0;
-#endif
+	LNB_MAKE_ERRNO_VAR(err);
 
 	__lnb_main ();
 #ifdef LNB_DEBUG
@@ -235,35 +233,29 @@ bind (
 
 	if ( __lnb_real_bind_location () == NULL )
 	{
-		SET_ERRNO_MISSING();
+		LNB_SET_ERRNO_MISSING();
 		return -1;
 	}
 
 	if ( my_addr == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = err;
-#endif
+		LNB_SET_ERRNO(err);
 		return (*__lnb_real_bind_location ()) (sockfd, my_addr, addrlen);
 	}
 
 	if ( (__lnb_check_prog_ban () != 0)
 		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = err;
-#endif
+		LNB_SET_ERRNO(err);
 		return (*__lnb_real_bind_location ()) (sockfd, my_addr, addrlen);
 	}
 
 	if ( __lnb_is_allowed_socket (my_addr->sa_family) == 1 )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = 0;
-#endif
+		LNB_SET_ERRNO(err);
 		return (*__lnb_real_bind_location ()) (sockfd, my_addr, addrlen);
 	}
 
-	SET_ERRNO_PERM();
+	LNB_SET_ERRNO_PERM();
 	return -1;
 }

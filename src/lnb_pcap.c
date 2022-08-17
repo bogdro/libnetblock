@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- libpcap functions' replacements.
  *
- * Copyright (C) 2011-2015 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2017 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -51,20 +51,36 @@ typedef void pcap_if_t;
 typedef unsigned int bpf_u_int32;
 typedef unsigned int intptr_t;
 */
-char * pcap_lookupdev LNB_PARAMS ((char *errbuf));
-int pcap_lookupnet LNB_PARAMS ((const char * device, bpf_u_int32 * netp,
+#  ifdef __cplusplus
+extern "C" {
+#  endif
+
+extern char * pcap_lookupdev LNB_PARAMS ((char *errbuf));
+extern int pcap_lookupnet LNB_PARAMS ((const char * device, bpf_u_int32 * netp,
 	bpf_u_int32 * maskp, char * errbuf));
-pcap_t * pcap_create LNB_PARAMS ((const char * source, char * errbuf));
-pcap_t * pcap_open_dead LNB_PARAMS ((int linktype, int snaplen));
-pcap_t * pcap_open_live LNB_PARAMS ((const char * device, int snaplen,
+extern pcap_t * pcap_create LNB_PARAMS ((const char * source, char * errbuf));
+extern pcap_t * pcap_open_dead LNB_PARAMS ((int linktype, int snaplen));
+extern pcap_t * pcap_open_live LNB_PARAMS ((const char * device, int snaplen,
 	int promisc, int to_ms, char * errbuf));
-pcap_t * pcap_open_offline LNB_PARAMS ((const char * fname, char * errbuf));
-pcap_t * pcap_fopen_offline LNB_PARAMS ((FILE * fp, char * errbuf));
-int pcap_findalldevs LNB_PARAMS ((pcap_if_t ** devs, char * errbuf));
+extern pcap_t * pcap_open_offline LNB_PARAMS ((const char * fname, char * errbuf));
+extern pcap_t * pcap_fopen_offline LNB_PARAMS ((FILE * fp, char * errbuf));
+extern int pcap_findalldevs LNB_PARAMS ((pcap_if_t ** devs, char * errbuf));
+
+#  ifdef __cplusplus
+}
+#  endif
 # endif
 #endif
+
 #if ! defined(WIN32)
-pcap_t * pcap_hopen_offline LNB_PARAMS ((intptr_t a, char * errbuf));
+# ifdef __cplusplus
+extern "C" {
+# endif
+
+extern pcap_t * pcap_hopen_offline LNB_PARAMS ((intptr_t a, char * errbuf));
+# ifdef __cplusplus
+}
+# endif
 #endif
 
 /* =============================================================== */

@@ -226,7 +226,7 @@ libnetblock_la_SOURCES = lnb_exec.c lnb_main.c lnb_net.c lnb_banning.c \
 	lnb_opens.c lnb_priv.h lnb_pcap.c
 
 EXTRA_DIST = lnb_cfg.h.in lnb_public.c.in libnetblock.h.in \
-	randomize_names_gawk.sh randomize_names_perl.sh
+	randomize_names_gawk.sh randomize_names_perl.sh banning-generic.c
 
 
 # VERSION = C:R:A     (current, revision, age)
@@ -234,7 +234,7 @@ EXTRA_DIST = lnb_cfg.h.in lnb_public.c.in libnetblock.h.in \
 # interface changed => C++, R:=0
 # - interface add => A++
 # - interface removed => A:=0
-libnetblock_la_LDFLAGS = -version-info 2:4:1
+libnetblock_la_LDFLAGS = -version-info 2:5:1
 
 #nobase_include_HEADERS = lnb_priv.h
 nobase_nodist_include_HEADERS = libnetblock.h

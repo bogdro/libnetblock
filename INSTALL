@@ -2,11 +2,28 @@ LibNetBlock - a library which blocks programs from accessing the network.
 
 Requirements for compiling the full version:
 - a non-root account. Please, NEVER compile or 'make' anything as root.
-- a working C compiler
+
+- a working C compiler (C++ compilers won't work due to variable casts)
+
 - development package for the C library (like glibc-devel and glibc-headers)
-  with the sys/stat.h and dlfcn.h header files
+
+  Note that some glibc versions (2.11 is known of this) have a bug in their
+  dl(v)sym implementation, which may cause LibNetBlock to hang during searching
+  for the original versions of the substituted C functions. If you observe
+  this, it is best to upgrade glibc. If not possible, you can start deleting
+  substituted functions from open() and check each time it your current
+  version started to work (yes, this decreases security).
+
+  The sys/stat.h contains functions needed to check an executable's type.
+  If it is a symbolic link, LibNetBlock will follow it.
+
+  The dlfcn.h header contains functions needed to call the original functions.
+  It has to have RTLD_NEXT defined. LibNetBlock wouldn't work without this, so
+  it won't compile without this.
+
 - libdl, the dynamic loading library, with its development package
   (unless the required functions are in the C library)
+
 - the 'make' program
 
 Type

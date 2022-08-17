@@ -1,3 +1,55 @@
+2017-04-23	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* LibNetBlock version 1.0
+	  Fixes and improvements to code related with banning the library from
+	  interfering with fragile programs. Many code improvements and
+	  simplifications in readability and maintenance. More unit tests.
+	  Small performance improvements.
+	* configure.ac: fixed typos, updated version, checking for the symlink
+	  function for unit tests.
+	* README, INSTALL, doc/libnetblock.texi.in: added a note that compiling
+	  with a C++ compiler won't work right now due to some variable
+	  casting constructs that are forbidden in C++. Added a note saying
+	  that glibc 2.11 (and potentially other versions) has a bug which may
+	  cause LibNetBlock to hang during initialization in dl(v)sym.
+	* src/lnb_priv.h: added LNB_SET_ERRNO and LNB_GET_ERRNO macros to
+	  simplify code in many places. Added LNB_MAKE_ERRNO_VAR for declaring
+	  and initializing a variable that holds the temporary errno value.
+	  Renamed SET_ERRNO_PERM to LNB_SET_ERRNO_PERM and SET_ERRNO_MISSING
+	  to LNB_SET_ERRNO_MISSING. Added a warning when glibc 2.11 is used.
+	* src/*.c: simplified errno usage - not setting where not checked
+	  after or when not in a user-called function. Use macros to set and
+	  get errno where required. All public functions should now either
+	  preserve errno or keep the value set by the original functions.
+	* src/lnb_opens.c, src/lnb_pcap.c: surrounded external definitions
+	  with >extern "C"<.
+	* src/banning-generic.c: a generic file with functions related to
+	  banning programs and files from being interfered with by the library.
+	  Improved code deduplication and maintenance. The file will be used
+	  in LibSecRm, LibHideIP and LibNetBlock.
+	* src/lnb_banning.c: include and use banning-generic.c.
+	* src/lnb_exec.c (__lnb_append_path, __lnb_is_forbidden_program):
+	  fixed potential buffer overflows
+	* src/lnb_exec.c (__lnb_append_path): calculate string lengths once
+	* src/lnb_exec.c (__lnb_is_forbidden_program): fixed potential use of
+	  uninitialized values
+	* src/lnb_exec.c (__lnb_get_target_link_path): fix syntax error when
+	  malloc() is missing.
+	* test/lnbtest.c: fixed LSR_ANSIC to LNB_ANSIC (shouldn't be used
+	  anyway).
+	* test/lnbtest.c (test_socket_unix, test_socket_local,
+	  test_socket_banned_netlink, test_socket_banned_raw,
+	  test_socket_banned_proto_netlink, test_socket_banned_inet,
+	  test_socket_banned_proto_inet): tests renamed to better match what
+	  they test.
+	* test/lnbtest.c (test_socket_banned_raw6,
+	  test_socket_banned_proto_netlink6, test_socket_banned_inet6,
+	  test_socket_banned_proto_inet6): added tests related to IPv6.
+	* test/lnbtest.c (test_freopen_stdout, test_freopen_stdout_banned,
+	  test_freopen_link_banned_stdout): added tests related to freopen().
+	* test/lnbtest.c (test_freopen_banned, test_freopen_link_banned):
+	  fixed descriptor leak (only in the test itself).
+
 2015-09-06	Bogdan Drozdowski <bogdandr@op.pl>
 
 	* LibNetBlock version 0.6

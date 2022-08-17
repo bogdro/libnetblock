@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- unit test.
  *
- * Copyright (C) 2015 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2015-2017 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -43,7 +43,7 @@
 #  define RTLD_NEXT ((void *) -1l)
 # endif
 #else
-# ifdef LSR_ANSIC
+# ifdef LNB_ANSIC
 #  error Dynamic loading functions missing.
 # endif
 #endif
@@ -446,28 +446,66 @@ START_TEST(test_freopen)
 }
 END_TEST
 
+START_TEST(test_freopen_stdout)
+{
+	FILE * f;
+
+	printf("test_freopen_stdout\n");
+	f = freopen(LNB_TEST_FILENAME, "r", stdout);
+	if (f != NULL)
+	{
+		fclose(f);
+	}
+	else
+	{
+		fail("test_freopen_stdout: file not re-opened: errno=%d\n", errno);
+	}
+}
+END_TEST
+
 START_TEST(test_freopen_banned)
 {
 	FILE * f;
+	FILE * f2;
+	int err;
 
 	printf("test_freopen_banned\n");
 	f = fopen(LNB_TEST_FILENAME, "r");
 	if (f != NULL)
 	{
-		f = freopen(LNB_TEST_BANNED_FILENAME, "r", f);
-		if (f != NULL)
+		f2 = freopen(LNB_TEST_BANNED_FILENAME, "r", f);
+		if (f2 != NULL)
 		{
-			fclose(f);
+			fclose(f2);
 			fail("test_freopen_banned: file opened, but shouldn't be\n");
 		}
+		err = errno;
+		fclose(f);
 #ifdef HAVE_ERRNO_H
-		ck_assert_int_eq(errno, EPERM);
+		ck_assert_int_eq(err, EPERM);
 #endif
 	}
 	else
 	{
 		fail("test_freopen_banned: file not opened: errno=%d\n", errno);
 	}
+}
+END_TEST
+
+START_TEST(test_freopen_stdout_banned)
+{
+	FILE * f;
+
+	printf("test_freopen_stdout_banned\n");
+	f = freopen(LNB_TEST_BANNED_FILENAME, "r", stdout);
+	if (f != NULL)
+	{
+		fclose(f);
+		fail("test_freopen_stdout_banned: file opened, but shouldn't be\n");
+	}
+#ifdef HAVE_ERRNO_H
+	ck_assert_int_eq(errno, EPERM);
+#endif
 }
 END_TEST
 
@@ -510,6 +548,7 @@ END_TEST
 START_TEST(test_freopen_link_banned)
 {
 	FILE * f;
+	FILE * f2;
 	int r;
 
 	printf("test_freopen_link_banned\n");
@@ -521,14 +560,15 @@ START_TEST(test_freopen_link_banned)
 	f = fopen(LNB_TEST_FILENAME, "r");
 	if (f != NULL)
 	{
-		f = freopen(LNB_TEST_BANNED_LINKNAME, "r", f);
-		if (f != NULL)
+		f2 = freopen(LNB_TEST_BANNED_LINKNAME, "r", f);
+		if (f2 != NULL)
 		{
-			fclose(f);
+			fclose(f2);
 			unlink (LNB_TEST_BANNED_LINKNAME);
 			fail("test_freopen_link_banned: file opened, but shouldn't be\n");
 		}
 		r = errno;
+		fclose(f);
 		unlink (LNB_TEST_BANNED_LINKNAME);
 # ifdef HAVE_ERRNO_H
 		ck_assert_int_eq(r, EPERM);
@@ -539,6 +579,32 @@ START_TEST(test_freopen_link_banned)
 		unlink (LNB_TEST_BANNED_LINKNAME);
 		fail("test_freopen_link_banned: file not opened: errno=%d\n", errno);
 	}
+}
+END_TEST
+
+START_TEST(test_freopen_link_banned_stdout)
+{
+	FILE * f;
+	int r;
+
+	printf("test_freopen_link_banned_stdout\n");
+	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
+	if (r != 0)
+	{
+		fail("test_freopen_link_banned_stdout: link could not be created: errno=%d, r=%d\n", errno, r);
+	}
+	f = freopen(LNB_TEST_BANNED_LINKNAME, "r", stdout);
+	if (f != NULL)
+	{
+		fclose(f);
+		unlink (LNB_TEST_BANNED_LINKNAME);
+		fail("test_freopen_link_banned_stdout: file opened, but shouldn't be\n");
+	}
+	r = errno;
+	unlink (LNB_TEST_BANNED_LINKNAME);
+# ifdef HAVE_ERRNO_H
+	ck_assert_int_eq(r, EPERM);
+# endif
 }
 END_TEST
 #endif /* HAVE_SYMLINK */
@@ -634,11 +700,11 @@ END_TEST
 /* ====================== Network functions */
 
 #ifdef HAVE_SYS_SOCKET_H
-START_TEST(test_socket1)
+START_TEST(test_socket_unix)
 {
 	int a;
 
-	printf("test_socket1\n");
+	printf("test_socket_unix\n");
 	a = socket (AF_UNIX, SOCK_STREAM, 0);
 	if ( a >= 0 )
 	{
@@ -646,16 +712,16 @@ START_TEST(test_socket1)
 	}
 	else
 	{
-		fail("test_socket1: socket not opened, but should be: errno=%d\n", errno);
+		fail("test_socket_unix: socket not opened, but should be: errno=%d\n", errno);
 	}
 }
 END_TEST
 
-START_TEST(test_socket2)
+START_TEST(test_socket_local)
 {
 	int a;
 
-	printf("test_socket2\n");
+	printf("test_socket_local\n");
 	a = socket (AF_LOCAL, SOCK_STREAM, 0);
 	if ( a >= 0 )
 	{
@@ -663,21 +729,21 @@ START_TEST(test_socket2)
 	}
 	else
 	{
-		fail("test_socket2: socket not opened, but should be: errno=%d\n", errno);
+		fail("test_socket_local: socket not opened, but should be: errno=%d\n", errno);
 	}
 }
 END_TEST
 
-START_TEST(test_socket_banned1)
+START_TEST(test_socket_banned_netlink)
 {
 	int a;
 
-	printf("test_socket_banned1\n");
+	printf("test_socket_banned_netlink\n");
 	a = socket (AF_NETLINK, SOCK_STREAM, PF_INET);
 	if ( a >= 0 )
 	{
 		close (a);
-		fail("test_socket_banned1: socket opened, but shouldn't be\n");
+		fail("test_socket_banned_netlink: socket opened, but shouldn't be\n");
 	}
 # ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -685,16 +751,16 @@ START_TEST(test_socket_banned1)
 }
 END_TEST
 
-START_TEST(test_socket_banned2)
+START_TEST(test_socket_banned_raw)
 {
 	int a;
 
-	printf("test_socket_banned2\n");
+	printf("test_socket_banned_raw\n");
 	a = socket (AF_INET, SOCK_RAW, PF_INET);
 	if ( a >= 0 )
 	{
 		close (a);
-		fail("test_socket_banned2: socket opened, but shouldn't be\n");
+		fail("test_socket_banned_raw: socket opened, but shouldn't be\n");
 	}
 # ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -702,16 +768,33 @@ START_TEST(test_socket_banned2)
 }
 END_TEST
 
-START_TEST(test_socket_banned3)
+START_TEST(test_socket_banned_raw6)
 {
 	int a;
 
-	printf("test_socket_banned3\n");
+	printf("test_socket_banned_raw6\n");
+	a = socket (AF_INET6, SOCK_RAW, PF_INET);
+	if ( a >= 0 )
+	{
+		close (a);
+		fail("test_socket_banned_raw6: socket opened, but shouldn't be\n");
+	}
+# ifdef HAVE_ERRNO_H
+	ck_assert_int_eq(errno, EPERM);
+# endif
+}
+END_TEST
+
+START_TEST(test_socket_banned_proto_netlink)
+{
+	int a;
+
+	printf("test_socket_banned_proto_netlink\n");
 	a = socket (AF_INET, SOCK_STREAM, PF_NETLINK);
 	if ( a >= 0 )
 	{
 		close (a);
-		fail("test_socket_banned3: socket opened, but shouldn't be\n");
+		fail("test_socket_banned_proto_netlink: socket opened, but shouldn't be\n");
 	}
 # ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -719,16 +802,33 @@ START_TEST(test_socket_banned3)
 }
 END_TEST
 
-START_TEST(test_socket_banned4)
+START_TEST(test_socket_banned_proto_netlink6)
 {
 	int a;
 
-	printf("test_socket_banned4\n");
+	printf("test_socket_banned_proto_netlink6\n");
+	a = socket (AF_INET6, SOCK_STREAM, PF_NETLINK);
+	if ( a >= 0 )
+	{
+		close (a);
+		fail("test_socket_banned_proto_netlink6: socket opened, but shouldn't be\n");
+	}
+# ifdef HAVE_ERRNO_H
+	ck_assert_int_eq(errno, EPERM);
+# endif
+}
+END_TEST
+
+START_TEST(test_socket_banned_inet)
+{
+	int a;
+
+	printf("test_socket_banned_inet\n");
 	a = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if ( a >= 0 )
 	{
 		close (a);
-		fail("test_socket_banned4: socket opened, but shouldn't be\n");
+		fail("test_socket_banned_inet: socket opened, but shouldn't be\n");
 	}
 # ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -736,16 +836,50 @@ START_TEST(test_socket_banned4)
 }
 END_TEST
 
-START_TEST(test_socket_banned5)
+START_TEST(test_socket_banned_inet6)
 {
 	int a;
 
-	printf("test_socket_banned5\n");
+	printf("test_socket_banned_inet6\n");
+	a = socket (AF_INET6, SOCK_STREAM, IPPROTO_TCP);
+	if ( a >= 0 )
+	{
+		close (a);
+		fail("test_socket_banned_inet6: socket opened, but shouldn't be\n");
+	}
+# ifdef HAVE_ERRNO_H
+	ck_assert_int_eq(errno, EPERM);
+# endif
+}
+END_TEST
+
+START_TEST(test_socket_banned_proto_inet)
+{
+	int a;
+
+	printf("test_socket_banned_proto_inet\n");
 	a = socket (AF_INET, SOCK_STREAM, PF_INET);
 	if ( a >= 0 )
 	{
 		close (a);
-		fail("test_socket_banned5: socket opened, but shouldn't be\n");
+		fail("test_socket_banned_proto_inet: socket opened, but shouldn't be\n");
+	}
+# ifdef HAVE_ERRNO_H
+	ck_assert_int_eq(errno, EPERM);
+# endif
+}
+END_TEST
+
+START_TEST(test_socket_banned_proto_inet6)
+{
+	int a;
+
+	printf("test_socket_banned_proto_inet6\n");
+	a = socket (AF_INET6, SOCK_STREAM, PF_INET6);
+	if ( a >= 0 )
+	{
+		close (a);
+		fail("test_socket_banned_proto_inet6: socket opened, but shouldn't be\n");
 	}
 # ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -992,6 +1126,8 @@ END_TEST
 #endif /* (defined HAVE_PCAP_H) || (defined HAVE_PCAP_PCAP_H) */
 
 
+/* ========================================================== */
+
 /*
 __attribute__ ((constructor))
 static void setup_global(void) / * unchecked * /
@@ -1073,24 +1209,31 @@ static Suite * lnb_create_suite(void)
 	tcase_add_test(tests_open, test_fopen_link_banned);
 #endif
 	tcase_add_test(tests_open, test_freopen);
+	tcase_add_test(tests_open, test_freopen_stdout);
 	tcase_add_test(tests_open, test_freopen_banned);
+	tcase_add_test(tests_open, test_freopen_stdout_banned);
 
 #ifdef HAVE_SYMLINK
 	tcase_add_test(tests_open, test_freopen_link);
 	tcase_add_test(tests_open, test_freopen_link_banned);
+	tcase_add_test(tests_open, test_freopen_link_banned_stdout);
 #endif
 
 
 /* ====================== Network functions */
 
 #ifdef HAVE_SYS_SOCKET_H
-	tcase_add_test(tests_net, test_socket1);
-	tcase_add_test(tests_net, test_socket2);
-	tcase_add_test(tests_net, test_socket_banned1);
-	tcase_add_test(tests_net, test_socket_banned2);
-	tcase_add_test(tests_net, test_socket_banned3);
-	tcase_add_test(tests_net, test_socket_banned4);
-	tcase_add_test(tests_net, test_socket_banned5);
+	tcase_add_test(tests_net, test_socket_unix);
+	tcase_add_test(tests_net, test_socket_local);
+	tcase_add_test(tests_net, test_socket_banned_netlink);
+	tcase_add_test(tests_net, test_socket_banned_raw);
+	tcase_add_test(tests_net, test_socket_banned_raw6);
+	tcase_add_test(tests_net, test_socket_banned_proto_netlink);
+	tcase_add_test(tests_net, test_socket_banned_proto_netlink6);
+	tcase_add_test(tests_net, test_socket_banned_inet);
+	tcase_add_test(tests_net, test_socket_banned_inet6);
+	tcase_add_test(tests_net, test_socket_banned_proto_inet);
+	tcase_add_test(tests_net, test_socket_banned_proto_inet6);
 	tcase_add_test(tests_net, test_recvmsg);
 	tcase_add_test(tests_net, test_sendmsg);
 # ifdef HAVE_SYS_UN_H

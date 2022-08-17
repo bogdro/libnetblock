@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(libnetblock, 0.6, bogdandr@op.pl)
+AC_INIT(libnetblock, 1.0, bogdandr@op.pl)
 AM_INIT_AUTOMAKE
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile test/Makefile
 	doc/libnetblock.texi libnetblock.spec src/lnb_cfg.h
@@ -93,10 +93,10 @@ if (test "x$libdl" != "xyes"); then
 	fi
 fi
 
-# Adding additional libraries actually makes LibHideIP "see" the functions
+# Adding additional libraries actually makes LibNetBlock "see" the functions
 # contained in them, via dlsym/dlvsym, so the original functions can be called.
 # This adds a runtime dependency, but otherwise it could make the program
-# bypass LibHideIP or make normally-working functions not available anymore.
+# bypass LibNetBlock or make normally-working functions not available anymore.
 
 AC_CHECK_LIB([pcap],[pcap_lookupdev])
 
@@ -165,7 +165,7 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNC([malloc],
 	AC_DEFINE([HAVE_MALLOC],[1],[Whether you have the malloc function.]))
 
-AC_CHECK_FUNCS([memset readlink getenv openat openat64 lstat])
+AC_CHECK_FUNCS([memset readlink getenv openat openat64 lstat symlink])
 
 have_check=no
 #ACTION-IF-NOT-FOUND is required, otherwise 'configure' fails
