@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- unit test for file opening functions.
  *
- * Copyright (C) 2015-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2015-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ START_TEST(test_openat)
 {
 	int fd;
 
-	printf("test_openat\n");
+	LNB_PROLOG_FOR_TEST();
 	fd = openat(AT_FDCWD, LNB_TEST_FILENAME, O_RDONLY);
 	if (fd >= 0)
 	{
@@ -85,7 +85,7 @@ START_TEST(test_openat_banned)
 	int fd;
 	int dirfd;
 
-	printf("test_openat_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	fd = openat(AT_FDCWD, LNB_TEST_BANNED_FILENAME, O_RDONLY);
 	if (fd >= 0)
 	{
@@ -126,7 +126,7 @@ START_TEST(test_openat_link)
 	int fd;
 	int r;
 
-	printf("test_openat_link\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_FILENAME, LNB_LINK_FILENAME);
 	if (r != 0)
 	{
@@ -155,7 +155,7 @@ START_TEST(test_openat_link_banned)
 	int fd;
 	int r;
 
-	printf("test_openat_link_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
@@ -182,7 +182,7 @@ START_TEST(test_fopen)
 {
 	FILE * f;
 
-	printf("test_fopen\n");
+	LNB_PROLOG_FOR_TEST();
 	f = fopen(LNB_TEST_FILENAME, "r");
 	if (f != NULL)
 	{
@@ -195,11 +195,45 @@ START_TEST(test_fopen)
 }
 END_TEST
 
+START_TEST(test_fopen_dev)
+{
+	FILE * f;
+
+	LNB_PROLOG_FOR_TEST();
+	f = fopen("/dev/null", "r");
+	if (f != NULL)
+	{
+		fclose(f);
+	}
+	else
+	{
+		fail("test_fopen_dev: file not opened: errno=%d\n", errno);
+	}
+}
+END_TEST
+
+START_TEST(test_fopen_proc)
+{
+	FILE * f;
+
+	LNB_PROLOG_FOR_TEST();
+	f = fopen("/proc/cpuinfo", "r");
+	if (f != NULL)
+	{
+		fclose(f);
+	}
+	else
+	{
+		fail("test_fopen_proc: file not opened: errno=%d\n", errno);
+	}
+}
+END_TEST
+
 START_TEST(test_fopen_banned)
 {
 	FILE * f;
 
-	printf("test_fopen_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	f = fopen(LNB_TEST_BANNED_FILENAME, "r");
 	if (f != NULL)
 	{
@@ -218,7 +252,7 @@ START_TEST(test_fopen_link)
 	FILE * f;
 	int r;
 
-	printf("test_fopen_link\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_FILENAME, LNB_LINK_FILENAME);
 	if (r != 0)
 	{
@@ -244,7 +278,7 @@ START_TEST(test_fopen_link_banned)
 	FILE * f;
 	int r;
 
-	printf("test_fopen_link_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
@@ -270,7 +304,7 @@ START_TEST(test_freopen)
 {
 	FILE * f;
 
-	printf("test_freopen\n");
+	LNB_PROLOG_FOR_TEST();
 	f = fopen(LNB_TEST_FILENAME, "r");
 	if (f != NULL)
 	{
@@ -295,7 +329,7 @@ START_TEST(test_freopen_stdout)
 {
 	FILE * f;
 
-	printf("test_freopen_stdout\n");
+	LNB_PROLOG_FOR_TEST();
 	f = freopen(LNB_TEST_FILENAME, "r", stdout);
 	if (f != NULL)
 	{
@@ -314,7 +348,7 @@ START_TEST(test_freopen_banned)
 	FILE * f2;
 	int err;
 
-	printf("test_freopen_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	f = fopen(LNB_TEST_FILENAME, "r");
 	if (f != NULL)
 	{
@@ -341,7 +375,7 @@ START_TEST(test_freopen_stdout_banned)
 {
 	FILE * f;
 
-	printf("test_freopen_stdout_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	f = freopen(LNB_TEST_BANNED_FILENAME, "r", stdout);
 	if (f != NULL)
 	{
@@ -360,7 +394,7 @@ START_TEST(test_freopen_link)
 	FILE * f;
 	int r;
 
-	printf("test_freopen_link\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_FILENAME, LNB_LINK_FILENAME);
 	if (r != 0)
 	{
@@ -396,7 +430,7 @@ START_TEST(test_freopen_link_banned)
 	FILE * f2;
 	int r;
 
-	printf("test_freopen_link_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
@@ -432,7 +466,7 @@ START_TEST(test_freopen_link_banned_stdout)
 	FILE * f;
 	int r;
 
-	printf("test_freopen_link_banned_stdout\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
@@ -458,7 +492,7 @@ START_TEST(test_open)
 {
 	int fd;
 
-	printf("test_open\n");
+	LNB_PROLOG_FOR_TEST();
 	fd = open(LNB_TEST_FILENAME, O_RDONLY);
 	if (fd >= 0)
 	{
@@ -475,7 +509,7 @@ START_TEST(test_open_banned)
 {
 	int fd;
 
-	printf("test_open_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	fd = open(LNB_TEST_BANNED_FILENAME, O_RDONLY);
 	if (fd >= 0)
 	{
@@ -494,7 +528,7 @@ START_TEST(test_open_link)
 	int fd;
 	int r;
 
-	printf("test_open_link\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_FILENAME, LNB_LINK_FILENAME);
 	if (r != 0)
 	{
@@ -520,7 +554,7 @@ START_TEST(test_open_link_banned)
 	int fd;
 	int r;
 
-	printf("test_open_link_banned\n");
+	LNB_PROLOG_FOR_TEST();
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
@@ -544,39 +578,9 @@ END_TEST
 
 /* ========================================================== */
 
-/*
-__attribute__ ((constructor))
-static void setup_global(void) / * unchecked * /
-{
-}
-*/
-
-/*
-static void teardown_global(void)
-{
-}
-*/
-
-static void setup_file_test(void) /* checked */
-{
-	FILE *f;
-
-	f = fopen(LNB_TEST_FILENAME, "w");
-	if (f != NULL)
-	{
-		fwrite("aaa", 1, LNB_TEST_FILE_LENGTH, f);
-		fclose(f);
-	}
-}
-
-static void teardown_file_test(void)
-{
-	unlink(LNB_TEST_FILENAME);
-}
-
 static Suite * lnb_create_suite(void)
 {
-	Suite * s = suite_create("libnetblock");
+	Suite * s = suite_create("libnetblock_open");
 
 	TCase * tests_open = tcase_create("open");
 
@@ -599,6 +603,8 @@ static Suite * lnb_create_suite(void)
 #endif
 
 	tcase_add_test(tests_open, test_fopen);
+	tcase_add_test(tests_open, test_fopen_dev);
+	tcase_add_test(tests_open, test_fopen_proc);
 	tcase_add_test(tests_open, test_fopen_banned);
 #ifdef HAVE_SYMLINK
 	tcase_add_test(tests_open, test_fopen_link);
@@ -617,7 +623,7 @@ static Suite * lnb_create_suite(void)
 
 /* ====================== */
 
-	tcase_add_checked_fixture(tests_open, &setup_file_test, &teardown_file_test);
+	lnbtest_add_fixtures (tests_open);
 
 	/* set 30-second timeouts */
 	tcase_set_timeout(tests_open, 30);

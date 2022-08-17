@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- unit test for network-related functions.
  *
- * Copyright (C) 2015-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2015-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -134,7 +134,7 @@ START_TEST(test_socket_unix)
 {
 	int a;
 
-	printf("test_socket_unix\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_UNIX, SOCK_STREAM, 0);
 	if ( a >= 0 )
 	{
@@ -151,7 +151,7 @@ START_TEST(test_socket_local)
 {
 	int a;
 
-	printf("test_socket_local\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_LOCAL, SOCK_STREAM, 0);
 	if ( a >= 0 )
 	{
@@ -168,7 +168,7 @@ START_TEST(test_socket_banned_netlink)
 {
 	int a;
 
-	printf("test_socket_banned_netlink\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_NETLINK, SOCK_STREAM, PF_INET);
 	if ( a >= 0 )
 	{
@@ -185,7 +185,7 @@ START_TEST(test_socket_banned_raw)
 {
 	int a;
 
-	printf("test_socket_banned_raw\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_INET, SOCK_RAW, PF_INET);
 	if ( a >= 0 )
 	{
@@ -202,7 +202,7 @@ START_TEST(test_socket_banned_raw6)
 {
 	int a;
 
-	printf("test_socket_banned_raw6\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_INET6, SOCK_RAW, PF_INET);
 	if ( a >= 0 )
 	{
@@ -219,7 +219,7 @@ START_TEST(test_socket_banned_proto_netlink)
 {
 	int a;
 
-	printf("test_socket_banned_proto_netlink\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_INET, SOCK_STREAM, PF_NETLINK);
 	if ( a >= 0 )
 	{
@@ -236,7 +236,7 @@ START_TEST(test_socket_banned_proto_netlink6)
 {
 	int a;
 
-	printf("test_socket_banned_proto_netlink6\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_INET6, SOCK_STREAM, PF_NETLINK);
 	if ( a >= 0 )
 	{
@@ -253,7 +253,7 @@ START_TEST(test_socket_banned_inet)
 {
 	int a;
 
-	printf("test_socket_banned_inet\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if ( a >= 0 )
 	{
@@ -270,7 +270,7 @@ START_TEST(test_socket_banned_inet6)
 {
 	int a;
 
-	printf("test_socket_banned_inet6\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_INET6, SOCK_STREAM, IPPROTO_TCP);
 	if ( a >= 0 )
 	{
@@ -287,7 +287,7 @@ START_TEST(test_socket_banned_proto_inet)
 {
 	int a;
 
-	printf("test_socket_banned_proto_inet\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_INET, SOCK_STREAM, PF_INET);
 	if ( a >= 0 )
 	{
@@ -304,7 +304,7 @@ START_TEST(test_socket_banned_proto_inet6)
 {
 	int a;
 
-	printf("test_socket_banned_proto_inet6\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socket (AF_INET6, SOCK_STREAM, PF_INET6);
 	if ( a >= 0 )
 	{
@@ -321,7 +321,7 @@ START_TEST(test_recvmsg)
 {
 	ssize_t a;
 
-	printf("test_recvmsg\n");
+	LNB_PROLOG_FOR_TEST();
 	a = recvmsg (1, NULL, 0);
 	if ( a >= 0 )
 	{
@@ -337,7 +337,7 @@ START_TEST(test_sendmsg)
 {
 	ssize_t a;
 
-	printf("test_sendmsg\n");
+	LNB_PROLOG_FOR_TEST();
 	a = sendmsg (1, NULL, 0);
 	if ( a >= 0 )
 	{
@@ -357,7 +357,7 @@ START_TEST(test_bind)
 	int err;
 	struct sockaddr_un sa_un;
 
-	printf("test_bind\n");
+	LNB_PROLOG_FOR_TEST();
 	sock = socket (AF_UNIX, SOCK_STREAM, 0);
 	if ( sock >= 0 )
 	{
@@ -385,7 +385,7 @@ START_TEST(test_socketpair)
 	int twosocks[2];
 	int a;
 
-	printf("test_socketpair\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socketpair (AF_UNIX, SOCK_STREAM, 0, twosocks);
 	if ( a >= 0 )
 	{
@@ -404,7 +404,7 @@ START_TEST(test_socketpair_banned1)
 	int twosocks[2];
 	int a;
 
-	printf("test_socketpair_banned1\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socketpair (AF_NETLINK, SOCK_STREAM, PF_INET, twosocks);
 	if ( a >= 0 )
 	{
@@ -426,7 +426,7 @@ START_TEST(test_socketpair_banned2)
 	int twosocks[2];
 	int a;
 
-	printf("test_socketpair_banned2\n");
+	LNB_PROLOG_FOR_TEST();
 	a = socketpair (AF_INET, SOCK_RAW, PF_INET, twosocks);
 	if ( a >= 0 )
 	{
@@ -448,7 +448,7 @@ START_TEST(test_socketpair_banned3)
 	int twosocks[2];
 	int a;
 
-	printf("test_socketpair_banned3\n");
+	LNB_PROLOG_FOR_TEST();
 # ifdef SOCK_PACKET
 	a = socketpair (AF_INET, SOCK_PACKET, PF_INET, twosocks);
 	if ( a >= 0 )
@@ -471,19 +471,6 @@ END_TEST
 
 /* ========================================================== */
 
-/*
-__attribute__ ((constructor))
-static void setup_global(void) / * unchecked * /
-{
-}
-*/
-
-/*
-static void teardown_global(void)
-{
-}
-*/
-
 static void setup_net_test(void) /* checked */
 {
 #ifdef HAVE_SYS_SOCKET_H
@@ -496,12 +483,11 @@ static void setup_net_test(void) /* checked */
 
 static void teardown_net_test(void)
 {
-
 }
 
 static Suite * lnb_create_suite(void)
 {
-	Suite * s = suite_create("libnetblock");
+	Suite * s = suite_create("libnetblock_net");
 
 	TCase * tests_net = tcase_create("net");
 

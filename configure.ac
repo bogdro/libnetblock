@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(libnetblock, 1.3, bogdandr@op.pl)
+AC_INIT(libnetblock, 1.4, bogdro@users.sourceforge.net)
 AM_INIT_AUTOMAKE
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile test/Makefile
 	doc/libnetblock.texi libnetblock.spec src/lnb_cfg.h
@@ -167,7 +167,7 @@ AC_CHECK_FUNC([malloc],
 	AC_DEFINE([HAVE_MALLOC],[1],[Whether you have the malloc function.]))
 
 AC_CHECK_FUNCS([memset memcpy readlink getenv openat openat64 lstat symlink \
-	execveat fexecve snprintf strdup])
+	execveat fexecve snprintf strdup stat stat64 lstat64])
 
 have_check=no
 #ACTION-IF-NOT-FOUND is required, otherwise 'configure' fails
@@ -227,6 +227,8 @@ if (test "x$GCC" = "xyes" ); then
         AX_C_CHECK_FLAG([-Wrestrict], [CFLAGS="$CFLAGS -Wrestrict"], [CFLAGS="$CFLAGS"])
         AX_C_CHECK_FLAG([-Woverlength-strings], [CFLAGS="$CFLAGS -Woverlength-strings"], [CFLAGS="$CFLAGS"])
         AX_C_CHECK_FLAG([-Wno-nonnull-compare], [CFLAGS="$CFLAGS -Wno-nonnull-compare"], [CFLAGS="$CFLAGS"])
+        AX_C_CHECK_FLAG([-Wstringop-truncation], [CFLAGS="$CFLAGS -Wstringop-truncation"], [CFLAGS="$CFLAGS"])
+        AX_C_CHECK_FLAG([-Wduplicated-branches], [CFLAGS="$CFLAGS -Wduplicated-branches"], [CFLAGS="$CFLAGS"])
 
         # required for the compiler, which is used by libtool instead of the linker
 	AX_C_CHECK_FLAG([-Wl,-z -Wl,noexecstack], [CFLAGS="$CFLAGS -Wl,-z -Wl,noexecstack"], [CFLAGS="$CFLAGS"])

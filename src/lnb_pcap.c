@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- libpcap functions' replacements.
  *
- * Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -83,6 +83,10 @@ extern pcap_t * pcap_hopen_offline LNB_PARAMS ((intptr_t a, char * errbuf));
 # endif
 #endif
 
+#ifdef TEST_COMPILE
+# undef LNB_ANSIC
+#endif
+
 /* =============================================================== */
 
 pcap_t *
@@ -153,4 +157,3 @@ pcap_open_live (
 
 	return NULL;
 }
-

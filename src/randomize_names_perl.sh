@@ -4,7 +4,7 @@
 # A library library which blocks programs from accessing the network.
 #	-- a name randomizing script that uses Perl.
 #
-# Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+# Copyright (C) 2011-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
 # License: GNU General Public License, v3+
 #
 # This program is free software; you can redistribute it and/or

@@ -52,6 +52,9 @@
 /* Define to 1 if you have the `lstat' function. */
 #undef HAVE_LSTAT
 
+/* Define to 1 if you have the `lstat64' function. */
+#undef HAVE_LSTAT64
+
 /* Whether you have the malloc function. */
 #undef HAVE_MALLOC
 
@@ -99,6 +102,12 @@
 
 /* Define to 1 if the system has the type `ssize_t'. */
 #undef HAVE_SSIZE_T
+
+/* Define to 1 if you have the `stat' function. */
+#undef HAVE_STAT
+
+/* Define to 1 if you have the `stat64' function. */
+#undef HAVE_STAT64
 
 /* Whether you have the stdarg.h header. */
 #undef HAVE_STDARG_H

@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- network functions' replacements.
  *
- * Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -58,6 +58,10 @@ static int __lnb_allowed_socket_types[] =
 {
 	AF_UNIX, AF_LOCAL
 };
+
+#ifdef TEST_COMPILE
+# undef LNB_ANSIC
+#endif
 
 /* =============================================================== */
 

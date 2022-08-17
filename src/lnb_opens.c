@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- file opening functions' replacements.
  *
- * Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -107,6 +107,13 @@ extern int open64 LNB_PARAMS ((const char * const path, const int flags, ... ));
 }
 #endif
 */
+
+#ifdef TEST_COMPILE
+# ifdef LNB_ANSIC
+#  define WAS_LNB_ANSIC
+# endif
+# undef LNB_ANSIC
+#endif
 
 /* ======================================================= */
 
@@ -415,6 +422,10 @@ generic_open (
 
 /* ======================================================= */
 
+#if (defined TEST_COMPILE) && (defined WAS_LNB_ANSIC)
+# define LNB_ANSIC 1
+#endif
+
 /* 'man 2 open' gives:
     int open(const char *pathname, int flags);
     int open(const char *pathname, int flags, mode_t mode);
@@ -552,6 +563,10 @@ open (
 
 /* ======================================================= */
 
+#ifdef TEST_COMPILE
+# undef LNB_ANSIC
+#endif
+
 #ifndef LNB_ANSIC
 static int generic_openat LNB_PARAMS((
 	const int dirfd, const char * const path, const int flags,
@@ -610,6 +625,10 @@ generic_openat (
 }
 
 /* ======================================================= */
+
+#if (defined TEST_COMPILE) && (defined WAS_LNB_ANSIC)
+# define LNB_ANSIC 1
+#endif
 
 #ifdef openat64
 # undef openat64

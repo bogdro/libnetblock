@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- private file and program banning functions.
  *
- * Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -53,6 +53,10 @@
 #else
 # undef LNB_CAN_USE_ENV
 # define BANNING_ENABLE_ENV 0
+#endif
+
+#ifdef TEST_COMPILE
+# undef LNB_ANSIC
 #endif
 
 #ifdef LNB_ANSIC

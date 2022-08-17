@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- unit test for packet capture functions.
  *
- * Copyright (C) 2015-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2015-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -57,7 +57,7 @@ START_TEST(test_pcap_create)
 {
 	pcap_t * ret;
 
-	printf("test_pcap_create\n");
+	LNB_PROLOG_FOR_TEST();
 	ret = pcap_create ("eth0", buf);
 	if (ret != NULL)
 	{
@@ -71,7 +71,7 @@ START_TEST(test_pcap_open_live)
 {
 	pcap_t * ret;
 
-	printf("test_pcap_open_live\n");
+	LNB_PROLOG_FOR_TEST();
 	ret = pcap_open_live ("eth0", 100, 0, 1000, buf);
 	if (ret != NULL)
 	{
@@ -85,22 +85,9 @@ END_TEST
 
 /* ========================================================== */
 
-/*
-__attribute__ ((constructor))
-static void setup_global(void) / * unchecked * /
-{
-}
-*/
-
-/*
-static void teardown_global(void)
-{
-}
-*/
-
 static Suite * lnb_create_suite(void)
 {
-	Suite * s = suite_create("libnetblock");
+	Suite * s = suite_create("libnetblock_pcap");
 
 #if (defined HAVE_PCAP_H) || (defined HAVE_PCAP_PCAP_H)
 	TCase * tests_pcap = tcase_create("pcap");
@@ -114,8 +101,6 @@ static Suite * lnb_create_suite(void)
 #endif
 
 /* ====================== */
-
-	/*tcase_add_checked_fixture(tests_pcap, &setup_net_test, &teardown_net_test);*/
 
 	/* set 30-second timeouts */
 #if (defined HAVE_PCAP_H) || (defined HAVE_PCAP_PCAP_H)

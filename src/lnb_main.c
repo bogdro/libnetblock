@@ -1,7 +1,7 @@
 /*
  * A library library which blocks programs from accessing the network.
  *
- * Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -82,6 +82,10 @@ static pp_ccp_i_i_i_cp			__lnb_real_pcap_open_live	= NULL;
 /*# warning Versioned fopen is unavailable, so LibNetBlock may crash on some glibc versions.*/
 #else
 # undef LNB_CANT_USE_VERSIONED_FOPEN
+#endif
+
+#ifdef TEST_COMPILE
+# undef LNB_ANSIC
 #endif
 
 /* =============================================================== */

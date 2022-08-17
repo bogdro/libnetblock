@@ -1,4 +1,50 @@
-2019-02-08	Bogdan Drozdowski <bogdandr@op.pl>
+2021-01-10	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+
+	* LibNetBlock version 1.4
+	  Portability improvements. LibNetBlock should work better with some
+	  filesystems which have i-node numbers greater than 2^32-1 and compile
+	  under non-ANSI-C. Checked running LibNetBlock under GCC address &
+	  undefined behaviour sanitizers. Improvements in unit tests.
+	* configure.ac: added checking for the stat(), stat64(), lstat64() and
+	  getaddrinfo_a functions. Added checking for the -Wstringop-truncation
+	  and -Wduplicated-branches compiler options.
+	* src/lnb_exec.c: forbid executing of 'coreutils' and 'hostid'
+	* doc/libnetblock.texi.in, doc/libnetblock.3: updated the addresses
+	* doc/libnetblock.texi.in: more blocks in @command{}
+	* libnetblock.spec.in: removed obsolete commented-out commands, updated
+	  the URL, added BugURL. Using macros for common elements.
+	* Makefile.am: stop using 'tar --delete', for systems where GNU tar is
+	  not installed or is not the default. Marked the 'pack' target PHONY
+	* src/lnb_cfg.h.in: added new constants
+	* src/lnb_priv.h: corrected some declarations to avoid warnings
+	* src/*.c*: added a preprocessor block that marks ANSI C as disabled,
+	  for internal testing compiler compatibility.
+	* src/lnb_exec.c (__lnb_get_target_link_path_fd): fixed a warning
+	  about a potential buffer overflow.
+	* src/lnb_exec.c (__lnb_get_target_link_path): replace rindex() with
+	  the more portable strrchr(). Check also for lstat64() and skip if
+	  both lstat64() and lstat() are not available.
+	* src/lnb_exec.c (__lnb_is_forbidden_program): Check also for
+	  stat64() and skip if both stat64() and stat() are not available.
+	* src/banning_generic.c (__banning_is_banned): fixed using the user
+	  banning filename instead of the global one
+	* src/lnb_exec.c: Forbid reading '/proc/net/fib_trie'.
+	* test/*.c, test/lnbtest_common.h: added a prolog macro with logging
+	  common for all tests
+	* test/lnbtest_other.c: new tests for finding private symbols in the
+	  library.
+	* test/lnbtest_common.c: a new file with code common to tests
+	* test/{lnbtest_exec.c,lnbtest_opens.c,lnbtest_banning.c}: Moved
+	  common code to lnbtest_common.c.
+	* test/lnbtest_fopens.c: added tests for a device file and for an
+	  object in the /proc filesystem.
+	* test/Makefile.am: added the new lnbtest_other test, added a target
+	  to just compile the tests
+
+	* test/lnbtest_net.c: free()ing some of the test results to avoid
+	  memory leaking warnings from sanitizers
+
+2019-02-08	Bogdan Drozdowski <bogdro@users.sourceforge.net>
 
 	* LibNetBlock version 1.3
 	  Added intercepting new functions. Fixed initialization code - fixed
@@ -12,7 +58,7 @@
 	  checking for the -Wchkp, -Wformat-overflow=2, -Wduplicated-cond,
 	  -Wrestrict and -Woverlength-strings compiler warning options.
 	* missing: script updated from new autoconf
-	* src/*.c: defined LNB_VOID to be void in ANSI C void and use that in
+	* src/*.c: define LNB_VOID to be 'void' in ANSI C and use that in
 	  function definitions for better readability
 	* src/lnb_opens.c: simplified the missing functions' declarations
 	* src/lnb_exec.c, src/lnb_net.c: added defining the constants
@@ -62,7 +108,7 @@
 	  where /bin/cat is a symlink to 'coreutils')
 	* test/lnbtest_banning.c: a new unit test for testing banning
 
-2017-04-23	Bogdan Drozdowski <bogdandr@op.pl>
+2017-04-23	Bogdan Drozdowski <bogdro@users.sourceforge.net>
 
 	* LibNetBlock version 1.0
 	  Fixes and improvements to code related with banning the library from
@@ -114,7 +160,7 @@
 	* test/lnbtest.c (test_freopen_banned, test_freopen_link_banned):
 	  fixed descriptor leak (only in the test itself).
 
-2015-09-06	Bogdan Drozdowski <bogdandr@op.pl>
+2015-09-06	Bogdan Drozdowski <bogdro@users.sourceforge.net>
 
 	* LibNetBlock version 0.6
 	  Library marked as not requiring executable stack (security reasons).
@@ -148,7 +194,7 @@
 	* src/lnb_opens.c (freopen, freopen64): disallowing also to reopen
 	  the standard streams (stdin, stdout, stderr) to the banned files
 
-2013-06-02	Bogdan Drozdowski <bogdandr@op.pl>
+2013-06-02	Bogdan Drozdowski <bogdro@users.sourceforge.net>
 
 	* LibNetBlock version 0.5
 	  Portability improvements (fixes for compilation without some header
@@ -168,7 +214,7 @@
 	* src/lnb_opens.c: removed including the unnecessary malloc.h file
 	* src/lnb_exec.c: added a missing "unused" attribute
 
-2012-09-30	Bogdan Drozdowski <bogdandr@op.pl>
+2012-09-30	Bogdan Drozdowski <bogdro@users.sourceforge.net>
 
 	* LibNetBlock version 0.4
 	  Banning mechanism fixed and updated with new possibilities.
@@ -191,7 +237,7 @@
 	* README, INSTALL, doc/libnetblock.texi.in, doc/libnetblock.3: updated
 	  with new banning information. Minor corrections.
 
-2012-02-11	Bogdan Drozdowski <bogdandr@op.pl>
+2012-02-11	Bogdan Drozdowski <bogdro@users.sourceforge.net>
 
 	* libnetblock version 0.3
 	  Made the header file SWIG-enabled, updated copyright, code cleanup,
@@ -209,7 +255,7 @@
 	* README, INSTALL: added information about SWIG, fixed typos
 	* doc/Makefile.am: fix typo
 
-2011-10-07	Bogdan Drozdowski <bogdandr@op.pl>
+2011-10-07	Bogdan Drozdowski <bogdro@users.sourceforge.net>
 
 	* libnetblock version 0.2
 	  Added a file for pkg-config with library information. Verified that
@@ -227,7 +273,7 @@
 	* src/lnb_main.c: removed unused declaration of __lnb_end().
 	* Makefile.am: added the file for pkg-config.
 
-2011-06-16	Bogdan Drozdowski <bogdandr@op.pl>
+2011-06-16	Bogdan Drozdowski <bogdro@users.sourceforge.net>
 
 	* libnetblock version 0.1
 	  Initial version. Intercepting: socket, sendmsg+recvmsg,

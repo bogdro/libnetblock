@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- unit test common functions - header file.
  *
- * Copyright (C) 2015-2019 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2015-2021 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -55,26 +55,40 @@
 #  define LNB_ALIGN(x)
 # endif
 
-#if (defined LNB_ENABLE_USERBANS) && (defined HAVE_GETENV) \
+# if (defined LNB_ENABLE_USERBANS) && (defined HAVE_GETENV) \
 	&& (defined HAVE_STDLIB_H) && (defined HAVE_MALLOC)
-# define LNB_CAN_USE_BANS 1
-#else
-# undef LNB_CAN_USE_BANS
-#endif
+#  define LNB_CAN_USE_BANS 1
+# else
+#  undef LNB_CAN_USE_BANS
+# endif
 
-#if (defined LNB_ENABLE_ENV) && (defined HAVE_STDLIB_H) && (defined HAVE_GETENV)
-# define LNB_CAN_USE_ENV 1
-#else
-# undef LNB_CAN_USE_ENV
-#endif
+# if (defined LNB_ENABLE_ENV) && (defined HAVE_STDLIB_H) && (defined HAVE_GETENV)
+#  define LNB_CAN_USE_ENV 1
+# else
+#  undef LNB_CAN_USE_ENV
+# endif
 
-#define LNB_TEST_FILENAME "zz1"
-#define LNB_TEST_FILE_LENGTH 3
-#define LNB_LINK_FILENAME "zz1link"
-#define LNB_TEST_BANNED_FILENAME "/etc/hosts"
-#define LNB_TEST_BANNED_FILENAME_SHORT "hosts"
-#define LNB_TEST_BANNED_LINKNAME "banlink"
-#define LNB_UNIX_SOCK "stest.sock"
-#define LNB_EXIT_VALUE (-222)
+# define LNB_TEST_FILENAME "zz1"
+# define LNB_TEST_FILE_LENGTH 3
+# define LNB_LINK_FILENAME "zz1link"
+# define LNB_TEST_BANNED_FILENAME "/etc/hosts"
+# define LNB_TEST_BANNED_FILENAME_SHORT "hosts"
+# define LNB_TEST_BANNED_LINKNAME "banlink"
+# define LNB_UNIX_SOCK "stest.sock"
+# define LNB_EXIT_VALUE (-222)
+
+# define LNB_PROLOG_FOR_TEST() \
+	puts(__func__)
+
+# ifdef __cplusplus
+extern "C" {
+# endif
+
+extern void lnbtest_prepare_banned_file LNB_PARAMS((void));
+extern TCase * lnbtest_add_fixtures LNB_PARAMS((TCase * tests));
+
+# ifdef __cplusplus
+}
+# endif
 
 #endif /* LNBTEST_COMMON_HEADER */

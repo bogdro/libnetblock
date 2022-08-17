@@ -38,7 +38,7 @@ This manual is for LibNetBlock, version @VERSION@
 
 @c ==================================================================
 
-    Copyright (c)  2011-2019 Bogdan Drozdowski
+    Copyright (c)  2011-2021 Bogdan Drozdowski
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2
@@ -173,15 +173,15 @@ When the script is done working, recompile and reinstall the library.
 
 Thus, a typical build sequence with less detection would be
 
-./configure
+@command{./configure}
 
-cd src
+@command{cd src}
 
-./randomize_names_gawk.sh (or @command{make randomnames})
+@command{./randomize_names_gawk.sh} (or @command{make randomnames})
 
-cd ..
+@command{cd ..}
 
-make
+@command{make}
 
 
 If you want to do this manually (or you don't have @command{sed} or
@@ -192,13 +192,13 @@ lines are the function names to convert. Take each name and substitue all its
 appearances in each source file in the "src" directory using a text editor or
 the following commands:
 
-sed -i 's/__lnb_real_execve_location/_your_function_name1/g' *.c* *.h*
+@command{sed -i 's/__lnb_real_execve_location/_your_function_name1/g' *.c* *.h*}
 
-sed -i 's/__lnb_real_system_location/_your_function_name2/g' *.c* *.h*
+@command{sed -i 's/__lnb_real_system_location/_your_function_name2/g' *.c* *.h*}
 
 ...
 
-sed -i 's/__lnb_get_init_stage/_your_function_nameN/g' *.c* *.h*
+@command{sed -i 's/__lnb_get_init_stage/_your_function_nameN/g' *.c* *.h*}
 
 Then find other symbols that start with __lnb in other files and change them
 too (using a text editor or commands similar to the above).
@@ -240,7 +240,7 @@ to be PRELOADED (loaded before other libraries). This is achieved easily, if you
 are using ld.so(8) (or derivatives) to load libraries (like on GNU/Linux).
 Just add the following line:
 
-export LD_PRELOAD=/usr/local/lib/libnetblock.so
+@command{export LD_PRELOAD=/usr/local/lib/libnetblock.so}
 
 to your startup scripts (like $HOME/.bashrc, $HOME/.bash_profile). You should change
 the path to the correct one. If you aren't using BASH, consult your shell
@@ -259,7 +259,7 @@ No syntax is required, just the path and filename, like this:
 
 To load LibNetBlock for just one program, type like this (for BASH):
 
-LD_PRELOAD=/usr/local/lib/libnetblock.so some-program-name
+@command{LD_PRELOAD=/usr/local/lib/libnetblock.so some-program-name}
 
 @c ==================================================================
 
@@ -291,7 +291,7 @@ you can use the header file directly. Simply type:
 
 and compile the program with the library, e.g.:
 
-	gcc -o your_prog your_prog.c -lnetblock -ldl
+	@command{gcc -o your_prog your_prog.c -lnetblock -ldl}
 
 If needed, LibNetBlock should be first in link order.
 
@@ -300,23 +300,23 @@ you can generate bindings to LibNetBlock for that language. You can use
 SWIG (@url{http://www.swig.org}) for this purpose. The header file is compatible
 with SWIG, so you can simply run:
 
-	swig -<your_lang> [<other options>] /path/to/libnetblock.h
+	@command{swig -<your_lang> [<other options>] /path/to/libnetblock.h}
 
 e.g.
 
-	swig -php -o lnb_wrap_php.c /usr/include/libnetblock.h
+	@command{swig -php -o lnb_wrap_php.c /usr/include/libnetblock.h}
 
 You can then compile the generated wrapper files:
 
-	gcc -fpic -c lnb_wrap_*.c
+	@command{gcc -fpic -c lnb_wrap_*.c}
 
 and link them into one or separate shared libraries:
 
-	gcc -shared lnb_wrap_*.o -lnetblock -o lnb_wrapper.so
+	@command{gcc -shared lnb_wrap_*.o -lnetblock -o lnb_wrapper.so}
 
 After this, you can link your program with the wrapper library and LibNetBlock:
 
-	gcc -o your_prog your_prog.c lnb_wrapper.so -lnetblock -ldl
+	@command{gcc -o your_prog your_prog.c lnb_wrapper.so -lnetblock -ldl}
 
 or use the library in other languages, as shown in the SWIG examples.
 
@@ -357,25 +357,19 @@ Bogdan 'bogdro' Drozdowski.
 
 To contact me, try one of these adresses: @*
 @quotation
-bogdandr (at) op . pl@*
-bogdro (at) rudy . mif . pg . gda . pl
+bogdro (at) users . sourceforge . net@*
+bogdro-soft (at) gmx . com
 @end quotation
 
 
 or look at my website:@*
-[EN] @url{http://libnetblock.sf.net}@*
-[PL] @url{http://libnetblock.sf.net/index-pl.php}@*
+[EN] @url{https://libnetblock.sourceforge.io}@*
 [EN] @url{http://bogdro.evai.pl/soft/}@*
-[EN] @url{http://bogdro.evai.pl/inne/}@*
-[PL] @url{http://bogdro.evai.pl/}@*
+[EN] @url{http://bogdro.evai.pl/soft4asm/}@*
 [EN] @url{http://bogdro.evai.pl/index-en.php}@*
 [EN] @url{http://bogdro.byethost18.com/soft/}@*
-[EN] @url{http://bogdro.byethost18.com/inne/}@*
-[PL] @url{http://bogdro.byethost18.com/}@*
+[EN] @url{http://bogdro.byethost18.com/soft4asm/}@*
 [EN] @url{http://bogdro.byethost18.com/index-en.php}@*
-[EN] @url{http://rudy.mif.pg.gda.pl/~bogdro/soft/}@*
-[EN] @url{http://rudy.mif.pg.gda.pl/~bogdro/inne/}@*
-[PL] @url{http://rudy.mif.pg.gda.pl/~bogdro/}@*
 
 @c ==================================================================
 

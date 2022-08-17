@@ -9,7 +9,7 @@ EXTRA_DIST = lnb_cfg.h.in lnb_public.c.in libnetblock.h.in \
 # interface changed => C++, R:=0
 # - interface add => A++
 # - interface removed => A:=0
-libnetblock_la_LDFLAGS = -version-info 3:0:2
+libnetblock_la_LDFLAGS = -version-info 3:1:2
 
 #nobase_include_HEADERS = lnb_priv.h
 

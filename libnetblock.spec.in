@@ -1,45 +1,44 @@
 # Special names here like {__make} come from /usr/lib/rpm/macros, /usr/lib/rpm/macros.rpmbuild
 
-%define version @VERSION@
-%define name libnetblock
+%define lnb_version @VERSION@
+%define lnb_name libnetblock
+%define lnb_release 1
+%define lnb_url https://libnetblock.sourceforge.io
+%define lnb_descr LibNetBlock is a preloadable library which intercepts and blocks system calls\
+that are used to access the network.
 
-Summary:	Library for blocking network access
-Name:		%{name}
-Version:	%{version}
-Release:	1
-URL:		http://libnetblock.sf.net/
-License:	GPLv3+
+%define lnb_lic GPLv3+
+%define lnb_summary Library for blocking network access
+
+Summary:	%{lnb_summary}
+Name:		%{lnb_name}
+Version:	%{lnb_version}
+Release:	%{lnb_release}
+URL:		%{lnb_url}
+BugURL:		%{lnb_url}
+License:	%{lnb_lic}
 # group must be one of the listed in /usr/share/doc/rpm-.../GROUPS or /usr/share/rpmlint/config.d/distro.conf
 Group:		System/Libraries
 #Group:		System Utilities
-#Packager:	Bogdan Drozdowski <bogdandr@op.pl>
 #Prefix:		/usr/local
-Source:		%{name}-%{version}.tar.gz
+Source:		%{lnb_name}-%{lnb_version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-build
 BuildRequires:	gcc, glibc, glibc-devel, make
 
 %description
-
-LibNetBlock is a preloadable library which intercepts and blocks system calls
-that are used to access the network.
+%{lnb_descr}
 
 %prep
 %setup -q
 %configure --enable-static --enable-shared --enable-public-interface
 
 %build
-#CFLAGS='-march=i386' ./configure --prefix=/usr/local --enable-static \
-#	--enable-shared --enable-public-interface --mandir=/usr/share/man \
-#	--infodir=/usr/share/info --libdir=/usr/local/lib
-#%{__make}
-
-%make
+# % make - deprecated
+%make_build
 
 %install
-#%{__rm} -rf $RPM_BUILD_ROOT
-#DESTDIR="$RPM_BUILD_ROOT" %{__make} install
-
-%makeinstall_std
+# % makeinstall_std - deprecated
+%make_install
 
 %preun
 #sed -i 's/^.*libnetblock.so//g' /etc/ld.so.preload
@@ -52,15 +51,15 @@ ldconfig
 #ldconfig
 
 %clean
-#%{__rm} -rf $RPM_BUILD_ROOT
+# % {__rm} -rf $RPM_BUILD_ROOT
 
-#%define _unpackaged_files_terminate_build 0
+# % define _unpackaged_files_terminate_build 0
 %files
 
 %defattr(-,root,root)
 %{_libdir}/libnetblock.so
 %{_libdir}/libnetblock.so.1
-%{_libdir}/libnetblock.so.1.2.0
+%{_libdir}/libnetblock.so.1.2.1
 %{_libdir}/libnetblock.la
 %doc %{_infodir}/libnetblock.info%_extension
 %doc %{_mandir}/man3/libnetblock.3%_extension
@@ -75,15 +74,14 @@ ldconfig
 
 %package devel
 
-Summary:	Library for blocking network access - development package
-Release:	1
-URL:		http://libnetblock.sf.net/
-License:	GPLv3+
+Summary:	%{lnb_summary} - development package
+Release:	%{lnb_release}
+URL:		%{lnb_url}
+BugURL:		%{lnb_url}
+License:	%{lnb_lic}
 Group:		Development/C
-#Packager:	Bogdan Drozdowski <bogdandr@op.pl>
 #Prefix:		/usr/local
-#Source:		%{name}-%{version}.tar.gz
-Requires:	%{name} = %{version}
+Requires:	%{lnb_name} = %{lnb_version}
 
 %files devel
 
@@ -93,10 +91,5 @@ Requires:	%{name} = %{version}
 %{_libdir}/pkgconfig/libnetblock.pc
 
 %description devel
-
 This is the development package for LibNetBlock.
-LibNetBlock is a preloadable library which intercepts and blocks system calls
-that are used to access the network.
-
-%changelog
-
+%{lnb_descr}
