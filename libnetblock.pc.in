@@ -5,7 +5,7 @@ includedir=@includedir@
 
 Name: LibNetBlock
 Description: A library which blocks programs from accessing the network.
-URL: http://rudy.mif.pg.gda.pl/~bogdro/soft/
+URL: http://libnetblock.sf.net/
 Version: @VERSION@
 Requires:
 Libs: -lnetblock

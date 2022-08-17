@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- file opening functions' replacements.
  *
- * Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2015 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -124,9 +124,7 @@ fopen64 (
 
 	if ( __lnb_real_fopen64_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return NULL;
 	}
 
@@ -146,7 +144,8 @@ fopen64 (
 		return (*__lnb_real_fopen64_location ()) (name, mode);
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -156,9 +155,7 @@ fopen64 (
 
 	if ( __lnb_is_forbidden_file (name) != 0 )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -EPERM;
-#endif
+		SET_ERRNO_PERM();
 		return NULL;
 	}
 #ifdef HAVE_ERRNO_H
@@ -201,9 +198,7 @@ fopen (
 
 	if ( __lnb_real_fopen_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return NULL;
 	}
 
@@ -223,7 +218,8 @@ fopen (
 		return (*__lnb_real_fopen_location ()) (name, mode);
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -233,9 +229,7 @@ fopen (
 
 	if ( __lnb_is_forbidden_file (name) != 0 )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -EPERM;
-#endif
+		SET_ERRNO_PERM();
 		return NULL;
 	}
 
@@ -279,9 +273,7 @@ freopen64 (
 
 	if ( __lnb_real_freopen64_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return NULL;
 	}
 
@@ -293,8 +285,8 @@ freopen64 (
 		return (*__lnb_real_freopen64_location ()) ( path, mode, stream );
 	}
 
-	if ( (path[0] == '\0') /*(strlen (path) == 0)*/ || (stream == stdin)
-		|| (stream == stdout) || (stream == stderr)
+	if ( (path[0] == '\0') /*(strlen (path) == 0)*/
+		/*|| (stream == stdin) || (stream == stdout) || (stream == stderr)*/
 	   )
 	{
 #ifdef HAVE_ERRNO_H
@@ -303,7 +295,8 @@ freopen64 (
 		return (*__lnb_real_freopen64_location ()) ( path, mode, stream );
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -313,9 +306,7 @@ freopen64 (
 
 	if ( __lnb_is_forbidden_file (path) != 0 )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -EPERM;
-#endif
+		SET_ERRNO_PERM();
 		return NULL;
 	}
 
@@ -360,9 +351,7 @@ freopen (
 
 	if ( __lnb_real_freopen_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return NULL;
 	}
 
@@ -374,8 +363,8 @@ freopen (
 		return (*__lnb_real_freopen_location ()) ( name, mode, stream );
 	}
 
-	if ( (name[0] == '\0') /*(strlen (name) == 0)*/ || (stream == stdin)
-		|| (stream == stdout) || (stream == stderr)
+	if ( (name[0] == '\0') /*(strlen (name) == 0)*/
+		/*|| (stream == stdin) || (stream == stdout) || (stream == stderr)*/
 	   )
 	{
 #ifdef HAVE_ERRNO_H
@@ -384,7 +373,8 @@ freopen (
 		return (*__lnb_real_freopen_location ()) ( name, mode, stream );
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -394,9 +384,7 @@ freopen (
 
 	if ( __lnb_is_forbidden_file (name) != 0 )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -EPERM;
-#endif
+		SET_ERRNO_PERM();
 		return NULL;
 	}
 
@@ -458,9 +446,7 @@ open64 (
 
 	if ( __lnb_real_open64_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return -1;
 	}
 
@@ -514,7 +500,8 @@ open64 (
 		return ret_fd;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -537,9 +524,7 @@ open64 (
 #if (defined HAVE_STDARG_H) || (defined HAVE_VARARGS_H)
 		va_end (args);
 #endif
-#ifdef HAVE_ERRNO_H
-		errno = -EPERM;
-#endif
+		SET_ERRNO_PERM();
 		return -1;
 	}
 
@@ -605,9 +590,7 @@ open (
 
 	if ( __lnb_real_open_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return -1;
 	}
 
@@ -661,7 +644,8 @@ open (
 		return ret_fd;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -684,9 +668,7 @@ open (
 #if (defined HAVE_STDARG_H) || (defined HAVE_VARARGS_H)
 		va_end (args);
 #endif
-#ifdef HAVE_ERRNO_H
-		errno = -EPERM;
-#endif
+		SET_ERRNO_PERM();
 		return -1;
 	}
 
@@ -756,9 +738,7 @@ openat64 (
 
 	if ( __lnb_real_openat64_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return -1;
 	}
 
@@ -813,7 +793,8 @@ openat64 (
 		return ret_fd;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -836,9 +817,7 @@ openat64 (
 #if (defined HAVE_STDARG_H) || (defined HAVE_VARARGS_H)
 		va_end (args);
 #endif
-#ifdef HAVE_ERRNO_H
-		errno = -EPERM;
-#endif
+		SET_ERRNO_PERM();
 		return -1;
 	}
 
@@ -913,9 +892,7 @@ openat (
 
 	if ( __lnb_real_openat_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return -1;
 	}
 
@@ -970,7 +947,8 @@ openat (
 		return ret_fd;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -993,9 +971,7 @@ openat (
 #if (defined HAVE_STDARG_H) || (defined HAVE_VARARGS_H)
 		va_end (args);
 #endif
-#ifdef HAVE_ERRNO_H
-		errno = -EPERM;
-#endif
+		SET_ERRNO_PERM();
 		return -1;
 	}
 

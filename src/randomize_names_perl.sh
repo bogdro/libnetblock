@@ -4,7 +4,7 @@
 # A library library which blocks programs from accessing the network.
 #	-- a name randomizing script that uses Perl.
 #
-# Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
+# Copyright (C) 2011-2015 Bogdan Drozdowski, bogdandr (at) op.pl
 # License: GNU General Public License, v3+
 #
 # This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 # Change this to whatever you wish (but it has to start with a letter or a '_')
 NEWNAMEPREFIX=__printf
 
-for i in `perl -ne 'if (/(__lnb[a-zA-Z0-9_]+)/) {my $m=$1; if (! /^((\/\*)|#)/) {print "$m\n";}}' \
+for i in `perl -ne 'if (/(__lnb[a-zA-Z0-9_]+)/o) {my $m=$1; if (! /^((\/\*)|#)/o) {print "$m\n";}}' \
 	 *.c *.h *.h.in | sort -u`; do
 
 	sed -i "s/\b$i\b/$NEWNAMEPREFIX$RANDOM$RANDOM$RANDOM/g" *;

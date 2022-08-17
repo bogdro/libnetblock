@@ -2,11 +2,11 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(libnetblock, 0.5, bogdandr@op.pl)
+AC_INIT(libnetblock, 0.6, bogdandr@op.pl)
 AM_INIT_AUTOMAKE
-AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile doc/libnetblock.texi
-	libnetblock.spec src/lnb_cfg.h src/libnetblock.h src/lnb_public.c
-        libnetblock.pc])
+AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile test/Makefile
+	doc/libnetblock.texi libnetblock.spec src/lnb_cfg.h
+	src/libnetblock.h src/lnb_public.c libnetblock.pc])
 AC_CONFIG_SRCDIR([src/lnb_net.c])
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -62,17 +62,21 @@ fi
 
 # ==================== Checks for programs.
 AC_PROG_CC
+AM_PROG_CC_C_O
 AM_CONDITIONAL(ISGCC, test "x$GCC" = "xyes")
 AC_PROG_LIBTOOL
 
 # ==================== Checks for libraries.
 libdl=yes
-AC_CHECK_LIB([dl],[dlsym],
-	[AC_DEFINE([HAVE_LIBDL], [1], [Whether you have the libdl library])
+AC_CHECK_LIB([dl],[dlsym],,[libdl=no])
+if (test "x$libdl" = "xyes"); then
+	AC_DEFINE([HAVE_LIBDL], [1], [Whether you have the libdl library])
 	AC_DEFINE([HAVE_LIBDL_DLSYM], [1], [Whether you have the dlsym() function in the libdl library])
 	AC_CHECK_LIB([dl],[dlvsym],[AC_DEFINE([HAVE_LIBDL_DLVSYM], [1],
 		[Whether you have the dlvsym() function in the libdl library])])
-	],[libdl=no])
+
+fi
+
 dlsym=yes
 AC_CHECK_FUNC([dlsym],
 	[AC_DEFINE([HAVE_DLSYM], [1], [Whether you have the dlsym function])],[dlsym=no])
@@ -88,6 +92,13 @@ if (test "x$libdl" != "xyes"); then
 		AC_MSG_ERROR([[I need the dlsym() and optionally dlvsym() function to work.]])
 	fi
 fi
+
+# Adding additional libraries actually makes LibHideIP "see" the functions
+# contained in them, via dlsym/dlvsym, so the original functions can be called.
+# This adds a runtime dependency, but otherwise it could make the program
+# bypass LibHideIP or make normally-working functions not available anymore.
+
+AC_CHECK_LIB([pcap],[pcap_lookupdev])
 
 # ==================== Checks for header files.
 AC_CHECK_HEADER([dlfcn.h],[AC_DEFINE([HAVE_DLFCN_H], [1], [Whether you have the dlfcn.h header])],
@@ -108,7 +119,8 @@ AC_CHECK_DECL([RTLD_NEXT],[AC_DEFINE([HAVE_DECL_RTLD_NEXT], [1], [Whether RTLD_N
 AC_HEADER_STDC
 
 AC_CHECK_HEADERS([stdlib.h string.h unistd.h errno.h malloc.h\
-	sys/types.h sys/socket.h netinet/in.h fcntl.h stdint.h inttypes.h])
+	sys/types.h sys/socket.h netinet/in.h fcntl.h stdint.h \
+	inttypes.h])
 
 has_sys_stat_h=yes
 AC_CHECK_HEADER([sys/stat.h],AC_DEFINE([HAVE_SYS_STAT_H],[1],
@@ -153,7 +165,20 @@ AC_FUNC_MALLOC
 AC_CHECK_FUNC([malloc],
 	AC_DEFINE([HAVE_MALLOC],[1],[Whether you have the malloc function.]))
 
-AC_CHECK_FUNCS([memset readlink getenv openat openat64])
+AC_CHECK_FUNCS([memset readlink getenv openat openat64 lstat])
+
+have_check=no
+#ACTION-IF-NOT-FOUND is required, otherwise 'configure' fails
+PKG_CHECK_MODULES([CHECK], [check >= 0.9.8], [have_check=yes], [have_check=no])
+#AM_PATH_CHECK([], [have_check=yes])
+
+AM_CONDITIONAL([LNB_TESTS_ENABLED], [test "x$have_check" = "xyes"])
+
+if (test "x$have_check" = "xyes"); then
+
+	AC_CHECK_HEADERS([arpa/inet.h sys/un.h])
+
+fi
 
 # ==================== Checks for compiler options.
 
@@ -194,6 +219,10 @@ if (test "x$GCC" = "xyes" ); then
 	AX_C_CHECK_FLAG([-O3], [CFLAGS="$CFLAGS -O3"], [CFLAGS="$CFLAGS"])
         AX_C_CHECK_FLAG([-Waggregate-return], [CFLAGS="$CFLAGS -Waggregate-return"], [CFLAGS="$CFLAGS"])
         AX_C_CHECK_FLAG([-Wwrite-strings], [CFLAGS="$CFLAGS -Wwrite-strings"], [CFLAGS="$CFLAGS"])
+	# required for the compiler, which is used by libtool instead of the linker
+	AX_C_CHECK_FLAG([-Wl,-z -Wl,noexecstack], [CFLAGS="$CFLAGS -Wl,-z -Wl,noexecstack"], [CFLAGS="$CFLAGS"])
+	# and just in case the linker was used
+	AX_CHECK_LINK_FLAG([-z noexecstack])
 
 fi
 

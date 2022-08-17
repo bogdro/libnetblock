@@ -9,7 +9,7 @@ EXTRA_DIST = lnb_cfg.h.in lnb_public.c.in libnetblock.h.in \
 # interface changed => C++, R:=0
 # - interface add => A++
 # - interface removed => A:=0
-libnetblock_la_LDFLAGS = -version-info 2:3:1
+libnetblock_la_LDFLAGS = -version-info 2:4:1
 
 #nobase_include_HEADERS = lnb_priv.h
 
@@ -25,4 +25,7 @@ if PUBLIC_INTERFACE
 nodist_libnetblock_la_SOURCES += lnb_public.c
 libnetblock_la_DISTCLEANFILES += lnb_public.c
 endif
+
+randomnames: clean
+	./randomize_names_gawk.sh
 

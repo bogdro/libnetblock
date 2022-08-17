@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- network functions' replacements.
  *
- * Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2015 Bogdan Drozdowski, bogdandr (at) op.pl
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -109,13 +109,12 @@ socket (
 
 	if ( __lnb_real_socket_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return -1;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = 0;
@@ -131,9 +130,7 @@ socket (
 		return (*__lnb_real_socket_location ()) (domain, type, protocol);
 	}
 
-#ifdef HAVE_ERRNO_H
-	errno = -EPERM;
-#endif
+	SET_ERRNO_PERM();
 	return -1;
 }
 
@@ -158,13 +155,12 @@ recvmsg (
 
 	if ( __lnb_real_recvmsg_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return -1;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = 0;
@@ -172,9 +168,7 @@ recvmsg (
 		return (*__lnb_real_recvmsg_location ()) (s, msg, flags);
 	}
 
-#ifdef HAVE_ERRNO_H
-	errno = -EPERM;
-#endif
+	SET_ERRNO_PERM();
 	return -1;
 }
 
@@ -199,13 +193,12 @@ sendmsg (
 
 	if ( __lnb_real_sendmsg_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return -1;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = 0;
@@ -213,9 +206,7 @@ sendmsg (
 		return (*__lnb_real_sendmsg_location ()) (s, msg, flags);
 	}
 
-#ifdef HAVE_ERRNO_H
-	errno = -EPERM;
-#endif
+	SET_ERRNO_PERM();
 	return -1;
 }
 
@@ -244,9 +235,7 @@ bind (
 
 	if ( __lnb_real_bind_location () == NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		errno = -ENOSYS;
-#endif
+		SET_ERRNO_MISSING();
 		return -1;
 	}
 
@@ -258,7 +247,8 @@ bind (
 		return (*__lnb_real_bind_location ()) (sockfd, my_addr, addrlen);
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -274,8 +264,6 @@ bind (
 		return (*__lnb_real_bind_location ()) (sockfd, my_addr, addrlen);
 	}
 
-#ifdef HAVE_ERRNO_H
-	errno = -EPERM;
-#endif
+	SET_ERRNO_PERM();
 	return -1;
 }

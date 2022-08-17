@@ -1,7 +1,7 @@
 /*
  * A library library which blocks programs from accessing the network.
  *
- * Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2015 Bogdan Drozdowski, bogdandr (at) op.pl
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -71,6 +71,15 @@ static i_i_cp_i_			__lnb_real_openat		= NULL;
 static pp_ccp_cp			__lnb_real_pcap_create		= NULL;
 static pp_ccp_i_i_i_cp			__lnb_real_pcap_open_live	= NULL;
 
+#if ((defined HAVE_DLSYM) || (defined HAVE_LIBDL_DLSYM))		\
+	&& (!defined HAVE_DLVSYM) && (!defined HAVE_LIBDL_DLVSYM)	\
+	|| (defined __GLIBC__ && (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ < 1)))
+# define LNB_CANT_USE_VERSIONED_FOPEN 1
+/*# warning Versioned fopen is unavailable, so LibNetBlock may crash on some glibc versions.*/
+#else
+# undef LNB_CANT_USE_VERSIONED_FOPEN
+#endif
+
 /* =============================================================== */
 
 int LNB_ATTR ((constructor))
@@ -91,9 +100,7 @@ __lnb_main (
 		*(void **) (&__lnb_real_sendmsg)          = dlsym (RTLD_NEXT, "sendmsg");
 		*(void **) (&__lnb_real_bind)             = dlsym (RTLD_NEXT, "bind");
 		/* file-related functions: */
-#if (defined HAVE_DLSYM || defined HAVE_LIBDL_DLSYM)			\
-	&& (!defined HAVE_DLVSYM) && (!defined HAVE_LIBDL_DLVSYM)	\
-	|| ( defined __GLIBC__ && (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ < 1) ) )
+#ifdef LNB_CANT_USE_VERSIONED_FOPEN
 		*(void **) (&__lnb_real_fopen64)          = dlsym  (RTLD_NEXT, "fopen64");
 #else
 		*(void **) (&__lnb_real_fopen64)          = dlvsym (RTLD_NEXT, "fopen64", "GLIBC_2.1");
@@ -102,9 +109,7 @@ __lnb_main (
 		*(void **) (&__lnb_real_open64)           = dlsym  (RTLD_NEXT, "open64");
 		*(void **) (&__lnb_real_openat64)         = dlsym  (RTLD_NEXT, "openat64");
 
-#if (defined HAVE_DLSYM || defined HAVE_LIBDL_DLSYM)			\
-	&& (!defined HAVE_DLVSYM) && (!defined HAVE_LIBDL_DLVSYM)	\
-	|| ( defined __GLIBC__ && (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ < 1) ) )
+#ifdef LNB_CANT_USE_VERSIONED_FOPEN
 		*(void **) (&__lnb_real_fopen)            = dlsym  (RTLD_NEXT, "fopen");
 #else
 		*(void **) (&__lnb_real_fopen)            = dlvsym (RTLD_NEXT, "fopen", "GLIBC_2.1");

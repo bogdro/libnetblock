@@ -1,3 +1,37 @@
+2015-09-06	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* LibNetBlock version 0.6
+	  Library marked as not requiring executable stack (security reasons).
+	  Fixed runtime dependencies. Fixed banning functions. Fixed errno
+	  setting. Minor code cleanup. Added unit tests.
+	* configure.ac: checking for the -Wl,-z -Wl,noexecstack compiler
+	  option and -z noexecstack linker option. Rearranging the check for
+	  libdl to enable the default behaviour (adding it to the LIBS) - this
+	  allows using tests and removes the need to preload libdl along with
+	  LibNetBlock. Checking for the "check" library for unit tests.
+	  Checking for libpcap which should also be present at runtime. Added
+	  checking for arpa/inet.h and sys/un.h, if tests are enabled.
+	* libnetblock.spec.in: changed the LibNetBlock URL address to
+	  SourceForge and updated filename for the new version
+	* doc/libnetblock.3: added SourceForge addresses
+	* src/Makefile.am: added the "randomnames" target for easy internal
+	  name randomization (hiding LibNetBlock from simple symbol listing),
+	  updated library version number
+	* src/randomize_names_perl.sh: optimized the name matching
+	* README, INSTALL, doc/libnetblock.texi.in: described in detail how to
+	  hide LibNetBlock by randomizing internal names
+	* src/lnb_exec.c (__lnb_is_forbidden_file): fixed link checking
+	* src/lnb_exec.c (__lnb_is_forbidden_program): fixed endless loop,
+	  fixed link reading
+	* src/lnb_banning.c: created new constants for common #defines
+	* src/lnb_priv.h: added SET_ERRNO_MISSING to set the errno
+	  when the original function is missing on the system. Fixed the
+	  value. Added SET_ERRNO_PERM to set the errno when the operation is
+	  forbidden
+	* test: added unit tests for LibNetBlock
+	* src/lnb_opens.c (freopen, freopen64): disallowing also to reopen
+	  the standard streams (stdin, stdout, stderr) to the banned files
+
 2013-06-02	Bogdan Drozdowski <bogdandr@op.pl>
 
 	* LibNetBlock version 0.5

@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- private file and program banning functions.
  *
- * Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2015 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -56,7 +56,16 @@
 
 static char __lnb_exename[LNB_MAXPATHLEN];	/* 4096 */
 static char __lnb_omitfile[LNB_MAXPATHLEN];
+
+#if (defined LNB_ENABLE_USERBANS) && (defined HAVE_GETENV) && (defined HAVE_MALLOC)
+# define LNB_CAN_USE_BANS 1
+#else
+# undef LNB_CAN_USE_BANS
+#endif
+
+#ifdef LNB_CAN_USE_BANS
 static const char __lnb_banfilename[] = LNB_BANNING_USERFILE;
+#endif
 
 /******************* some of what's below comes from libsafe ***************/
 
@@ -223,7 +232,7 @@ __lnb_check_prog_ban (
 )
 {
 	int	ret = 0;	/* DEFAULT: NO, this program is not banned */
-#if (defined LNB_ENABLE_USERBANS) && (defined HAVE_GETENV) && (defined HAVE_MALLOC)
+#ifdef LNB_CAN_USE_BANS
 	char *path = NULL;
 	char * full_path = NULL;
 	size_t path_len;
@@ -249,7 +258,7 @@ __lnb_check_prog_ban (
 			ret = __lnb_is_banned_in_file (__lnb_exename, getenv (LNB_BANNING_ENV));
 		}
 #endif
-#if (defined LNB_ENABLE_USERBANS) && (defined HAVE_GETENV) && (defined HAVE_MALLOC)
+#ifdef LNB_CAN_USE_BANS
 		if ( ret == 0 )
 		{
 			path = getenv ("HOME");
@@ -270,6 +279,7 @@ __lnb_check_prog_ban (
 					strncpy (full_path, path, path_len+1);
 					strncat (full_path, LNB_PATH_SEP, filesep_len+1);
 					strncat (full_path, __lnb_banfilename, filename_len+1);
+					full_path[(path_len + 1 + filesep_len + 1 + filename_len + 1)-1] = '\0';
 					ret = __lnb_is_banned_in_file (__lnb_exename, full_path);
 					free (full_path);
 				}

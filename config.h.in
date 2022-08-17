@@ -4,6 +4,9 @@
    */
 #undef GCC_WARN_UNUSED_RESULT
 
+/* Define to 1 if you have the <arpa/inet.h> header file. */
+#undef HAVE_ARPA_INET_H
+
 /* Whether RTLD_NEXT is defined */
 #undef HAVE_DECL_RTLD_NEXT
 
@@ -36,6 +39,12 @@
 
 /* Whether you have the dlvsym() function in the libdl library */
 #undef HAVE_LIBDL_DLVSYM
+
+/* Define to 1 if you have the `pcap' library (-lpcap). */
+#undef HAVE_LIBPCAP
+
+/* Define to 1 if you have the `lstat' function. */
+#undef HAVE_LSTAT
 
 /* Whether you have the malloc function. */
 #undef HAVE_MALLOC
@@ -103,6 +112,9 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
+/* Define to 1 if you have the <sys/un.h> header file. */
+#undef HAVE_SYS_UN_H
+
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
@@ -120,6 +132,9 @@
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */
 #undef LT_OBJDIR
+
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
+#undef NO_MINUS_C_MINUS_O
 
 /* Name of package */
 #undef PACKAGE
