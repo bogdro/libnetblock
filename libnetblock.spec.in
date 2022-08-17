@@ -1,4 +1,4 @@
-# Special names here like %{__make} come from /usr/lib/rpm/macros
+# Special names here like {__make} come from /usr/lib/rpm/macros, /usr/lib/rpm/macros.rpmbuild
 
 %define version @VERSION@
 %define name libnetblock
@@ -9,14 +9,14 @@ Version:	%{version}
 Release:	1
 URL:		http://libnetblock.sf.net/
 License:	GPLv3+
-# group must be one of the listed in /usr/share/doc/rpm-.../GROUPS
-Group:		System Environment/Libraries
+# group must be one of the listed in /usr/share/doc/rpm-.../GROUPS or /usr/share/rpmlint/config.d/distro.conf
+Group:		System/Libraries
 #Group:		System Utilities
 #Packager:	Bogdan Drozdowski <bogdandr@op.pl>
 #Prefix:		/usr/local
 Source:		%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-build
-BuildRequires:	gcc, glibc, glibc-devel, glibc-headers, make
+BuildRequires:	gcc, glibc, glibc-devel, make
 
 %description
 
@@ -25,41 +25,45 @@ that are used to access the network.
 
 %prep
 %setup -q
+%configure --enable-static --enable-shared --enable-public-interface
 
 %build
+#CFLAGS='-march=i386' ./configure --prefix=/usr/local --enable-static \
+#	--enable-shared --enable-public-interface --mandir=/usr/share/man \
+#	--infodir=/usr/share/info --libdir=/usr/local/lib
+#%{__make}
 
-CFLAGS='-march=i386' ./configure --prefix=/usr/local --enable-static \
-	--enable-shared --enable-public-interface --mandir=/usr/share/man \
-	--infodir=/usr/share/info --libdir=/usr/local/lib
-%{__make}
+%make
 
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
-DESTDIR="$RPM_BUILD_ROOT" %{__make} install
+#%{__rm} -rf $RPM_BUILD_ROOT
+#DESTDIR="$RPM_BUILD_ROOT" %{__make} install
+
+%makeinstall_std
 
 %preun
 #sed -i 's/^.*libnetblock.so//g' /etc/ld.so.preload
 
 %post
-#ldconfig
+ldconfig
 #install-info
 
-%postun
+%postun -p /sbin/ldconfig
 #ldconfig
 
 %clean
-%{__rm} -rf $RPM_BUILD_ROOT
+#%{__rm} -rf $RPM_BUILD_ROOT
 
 #%define _unpackaged_files_terminate_build 0
 %files
 
 %defattr(-,root,root)
-/usr/local/lib/libnetblock.so
-/usr/local/lib/libnetblock.so.1
-/usr/local/lib/libnetblock.so.1.1.5
-/usr/local/lib/libnetblock.la
-%doc /usr/share/info/libnetblock.info.gz
-%doc /usr/share/man/man3/libnetblock.3.gz
+%{_libdir}/libnetblock.so
+%{_libdir}/libnetblock.so.1
+%{_libdir}/libnetblock.so.1.2.0
+%{_libdir}/libnetblock.la
+%doc %{_infodir}/libnetblock.info%_extension
+%doc %{_mandir}/man3/libnetblock.3%_extension
 %doc README
 %doc COPYING
 %doc AUTHORS
@@ -75,7 +79,7 @@ Summary:	Library for blocking network access - development package
 Release:	1
 URL:		http://libnetblock.sf.net/
 License:	GPLv3+
-Group:		Development/Libraries
+Group:		Development/C
 #Packager:	Bogdan Drozdowski <bogdandr@op.pl>
 #Prefix:		/usr/local
 #Source:		%{name}-%{version}.tar.gz
@@ -84,9 +88,9 @@ Requires:	%{name} = %{version}
 %files devel
 
 %defattr(-,root,root)
-/usr/local/lib/libnetblock.a
-/usr/local/include/libnetblock.h
-/usr/local/lib/pkgconfig/libnetblock.pc
+%{_includedir}/libnetblock.h
+%{_libdir}/libnetblock.a
+%{_libdir}/pkgconfig/libnetblock.pc
 
 %description devel
 

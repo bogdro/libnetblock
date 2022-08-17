@@ -1,3 +1,67 @@
+2019-02-08	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* LibNetBlock version 1.3
+	  Added intercepting new functions. Fixed initialization code - fixed
+	  lookup for fopen(). Improvements in unit tests. Improvements in code
+	  portability and compatibility. Better code maintainability, updated
+	  copyright and documentation.
+	* configure.ac: moved AC_LANG(C) before AC_PROG_LIBTOOL for improved
+	  compatibility. Added checking for the -Wno-nonnull-compare compiler
+	  flag to avoid warnings about defensive programming code. Added
+	  checking for execveat(), fexecve(), strdup() and snprintf(). Added
+	  checking for the -Wchkp, -Wformat-overflow=2, -Wduplicated-cond,
+	  -Wrestrict and -Woverlength-strings compiler warning options.
+	* missing: script updated from new autoconf
+	* src/*.c: defined LNB_VOID to be void in ANSI C void and use that in
+	  function definitions for better readability
+	* src/lnb_opens.c: simplified the missing functions' declarations
+	* src/lnb_exec.c, src/lnb_net.c: added defining the constants
+	  (_DEFAULT_SOURCE) for better compatibility with new C libraries
+	* src/lnb_main.c (__lnb_main): when the fopen() functions can't be
+	  found by versioned lookup, try normal lookup. This should fix
+	  compatibility with newer systems and make banning work there
+	* doc/libnetblock.texi.in, doc/libnetblock.3: added new URLs, updated
+	  the description
+	* README, INSTALL: updated the description
+	* src/lnb_main.c, src/lnb_priv.h: added substitutes for strdup(),
+	  memset() and memcpy()
+	* src/lnb_exec.c (__lnb_get_target_link_path): rewrite the function
+	  usage to correctly drop the "const" qualifier. Add support for
+	  symlink targets with paths not absolute, but relative to the symlink.
+	  Free the allocated memory on each iteration when it would become
+	  unused and lost. Start with duplicating the parameter so that it
+	  can be passed as a literal.
+	* src/lnb_exec.c (__lnb_is_forbidden_program): change variables'
+	  types to more correct ones (size_t), matching their usage. Fix
+	  separating the program's name from its arguments.
+	* src/lnb_opens.c: created generic 32-/64-bit functions with common
+	  code to be called from the intercepted functions
+	* src/lnb_opens.c (generic_freopen): closing the original stream even
+	  if opening the new one is forbidden - prevents resource leaks
+	* src/lnb_opens.c (open, open64, openat, openat64): move the logger
+	  after parameter initialization to display it properly in code based
+	  on old-style varargs
+	* src/lnb_main.c, src/lnb_priv.h, src/lnb_exec.c,
+	  test/lnbtest_exec.c: added intercepting execveat() and fexecve()
+	* libnetblock.spec.in: made the spec file more portable (assuming that
+	  the required macros are properly defined on the target systems) and
+	  removed some rpmlint warnings and errors
+	* test/*.c, test/Makefile.am: split the unit tests into separate
+	  files, one for each functionality/compilation unit with intercepted
+	  functions. Added defining the constants (_DEFAULT_SOURCE) for
+	  better compatibility with new C libraries
+	* test/lnbtest_exec.c (test_execve_banned): don't pass NULL as the
+	  program's environment - pass an array with one NULL instead
+	* test/lnbtest_exec.c: fix testing if the banned program wasn't
+	  indeed run
+	* test/lnbtest_exec.c: remove unused variables
+	* test/lnbtest_net.c (test_recvmsg, test_sendmsg): change variables'
+	  types to more correct ones
+	* test/lnbtest_exec.c (test_system): call "/bin/cat" instead of just
+	  "cat", because that doesn't work on some systems (probably those
+	  where /bin/cat is a symlink to 'coreutils')
+	* test/lnbtest_banning.c: a new unit test for testing banning
+
 2017-04-23	Bogdan Drozdowski <bogdandr@op.pl>
 
 	* LibNetBlock version 1.0

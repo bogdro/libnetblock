@@ -96,7 +96,7 @@ Building an RPM package (the old way):
 2) copy the source package libnetblock-XX.tar.gz to /usr/src/redhat/SOURCES
 3) type
 	rpmbuild -ba /usr/src/redhat/SPECS/libnetblock.spec
-4) get the RPMs from /usr/src/redhat/RPMS/i386 and /usr/src/redhat/SRPMS
+4) get the RPMs from /usr/src/redhat/RPMS/ and /usr/src/redhat/SRPMS
 
 Building an RPM package (the new way):
 
@@ -104,4 +104,4 @@ Building an RPM package (the new way):
 2) copy the source package libnetblock-XX.tar.gz to $HOME/rpmbuild/SOURCES
 3) type
 	rpmbuild -ba $HOME/rpmbuild/SPECS/libnetblock.spec
-4) get the RPMs from $HOME/rpmbuild/RPMS/i386 and $HOME/rpmbuild/SRPMS
+4) get the RPMs from $HOME/rpmbuild/RPMS/ and $HOME/rpmbuild/SRPMS

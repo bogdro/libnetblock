@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- public interface file.
  *
- * Copyright (C) 2011-2017 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -31,9 +31,11 @@
 	|| defined (WIN32) || defined (__cplusplus)
 #  define LNB_PARAMS(protos) protos
 #  define LNB_ANSIC
+#  define LNB_VOID void
 # else
 #  define LNB_PARAMS(protos) ()
 #  undef LNB_ANSIC
+#  define LNB_VOID
 # endif
 #endif
 
@@ -43,11 +45,7 @@
  * Enables the use of libnetblock by any program that calls this function.
  * Simply linking the program with libnetblock enables it.
  */
-void libnetblock_enable (
-#ifdef LNB_ANSIC
-	void
-#endif
-)
+void libnetblock_enable (LNB_VOID)
 {
 	/* Nothing is required to do here. By the sole fact that a program
 	   is calling this function, and is thus linked with this library,
@@ -60,11 +58,7 @@ void libnetblock_enable (
  * Returns the run-time version of this library.
  */
 const char *
-libnetblock_version (
-#ifdef LNB_ANSIC
-        void
-#endif
-)
+libnetblock_version (LNB_VOID)
 {
         return "@VERSION@";
 }

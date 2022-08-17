@@ -38,7 +38,7 @@ This manual is for LibNetBlock, version @VERSION@
 
 @c ==================================================================
 
-    Copyright (c)  2011-2017 Bogdan Drozdowski
+    Copyright (c)  2011-2019 Bogdan Drozdowski
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2
@@ -91,6 +91,7 @@ the functions compiled in it)
 program, which clears the environment
 variables used by the dynamic linker, so the dynamic linker doesn't preload
 LibNetBlock. Some Java Runtime Environments seem to do this.
+@item A program is using functions not known to LibNetBlock.
 @end itemize
 
 @c ==================================================================
@@ -213,7 +214,7 @@ To create an RPM package (the old way):
 @item copy the libnetblock.spec file to /usr/src/redhat/SPECS
 @item copy the source package libnetblock-@VERSION@.tar.gz to /usr/src/redhat/SOURCES
 @item type @command{rpmbuild -bb /usr/src/redhat/SPECS/libnetblock.spec}
-@item get the RPMs from /usr/src/redhat/RPMS/i386
+@item get the RPMs from /usr/src/redhat/RPMS/
 @end enumerate
 
 To create an RPM package (the new way):
@@ -222,7 +223,7 @@ To create an RPM package (the new way):
 @item copy the libnetblock.spec file to $HOME/rpmbuild/SPECS
 @item copy the source package libnetblock-@VERSION@.tar.gz to $HOME/rpmbuild/SOURCES
 @item type @command{rpmbuild -bb $HOME/rpmbuild/SPECS/libnetblock.spec}
-@item get the RPMs from $HOME/rpmbuild/RPMS/i386
+@item get the RPMs from $HOME/rpmbuild/RPMS/
 @end enumerate
 
 @c ==================================================================
@@ -364,6 +365,14 @@ bogdro (at) rudy . mif . pg . gda . pl
 or look at my website:@*
 [EN] @url{http://libnetblock.sf.net}@*
 [PL] @url{http://libnetblock.sf.net/index-pl.php}@*
+[EN] @url{http://bogdro.evai.pl/soft/}@*
+[EN] @url{http://bogdro.evai.pl/inne/}@*
+[PL] @url{http://bogdro.evai.pl/}@*
+[EN] @url{http://bogdro.evai.pl/index-en.php}@*
+[EN] @url{http://bogdro.byethost18.com/soft/}@*
+[EN] @url{http://bogdro.byethost18.com/inne/}@*
+[PL] @url{http://bogdro.byethost18.com/}@*
+[EN] @url{http://bogdro.byethost18.com/index-en.php}@*
 [EN] @url{http://rudy.mif.pg.gda.pl/~bogdro/soft/}@*
 [EN] @url{http://rudy.mif.pg.gda.pl/~bogdro/inne/}@*
 [PL] @url{http://rudy.mif.pg.gda.pl/~bogdro/}@*

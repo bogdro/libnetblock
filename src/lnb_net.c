@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- network functions' replacements.
  *
- * Copyright (C) 2011-2017 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -28,6 +28,7 @@
 
 #define _BSD_SOURCE 1
 #define _SVID_SOURCE 1
+#define _DEFAULT_SOURCE 1
 
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>

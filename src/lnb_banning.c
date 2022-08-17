@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- private file and program banning functions.
  *
- * Copyright (C) 2011-2017 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2019 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -88,11 +88,7 @@
 /* =============================================================== */
 
 int GCC_WARN_UNUSED_RESULT
-__lnb_check_prog_ban (
-#ifdef LNB_ANSIC
-	void
-#endif
-)
+__lnb_check_prog_ban (LNB_VOID)
 {
 	int	ret = 0;	/* DEFAULT: NO, this program is not banned */
 	LNB_MAKE_ERRNO_VAR(err);
@@ -113,12 +109,9 @@ __lnb_check_prog_ban (
 		return 0;
 	}
 
-	if ( __lnb_real_fopen_location () != NULL )
-	{
-		ret = __banning_is_banned ("libnetblock.progban",
-			LNB_BANNING_USERFILE, LNB_BANNING_ENV,
-			__banning_exename);
-	}
+	ret = __banning_is_banned ("libnetblock.progban",
+		LNB_BANNING_USERFILE, LNB_BANNING_ENV,
+		__banning_exename);
 #ifdef LNB_DEBUG
 	fprintf (stderr, "libnetblock: __lnb_check_prog_ban()=%d\n", ret);
 	fflush (stderr);
