@@ -1,0 +1,12 @@
+2011-06-16	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* libnetblock version 0.1
+	  Initial version. Intercepting: socket, sendmsg+recvmsg,
+	  execve (thus the whole exec* family) with the system function (can
+	  be used to launch bad programs), bind, a bunch of file opening
+	  functions (fopen, fopen64, open, open64, freopen, freopen64,
+	  openat, openat64) which can be used to access files under /dev/net,
+	  some of the function from the libpcap library, to prevent raw
+	  opening of network devices. Implemented program banning. Providing
+	  a public interface to use by programmers to secure their programs.
+

@@ -1,0 +1,97 @@
+# Special names here like %{__make} come from /usr/lib/rpm/macros
+
+%define version @VERSION@
+%define name libnetblock
+
+Summary:	Library blocking network access
+Name:		%{name}
+Version:	%{version}
+Release:	1
+URL:		http://rudy.mif.pg.gda.pl/~bogdro/soft/
+License:	GPLv3+
+# group must be one of the listed in /usr/share/doc/rpm-.../GROUPS
+Group:		System Environment/Libraries
+#Group:		System Utilities
+#Packager:	Bogdan Drozdowski <bogdandr@op.pl>
+#Prefix:		/usr/local
+Source:		%{name}-%{version}.tar.gz
+BuildRoot:	%{_tmppath}/%{name}-build
+BuildRequires:	gcc, glibc, glibc-devel, glibc-headers, make
+
+%description
+
+LibNetBlock is a library which intercepts and blocks system calls
+that are used to access the network.
+
+%prep
+%setup -q
+
+%build
+
+CFLAGS='-march=i386' ./configure --prefix=/usr/local --enable-static \
+	--enable-shared --enable-public-interface --mandir=/usr/share/man \
+	--infodir=/usr/share/info --libdir=/usr/local/lib
+%{__make}
+
+%install
+%{__rm} -rf $RPM_BUILD_ROOT
+DESTDIR="$RPM_BUILD_ROOT" %{__make} install
+
+%preun
+#sed -i 's/^.*libnetblock.so//g' /etc/ld.so.preload
+
+%post
+#ldconfig
+#install-info
+
+%postun
+#ldconfig
+
+%clean
+%{__rm} -rf $RPM_BUILD_ROOT
+
+#%define _unpackaged_files_terminate_build 0
+%files
+
+%defattr(-,root,root)
+/usr/local/lib/libnetblock.so
+/usr/local/lib/libnetblock.so.1
+/usr/local/lib/libnetblock.so.1.0.0
+/usr/local/lib/libnetblock.la
+%doc /usr/share/info/libnetblock.info.gz
+%doc /usr/share/man/man3/libnetblock.3.gz
+%doc README
+%doc COPYING
+%doc AUTHORS
+%doc ChangeLog
+
+%changelog
+
+############################################################################
+
+%package devel
+
+Summary:	Library blocking network access
+Release:	1
+URL:		http://rudy.mif.pg.gda.pl/~bogdro/soft/
+License:	GPLv3+
+Group:		Development/Libraries
+#Packager:	Bogdan Drozdowski <bogdandr@op.pl>
+#Prefix:		/usr/local
+#Source:		%{name}-%{version}.tar.gz
+Requires:	%{name} = %{version}
+
+%files devel
+
+%defattr(-,root,root)
+/usr/local/lib/libnetblock.a
+/usr/local/include/libnetblock.h
+
+%description devel
+
+This is the development package for libnetblock.
+LibNetBlock is a library which intercepts and blocks system calls
+that are used to access the network.
+
+%changelog
+
