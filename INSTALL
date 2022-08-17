@@ -10,6 +10,9 @@ Requirements for compiling the full version:
 - the 'make' program
 
 Type './configure' to configure the library for your system.
+If you want to enable the public interface of LibHideIP, configure the
+ library with
+        ./configure --enable-public-interface
 
 Type 'make' to compile the library.
 

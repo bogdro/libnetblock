@@ -39,7 +39,8 @@ host_triplet = @host@
 @PUBLIC_INTERFACE_TRUE@am__append_2 = lnb_public.c libnetblock.h
 subdir = src
 DIST_COMMON = $(am__nobase_include_HEADERS_DIST) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/lnb_cfg.h.in
+	$(srcdir)/Makefile.in $(srcdir)/libnetblock.h.in \
+	$(srcdir)/lnb_cfg.h.in $(srcdir)/lnb_public.c.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ac_define_path_style.m4 \
 	$(top_srcdir)/m4/ax_c_check_flag.m4 \
@@ -51,7 +52,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = lnb_cfg.h
+CONFIG_CLEAN_FILES = lnb_cfg.h libnetblock.h lnb_public.c
 CONFIG_CLEAN_VPATH_FILES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
@@ -221,7 +222,7 @@ lib_LTLIBRARIES = libnetblock.la
 libnetblock_la_SOURCES = lnb_exec.c lnb_main.c lnb_net.c lnb_banning.c \
 	lnb_opens.c lnb_priv.h lnb_pcap.c
 
-EXTRA_DIST = lnb_cfg.h.in lnb_public.c libnetblock.h \
+EXTRA_DIST = lnb_cfg.h.in lnb_public.c.in libnetblock.h.in \
 	randomize_names_gawk.sh randomize_names_perl.sh
 
 
@@ -230,7 +231,7 @@ EXTRA_DIST = lnb_cfg.h.in lnb_public.c libnetblock.h \
 # interface changed => C++, R:=0
 # - interface add => A++
 # - interface removed => A:=0
-libnetblock_la_LDFLAGS = -version-info 1:0:0
+libnetblock_la_LDFLAGS = -version-info 2:0:1
 
 #nobase_include_HEADERS = lnb_priv.h
 BUILT_SOURCES = lnb_paths.h
@@ -273,6 +274,10 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 lnb_cfg.h: $(top_builddir)/config.status $(srcdir)/lnb_cfg.h.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+libnetblock.h: $(top_builddir)/config.status $(srcdir)/libnetblock.h.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+lnb_public.c: $(top_builddir)/config.status $(srcdir)/lnb_public.c.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)

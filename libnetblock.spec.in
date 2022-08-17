@@ -3,7 +3,7 @@
 %define version @VERSION@
 %define name libnetblock
 
-Summary:	Library blocking network access
+Summary:	Library for blocking network access
 Name:		%{name}
 Version:	%{version}
 Release:	1
@@ -56,7 +56,7 @@ DESTDIR="$RPM_BUILD_ROOT" %{__make} install
 %defattr(-,root,root)
 /usr/local/lib/libnetblock.so
 /usr/local/lib/libnetblock.so.1
-/usr/local/lib/libnetblock.so.1.0.0
+/usr/local/lib/libnetblock.so.1.1.0
 /usr/local/lib/libnetblock.la
 %doc /usr/share/info/libnetblock.info.gz
 %doc /usr/share/man/man3/libnetblock.3.gz
@@ -71,7 +71,7 @@ DESTDIR="$RPM_BUILD_ROOT" %{__make} install
 
 %package devel
 
-Summary:	Library blocking network access
+Summary:	Library for blocking network access
 Release:	1
 URL:		http://rudy.mif.pg.gda.pl/~bogdro/soft/
 License:	GPLv3+
@@ -86,6 +86,7 @@ Requires:	%{name} = %{version}
 %defattr(-,root,root)
 /usr/local/lib/libnetblock.a
 /usr/local/include/libnetblock.h
+/usr/local/lib/pkgconfig/libnetblock.pc
 
 %description devel
 

@@ -49,7 +49,18 @@ extern "C" {
  * Enables the use of libnetblock by any program that calls this function.
  * Simply linking the program with libnetblock enables it.
  */
-extern void libnetblock_enable PARAMS((void));
+extern void libnetblock_enable PARAMS ((void));
+
+/**
+ * The compile-time version of this library.
+ */
+# define LNB_VERSION "@VERSION@"
+
+/**
+ * Returns the run-time version of this library.
+ */
+extern const char * libnetblock_version PARAMS ((void));
+
 
 # ifdef __cplusplus
 }

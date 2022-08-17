@@ -116,6 +116,9 @@ opening functions.
 
 Type @command{./configure} to configure LibNetBlock for your system.
 
+If you want to enable the public interface of LibHideIP, configure the
+library with @command{./configure --enable-public-interface}.
+
 Documentation comes compiled (and can be copied right away), but can be changed
 and recompiled, if you have the @command{makeinfo} program (@command{texinfo} package).
 

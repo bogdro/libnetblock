@@ -5,6 +5,9 @@ ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = libnetblock.spec.in doc/libnetblock.3 m4/ax_c_check_flag.m4 \
 	m4/ax_gcc_warn_unused_result.m4 m4/ac_prototype.m4 m4/ac_define_path_style.m4
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = libnetblock.pc
+
 pack:	doc/libnetblock.info
 	make dist-gzip
 	mkdir -p libnetblock-@VERSION@/doc
@@ -17,3 +20,4 @@ pack:	doc/libnetblock.info
 	tar -rf libnetblock-@VERSION@.tar libnetblock-@VERSION@/doc/libnetblock.texi
 	gzip -9 -f libnetblock-@VERSION@.tar
 	rm -fr libnetblock-@VERSION@
+

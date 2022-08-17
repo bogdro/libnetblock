@@ -71,8 +71,6 @@ static i_i_cp_i_			__lnb_real_openat		= NULL;
 static pp_ccp_cp			__lnb_real_pcap_create		= NULL;
 static pp_ccp_i_i_i_cp			__lnb_real_pcap_open_live	= NULL;
 
-void __lnb_end PARAMS ((void));
-
 /* =============================================================== */
 
 int LNB_ATTR ((constructor))

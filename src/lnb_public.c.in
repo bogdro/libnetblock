@@ -54,3 +54,18 @@ void libnetblock_enable (
 	   is enough. */
 }
 
+/* =============================================================== */
+
+/**
+ * Returns the run-time version of this library.
+ */
+const char *
+libnetblock_version (
+#ifdef LNB_ANSIC
+        void
+#endif
+)
+{
+        return "@VERSION@";
+}
+

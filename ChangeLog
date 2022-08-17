@@ -1,3 +1,21 @@
+2011-10-07	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* libnetblock version 0.2
+	  Added a file for pkg-config with library information. Verified that
+	  no symbol whose name can't be randomized can be reached from the
+	  outside.
+	* configure.ac: added new C compiler flags to check for:
+	  -Wwrite-strings and -Waggregate-return. Added generating a file
+	  for pkg-config.
+	* libnetblock.pc.in: a data file for pkg-config.
+	* libnetblock.spec.in: added the pkg-config file to the -devel package
+	* README, INSTALL, doc/libhideip.texi.in: added the
+	  --enable-public-interface configure option.
+	* src/{libnetblock.h.in,lnb_public.c.in}: added version information
+	  to the library's public interface.
+	* src/lnb_main.c: removed unused declaration of __lnb_end().
+	* Makefile.am: added the file for pkg-config.
+
 2011-06-16	Bogdan Drozdowski <bogdandr@op.pl>
 
 	* libnetblock version 0.1
