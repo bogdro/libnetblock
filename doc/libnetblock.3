@@ -1,0 +1,66 @@
+.\"	Process this file with groff -man -Tascii foo.3
+.\"
+.TH LibNetBlock 3 GNU/Linux "User's Manual"
+
+.SH NAME
+LibNetBlock \- blocking programs from accessing the network.
+
+.SH SYNOPSIS
+$HOME/.bash_profile:
+
+.B export LD_PRELOAD=/usr/local/lib/libnetblock.so
+
+and/or
+
+/etc/ld.so.preload:
+
+.B /usr/local/lib/libnetblock.so
+
+.SH DESCRIPTION
+The LibNetBlock library ensures that no program under its control can access the network.
+
+Selected programs can be taken out of LibNetBlock's control by being put in banning files.
+A banning files consists of program names, one per line. If a text found in a line
+of a banning file is found in the program's name, LibNetBlock does
+.B NOT
+prevent the program from doing anything.
+
+.SH FILES
+${sysconfdir}/libnetblock.progban (usually /usr/local/etc) - path to primary banning file
+
+$HOME/.libnetblock.progban - path to additional user banning file
+
+.SH ENVIRONMENT
+LIBNETBLOCK_BANFILE - path to an additional banning file
+
+.SH NOTES
+The file and command given in the synopsis section may be different on shells other than BASH.
+
+.SH AUTHOR
+Bogdan 'bogdro' Drozdowski,
+
+bogdro (at) users . sourceforge . net
+
+bogdro-soft (at) gmx . com
+
+[EN] https://libnetblock.sourceforge.io
+
+[EN] http://bogdro.evai.pl/soft/
+
+[EN] http://bogdro.evai.pl/soft4asm/
+
+[EN] http://bogdro.evai.pl/index-en.php
+
+[EN] http://bogdro.byethost18.com/soft/
+
+[EN] http://bogdro.byethost18.com/soft4asm/
+
+[EN] http://bogdro.byethost18.com/index-en.php
+
+.SH "SEE ALSO"
+
+The 'info' documentation is more descriptive and is the main one. Type
+
+.B 	info libnetblock
+
+to read it.
