@@ -44,15 +44,17 @@
 #endif
 
 #include "lnb_priv.h"
+#include "libnetblock.h"
 
 static char __lnb_exename[LNB_MAXPATHLEN];	/* 4096 */
 static char __lnb_omitfile[LNB_MAXPATHLEN];
+static const char __lnb_banfilename[] = LNB_BANNING_USERFILE;
 
 /******************* some of what's below comes from libsafe ***************/
 
 #ifndef LNB_ANSIC
 static char *
-__lnb_get_exename PARAMS((char * const exename, const size_t size));
+__lnb_get_exename LNB_PARAMS((char * const exename, const size_t size));
 #endif
 
 /**
@@ -107,6 +109,98 @@ __lnb_get_exename (
 
 /* =============================================================== */
 
+#ifndef LNB_ANSIC
+static int
+__lnb_is_banned_in_file LNB_PARAMS((const char * const exename, const char * const ban_file_name));
+#endif
+
+/**
+ * Checks if the given program is banned (listed) in the given file.
+ * \param exename The program name to check.
+ * \param ban_file_name The name of the banning file to check.
+ * \return The buffer.
+ */
+static int GCC_WARN_UNUSED_RESULT
+__lnb_is_banned_in_file (
+#ifdef LNB_ANSIC
+	const char * const exename, const char * const ban_file_name)
+#else
+	exename, ban_file_name)
+	const char * const exename;
+	const char * const ban_file_name;
+#endif
+{
+	FILE *fp;
+	int ret = 0;	/* DEFAULT: NO, this program is not banned */
+	size_t line_len;
+#ifdef HAVE_ERRNO_H
+	int err = 0;
+#endif
+
+	if ( (exename == NULL) || (ban_file_name == NULL) )
+	{
+		return ret;
+	}
+
+#ifdef HAVE_ERRNO_H
+	err = errno;
+#endif
+	fp = (*__lnb_real_fopen_location ()) (ban_file_name, "r");
+	if ( fp != NULL )
+	{
+		while ( fgets (__lnb_omitfile, sizeof (__lnb_omitfile), fp) != NULL )
+		{
+			__lnb_omitfile[LNB_MAXPATHLEN - 1] = '\0';
+
+			if ( (__lnb_omitfile[0] != '\0') /*(strlen (__lnb_omitfile) > 0)*/
+				&& (__lnb_omitfile[0] != '\n')
+				&& (__lnb_omitfile[0] != '\r') )
+			{
+				do
+				{
+					line_len = strlen (__lnb_omitfile);
+					if ( line_len == 0 )
+					{
+						break;
+					}
+					if ( (__lnb_omitfile[line_len-1] == '\r')
+						|| (__lnb_omitfile[line_len-1] == '\n') )
+					{
+						__lnb_omitfile[line_len-1] = '\0';
+					}
+					else
+					{
+						break;
+					}
+				}
+				while ( line_len != 0 );
+				if ( line_len == 0 )
+				{
+					/* empty line in file - shouldn't happen here */
+					continue;
+				}
+				/*if (strncmp (omitfile, exename, sizeof (omitfile)) == 0)*/
+				/* NOTE the reverse parameters */
+				/* char *strstr(const char *haystack, const char *needle); */
+				if (strstr (exename, __lnb_omitfile) != NULL)
+				{
+					/* needle found in haystack */
+					ret = 1;	/* YES, this program is banned */
+					break;
+				}
+			}
+		}
+		fclose (fp);
+	}
+#ifdef HAVE_ERRNO_H
+	errno = err;
+#endif
+	return ret;
+}
+
+
+/* =============================================================== */
+
 int GCC_WARN_UNUSED_RESULT
 __lnb_check_prog_ban (
 #ifdef LNB_ANSIC
@@ -114,10 +208,13 @@ __lnb_check_prog_ban (
 #endif
 )
 {
-	FILE    *fp;
 	int	ret = 0;	/* DEFAULT: NO, this program is not banned */
-#ifdef HAVE_ERRNO_H
-	int err = 0;
+#if (defined LNB_ENABLE_USERBANS) && (defined HAVE_GETENV) && (defined HAVE_MALLOC)
+	char *path = NULL;
+	char * full_path = NULL;
+	size_t path_len;
+	static size_t filename_len = 0;
+	static size_t filesep_len = 0;
 #endif
 
 	/* Is this process on the list of applications to ignore? */
@@ -131,35 +228,39 @@ __lnb_check_prog_ban (
 
 	if ( __lnb_real_fopen_location () != NULL )
 	{
-#ifdef HAVE_ERRNO_H
-		err = errno;
-#endif
-		fp = (*__lnb_real_fopen_location ()) (SYSCONFDIR LNB_PATH_SEP "libnetblock.progban", "r");
-		if ( fp != NULL )
+		ret = __lnb_is_banned_in_file (__lnb_exename, SYSCONFDIR LNB_PATH_SEP "libnetblock.progban");
+#if (defined LNB_ENABLE_ENV) && (defined HAVE_GETENV)
+		if ( ret == 0 )
 		{
-			while ( fgets (__lnb_omitfile, sizeof (__lnb_omitfile), fp) != NULL )
+			ret = __lnb_is_banned_in_file (__lnb_exename, getenv (LNB_BANNING_ENV));
+		}
+#endif
+#if (defined LNB_ENABLE_USERBANS) && (defined HAVE_GETENV) && (defined HAVE_MALLOC)
+		if ( ret == 0 )
+		{
+			path = getenv ("HOME");
+			if ( path != NULL )
 			{
-				__lnb_omitfile[LNB_MAXPATHLEN - 1] = '\0';
-
-				if ( (__lnb_omitfile[0] != '\0') /*(strlen (__lnb_omitfile) > 0)*/
-					&& (__lnb_omitfile[0] != '\n')
-					&& (__lnb_omitfile[0] != '\r') )
+				path_len = strlen (path);
+				if ( filename_len == 0 )
 				{
-					/*if (strncmp (omitfile, exename, sizeof (omitfile)) == 0)*/
-					/* NOTE the reverse parameters */
-					/* char *strstr(const char *haystack, const char *needle); */
-					if ( strstr (__lnb_exename, __lnb_omitfile) != NULL )
-					{
-						/* needle found in haystack */
-						ret = 1;	/* YES, this program is banned */
-						break;
-					}
+					filename_len = strlen (__lnb_banfilename);
+				}
+				if ( filesep_len == 0 )
+				{
+					filesep_len = strlen (LNB_PATH_SEP);
+				}
+				full_path = (char *) malloc (path_len + 1 + filesep_len + 1 + filename_len + 1);
+				if ( full_path != NULL )
+				{
+					strncpy (full_path, path, path_len+1);
+					strncat (full_path, LNB_PATH_SEP, filesep_len+1);
+					strncat (full_path, __lnb_banfilename, filename_len+1);
+					ret = __lnb_is_banned_in_file (__lnb_exename, full_path);
+					free (full_path);
 				}
 			}
-			fclose (fp);
 		}
-#ifdef HAVE_ERRNO_H
-		errno = err;
 #endif
 	}
 	return ret;

@@ -59,7 +59,7 @@ static int __lnb_allowed_socket_types[] =
 /* =============================================================== */
 
 #ifndef LNB_ANSIC
-static int __lnb_is_allowed_socket PARAMS((const int socket_type));
+static int __lnb_is_allowed_socket LNB_PARAMS((const int socket_type));
 #endif
 
 /**

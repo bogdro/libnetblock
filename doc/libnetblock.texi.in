@@ -1,15 +1,20 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
 @setfilename libnetblock.info
-@settitle libnetblock manual @VERSION@
+@settitle LibNetBlock manual @VERSION@
 @c %**end of header
 
+@dircategory Libraries
+@direntry
+* LibNetBlock: (libnetblock).		Block programs from accessing the network.
+@end direntry
+
 @copying
-This manual is for libnetblock, version @VERSION@
+This manual is for LibNetBlock, version @VERSION@
 @end copying
 
 @titlepage
-@title The libnetblock library
+@title The LibNetBlock library
 @author Bogdan 'bogdro' Drozdowski
 
 @c  The following two commands
@@ -25,8 +30,8 @@ This manual is for libnetblock, version @VERSION@
 @contents
 
 @ifnottex
-@node Top, What is libnetblock?, (dir), (dir)
-@top The libnetblock library
+@node Top, What is LibNetBlock?, (dir), (dir)
+@top The LibNetBlock library
 
 @insertcopying
 @end ifnottex
@@ -44,7 +49,7 @@ Free Documentation License" in the "Copying" chapter.
 
 
 @menu
-* What is libnetblock?::	About the library.
+* What is LibNetBlock?::	About the library.
 * How to compile?::		How to compile the library.
 * Installing::			Installation of the library.
 * Developing::			Programming with the library.
@@ -56,16 +61,16 @@ Free Documentation License" in the "Copying" chapter.
 
 @c ==================================================================
 
-@node What is libnetblock?, How to compile?, Top, Top
+@node What is LibNetBlock?, How to compile?, Top, Top
 @comment  node-name, next,      previous,  up
-@chapter What is libnetblock?
+@chapter What is LibNetBlock?
 
 LibNetBlock is a set of replacements for those function that could be
 used to access the network. These functions include: socket, sendmsg+recvmsg,
 execve (thus the whole exec* family) with the system function (can
 be used to launch bad programs), bind, a bunch of file opening functions
 (fopen, fopen64, open, open64, freopen, freopen64, openat, openat64)
-which can be used to access files under /dev/net,
+which can be used to access files under /dev/net and /proc,
 some of the function from the libpcap library, to prevent raw opening
 of network devices.
 
@@ -91,7 +96,7 @@ LibNetBlock. Some Java Runtime Environments seem to do this.
 @c ==================================================================
 
 
-@node How to compile?, Installing, What is libnetblock?, Top
+@node How to compile?, Installing, What is LibNetBlock?, Top
 @chapter How to compile the library?
 
 Requirements for compiling the library:
@@ -121,13 +126,28 @@ If you want to enable the public interface of LibNetBlock, configure the
 library with @command{./configure --enable-public-interface}. See the
 chapter on developing to learn how to use LibNetBlock (@ref{Developing}).
 
+LibNetBlock allows some programs to be banned (not allowed to run under
+LibNetBlock, because they might need accesss to the network). One banning
+file is always supported - $@{sysconfdir@}/libnetblock.progban ($@{sysconfdir@} is
+/usr/local/etc unless set otherwise during configure).
+
+If you want to disable additional banning files pointed to by environment
+variables, configure the library with@*
+	@command{./configure --enable-environment=no}@*
+
+If you want to disable additional banning files in users' home directories,
+configure the library with@*
+	@command{./configure --enable-user-files=no}@*
+
+Type @command{make} to compile the library.
+
 Documentation comes compiled (and can be copied right away), but can be changed
 and recompiled, if you have the @command{makeinfo} program (@command{texinfo} package).
 
 Type @command{make install} to install the library.
 
 @strong{NOTE}: @command{make install} is @strong{NOT} recommended. Create and install
-an rpm package instead, if possible.
+an RPM package instead, if possible.
 
 To create an RPM package (the old way):
 
@@ -163,22 +183,22 @@ Just add the following line:
 
 export LD_PRELOAD=/usr/local/lib/libnetblock.so
 
-to your startup scripts (like ~/.bashrc, ~/.bash_profile). You should change
+to your startup scripts (like $HOME/.bashrc, $HOME/.bash_profile). You should change
 the path to the correct one. If you aren't using BASH, consult your shell
 manual for details on how to export an environment variable.
 
 This will make the
-dynamic linker, ld.so, load libnetblock before loading any other libraries, when
+dynamic linker, ld.so, load LibNetBlock before loading any other libraries, when
 starting programs. That is, after the line above gets executed, all programs
 from that moment start using LibNetBlock.
 
 You can alternatively put the full path to the library in the /etc/ld.so.preload
-(not recommended, because some good programs may need network access).
+(@strong{NOT} recommended, because some good programs may need network access).
 No syntax is required, just the path and filename, like this:
 
 /usr/local/lib/libnetblock.so
 
-To load libnetblock for just one program, type like this (for BASH):
+To load LibNetBlock for just one program, type like this (for BASH):
 
 LD_PRELOAD=/usr/local/lib/libnetblock.so some-program-name
 
@@ -227,6 +247,10 @@ that calls this function
 of the library the program is using
 @item LNB_VERSION is the compile-time preprocessor string constant containing
 the version of the library the program is compiled against
+@item LNB_BANNING_ENV is the name of the environment variable that can point
+to an additional banning file
+@item LNB_BANNING_USERFILE is the name of the additional banning file that
+can be located in the users' home directories.
 @end itemize
 
 If you're using C or C++ (or any language that can parse C header files),
@@ -237,6 +261,8 @@ you can use the header file directly. Simply type:
 and compile the program with the library, e.g.:
 
 	gcc -o your_prog your_prog.c -lnetblock -ldl
+
+If needed, LibNetBlock should be first in link order.
 
 If you want to use LibNetBlock with some other programming language,
 you can generate bindings to LibNetBlock for that language. You can use
@@ -279,7 +305,13 @@ By using SWIG yourself, you can be sure that such problems will not occur.
 You can use the configuration file $@{sysconfdir@}/libnetblock.progban to
 specify which programs should LibNetBlock not mess with. Put each entry on its own line.
 
- $@{sysconfdir@} is /usr/local/etc unless set otherwise during configure.
+$@{sysconfdir@} is /usr/local/etc unless set otherwise during configure.
+
+If additional banning files haven't been disabled (@ref{How to compile?}), they can
+be located in users' home directories (e.g. /home/user1/.libnetblock.progban).
+You can also put the file in any location and set the environment variable
+LIBNETBLOCK_BANFILE to point at that file, e.g.@*
+	@command{export LIBNETBLOCK_BANFILE=/opt/config/libnetblock.progban}
 
 The /proc filesystem must be mounted in order for program banning to work right now.
 

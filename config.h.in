@@ -37,17 +37,11 @@
 /* Whether you have the dlvsym() function in the libdl library */
 #undef HAVE_LIBDL_DLVSYM
 
-/* Define to 1 if you have the `lstat' function. */
-#undef HAVE_LSTAT
-
 /* Whether you have the malloc function. */
 #undef HAVE_MALLOC
 
 /* Define to 1 if you have the <malloc.h> header file. */
 #undef HAVE_MALLOC_H
-
-/* Define to 1 if you have the `memcpy' function. */
-#undef HAVE_MEMCPY
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
@@ -78,9 +72,6 @@
 
 /* Define to 1 if the system has the type `size_t'. */
 #undef HAVE_SIZE_T
-
-/* Define to 1 if you have the `snprintf' function. */
-#undef HAVE_SNPRINTF
 
 /* Define to 1 if the system has the type `socklen_t'. */
 #undef HAVE_SOCKLEN_T
@@ -117,6 +108,14 @@
 
 /* Whether you have the varargs.h header. */
 #undef HAVE_VARARGS_H
+
+/* Whether or not to enable additional ban files pointed to by environment
+   variables. */
+#undef LNB_ENABLE_ENV
+
+/* Whether or not to enable additional ban files located in users' home
+   directories. */
+#undef LNB_ENABLE_USERBANS
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
    */

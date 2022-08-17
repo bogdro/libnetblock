@@ -35,10 +35,10 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@PUBLIC_INTERFACE_TRUE@am__append_1 = lnb_public.c libnetblock.h
-@PUBLIC_INTERFACE_TRUE@am__append_2 = lnb_public.c libnetblock.h
+@PUBLIC_INTERFACE_TRUE@am__append_1 = lnb_public.c
+@PUBLIC_INTERFACE_TRUE@am__append_2 = lnb_public.c
 subdir = src
-DIST_COMMON = $(am__nobase_include_HEADERS_DIST) $(srcdir)/Makefile.am \
+DIST_COMMON = $(nobase_include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/libnetblock.h.in \
 	$(srcdir)/lnb_cfg.h.in $(srcdir)/lnb_public.c.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -102,7 +102,6 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(libnetblock_la_SOURCES) $(nodist_libnetblock_la_SOURCES)
 DIST_SOURCES = $(libnetblock_la_SOURCES)
-am__nobase_include_HEADERS_DIST = libnetblock.h
 HEADERS = $(nobase_include_HEADERS)
 ETAGS = etags
 CTAGS = ctags
@@ -231,13 +230,15 @@ EXTRA_DIST = lnb_cfg.h.in lnb_public.c.in libnetblock.h.in \
 # interface changed => C++, R:=0
 # - interface add => A++
 # - interface removed => A:=0
-libnetblock_la_LDFLAGS = -version-info 2:1:1
+libnetblock_la_LDFLAGS = -version-info 2:2:1
 
 #nobase_include_HEADERS = lnb_priv.h
-BUILT_SOURCES = lnb_paths.h
-nodist_libnetblock_la_SOURCES = lnb_paths.h $(am__append_1)
-libnetblock_la_DISTCLEANFILES = lnb_paths.h $(am__append_2)
-@PUBLIC_INTERFACE_TRUE@nobase_include_HEADERS = libnetblock.h
+nobase_include_HEADERS = libnetblock.h
+BUILT_SOURCES = lnb_paths.h libnetblock.h
+nodist_libnetblock_la_SOURCES = lnb_paths.h libnetblock.h \
+	$(am__append_1)
+libnetblock_la_DISTCLEANFILES = lnb_paths.h libnetblock.h \
+	$(am__append_2)
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
 
@@ -582,6 +583,7 @@ uninstall-am: uninstall-libLTLIBRARIES uninstall-nobase_includeHEADERS
 	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
 	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-nobase_includeHEADERS
+
 
 lnb_paths.h: Makefile
 	echo '#define SYSCONFDIR "$(sysconfdir)"' > lnb_paths.h

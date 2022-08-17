@@ -55,6 +55,19 @@ If you want to enable the public interface of LibNetBlock, configure the
  The public interface is compatible with SWIG (http://www.swig.org), so
  you can make native bindings to LibNetBlock for any supported language.
 
+LibNetBlock allows some programs to be banned (not allowed to run under
+ LibNetBlock, because they might need accesss to the network). One banning
+ file is always supported - ${sysconfdir}/libnetblock.progban (${sysconfdir} is
+ /usr/local/etc unless set otherwise during configure).
+
+If you want to disable additional banning files pointed to by environment
+ variables, configure the library with
+	./configure --enable-environment=no
+
+If you want to disable additional banning files in users' home directories,
+ configure the library with
+	./configure --enable-user-files=no
+
 Type 'make' to compile the library.
 
 Documentation comes complied (and can be copied right away), but can be

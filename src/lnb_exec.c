@@ -221,8 +221,8 @@ int __lnb_is_forbidden_file (
 	}
 	j = strlen (name) + 1;
 #ifdef HAVE_MALLOC
-	__lnb_linkpath = (char *) malloc ( j );
-	__lnb_newlinkpath = (char *) malloc ( j );
+	__lnb_linkpath = (char *) malloc (j);
+	__lnb_newlinkpath = (char *) malloc (j);
 	if ( (__lnb_linkpath != NULL) && (__lnb_newlinkpath != NULL) )
 #endif
 	{
@@ -266,12 +266,18 @@ int __lnb_is_forbidden_file (
 			if ( S_ISLNK (st.st_mode) )
 			{
 				res = readlink (__lnb_linkpath, __lnb_newlinkpath, j - 1 );
-				if ( res < 0 ) break;
+				if ( res < 0 )
+				{
+					break;
+				}
 				__lnb_newlinkpath[res] = '\0';
 				strncpy (__lnb_linkpath, __lnb_newlinkpath, (size_t)res);
 				__lnb_linkpath[res] = '\0';
 			}
-			else break;
+			else
+			{
+				break;
+			}
 			res = stat (__lnb_linkpath, &st);
 		}
 #endif
@@ -285,8 +291,14 @@ int __lnb_is_forbidden_file (
 		}
 	}
 #ifdef HAVE_MALLOC
-	if ( __lnb_newlinkpath != NULL ) free (__lnb_newlinkpath);
-	if ( __lnb_linkpath != NULL ) free (__lnb_linkpath);
+	if ( __lnb_newlinkpath != NULL )
+	{
+		free (__lnb_newlinkpath);
+	}
+	if ( __lnb_linkpath != NULL )
+	{
+		free (__lnb_linkpath);
+	}
 #endif
 	return ret;
 }
@@ -295,7 +307,7 @@ int __lnb_is_forbidden_file (
 
 #ifndef LNB_ANSIC
 static int __lnb_is_forbidden_program
-	PARAMS((const char * const name, char *const argv[], const int is_system));
+	LNB_PARAMS((const char * const name, char *const argv[], const int is_system));
 #endif
 
 /**
@@ -338,11 +350,14 @@ static int __lnb_is_forbidden_program (
 	size_t linksize = sizeof (__lnb_linkpath);
 	size_t newlinksize = sizeof (__lnb_newlinkpath);
 
-	if ( name == NULL ) return 0;
+	if ( name == NULL )
+	{
+		return 0;
+	}
 	j = strlen (name) + 1;
 #ifdef HAVE_MALLOC
-	__lnb_linkpath = (char *) malloc ( j );
-	__lnb_newlinkpath = (char *) malloc ( j );
+	__lnb_linkpath = (char *) malloc (j);
+	__lnb_newlinkpath = (char *) malloc (j);
 	if ( (__lnb_linkpath != NULL) && (__lnb_newlinkpath != NULL) )
 #endif
 	{
@@ -410,7 +425,10 @@ static int __lnb_is_forbidden_program (
 								strncat (path_dir, __lnb_linkpath, LNB_MAXPATHLEN-strlen (path_dir));
 								strncat (path_dir, LNB_PATH_SEP, LNB_MIN (LNB_MAXPATHLEN-strlen (path_dir), 1));
 								res = stat (path_dir, &st);
-								if ( res >= 0 ) break;	/* object was found */
+								if ( res >= 0 )
+								{
+									break;	/* object was found */
+								}
 								path = &first_char[1];
 								first_char = strchr (path, LNB_FILE_SEP);
 
@@ -422,7 +440,10 @@ static int __lnb_is_forbidden_program (
 					{
 #  if (defined HAVE_MALLOC)
 						path_dir = (char *) malloc (strlen (path) + 1);
-						if ( path_dir != NULL ) strncpy (path_dir, path, strlen (path) + 1);
+						if ( path_dir != NULL )
+						{
+							strncpy (path_dir, path, strlen (path) + 1);
+						}
 #  endif
 					}
 #  if (defined HAVE_MALLOC)
@@ -460,12 +481,18 @@ static int __lnb_is_forbidden_program (
 			if ( S_ISLNK (st.st_mode) )
 			{
 				res = readlink (__lnb_linkpath, __lnb_newlinkpath, j - 1 );
-				if ( res < 0 ) break;
+				if ( res < 0 )
+				{
+					break;
+				}
 				__lnb_newlinkpath[res] = '\0';
 				strncpy (__lnb_linkpath, __lnb_newlinkpath, (size_t)res);
 				__lnb_linkpath[res] = '\0';
 			}
-			else break;
+			else
+			{
+				break;
+			}
 			res = stat (__lnb_linkpath, &st);
 		}
 #endif
@@ -511,8 +538,14 @@ static int __lnb_is_forbidden_program (
 		}
 	} /* if ( __lnb_linkpath != NULL && __lnb_newlinkpath != NULL ) */
 #ifdef HAVE_MALLOC
-	if ( __lnb_newlinkpath != NULL ) free (__lnb_newlinkpath);
-	if ( __lnb_linkpath != NULL ) free (__lnb_linkpath);
+	if ( __lnb_newlinkpath != NULL )
+	{
+		free (__lnb_newlinkpath);
+	}
+	if ( __lnb_linkpath != NULL )
+	{
+		free (__lnb_linkpath);
+	}
 #endif
 	return ret;
 }
