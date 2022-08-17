@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- network functions' replacements.
  *
- * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -59,7 +59,7 @@ static int __lnb_allowed_socket_types[] =
 /* =============================================================== */
 
 #ifndef LNB_ANSIC
-static int __lnb_is_allowed_socket LNB_PARAMS((const int socket_type));
+static int __lnb_is_allowed_socket LNB_PARAMS ((const int socket_type));
 #endif
 
 /**

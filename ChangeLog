@@ -1,3 +1,23 @@
+2013-06-02	Bogdan Drozdowski <bogdandr@op.pl>
+
+	* LibNetBlock version 0.5
+	  Portability improvements (fixes for compilation without some header
+	  files or functions). Other small fixes and updates.
+	* configure.ac: checking for the -O3 compiler option. No longer
+	  requiring malloc().
+	* src/libnetblock.h.in: correctly indented constants introduced in 0.4
+	* README, INSTALL, doc/libnetblock.texi.in: changed "rpm" to "RPM",
+	  commands in separate paragraphs
+	* src/lnb_banning.c: added the stdlib.h file, required by getenv().
+	  Added the malloc.h file (optional).
+	* src/lnb_exec.c (__lnb_is_forbidden_file,__lnb_is_forbidden_program):
+	  small improvements
+	* src/lnb_exec.c (__lnb_is_forbidden_program): fixed compiling
+	  without malloc(), sys/stat.h, readlink() and getenv().
+	* src/Makefile.am: made libnetblock.h not distributed
+	* src/lnb_opens.c: removed including the unnecessary malloc.h file
+	* src/lnb_exec.c: added a missing "unused" attribute
+
 2012-09-30	Bogdan Drozdowski <bogdandr@op.pl>
 
 	* LibNetBlock version 0.4

@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- execution functions' replacements.
  *
- * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -222,42 +222,55 @@ int __lnb_is_forbidden_file (
 	j = strlen (name) + 1;
 #ifdef HAVE_MALLOC
 	__lnb_linkpath = (char *) malloc (j);
+# if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 	__lnb_newlinkpath = (char *) malloc (j);
-	if ( (__lnb_linkpath != NULL) && (__lnb_newlinkpath != NULL) )
+# endif
+	if ( (__lnb_linkpath != NULL)
+# if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
+		&& (__lnb_newlinkpath != NULL)
+# endif
+		)
 #endif
 	{
 #ifdef HAVE_MALLOC
 # ifdef HAVE_MEMSET
 		memset (__lnb_linkpath, 0, j);
+#  if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 		memset (__lnb_newlinkpath, 0, j);
+#  endif
 # else
 		for ( i = 0; i < j; i++ )
 		{
 			__lnb_linkpath[i] = '\0';
+#  if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 			__lnb_newlinkpath[i] = '\0';
+#  endif
 		}
 # endif
-		strncpy (__lnb_linkpath, name, strlen (name));
-#else
+		strncpy (__lnb_linkpath, name, j-1);
+#else /* ! HAVE_MALLOC */
 # ifdef HAVE_MEMSET
 		memset (__lnb_linkpath, 0, sizeof (__lnb_linkpath));
+#  if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 		memset (__lnb_newlinkpath, 0, sizeof (__lnb_newlinkpath));
+#  endif
 # else
 		for ( i = 0; i < sizeof (__lnb_linkpath); i++ )
 		{
 			__lnb_linkpath[i] = '\0';
 		}
+#  if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 		for ( i = 0; i < sizeof (__lnb_newlinkpath); i++ )
 		{
 			__lnb_newlinkpath[i] = '\0';
 		}
+#  endif
 # endif
 		strncpy (__lnb_linkpath, name, sizeof (__lnb_linkpath) - 1);
-#endif
+#endif /* HAVE_MALLOC */
+
 #if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
-# ifdef HAVE_MALLOC
-		j = strlen (name) + 1;
-# else
+# ifndef HAVE_MALLOC
 		j = sizeof (__lnb_newlinkpath);
 # endif
 		res = stat (name, &st);
@@ -291,10 +304,12 @@ int __lnb_is_forbidden_file (
 		}
 	}
 #ifdef HAVE_MALLOC
+# if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 	if ( __lnb_newlinkpath != NULL )
 	{
 		free (__lnb_newlinkpath);
 	}
+# endif
 	if ( __lnb_linkpath != NULL )
 	{
 		free (__lnb_linkpath);
@@ -307,7 +322,7 @@ int __lnb_is_forbidden_file (
 
 #ifndef LNB_ANSIC
 static int __lnb_is_forbidden_program
-	LNB_PARAMS((const char * const name, char *const argv[], const int is_system));
+	LNB_PARAMS ((const char * const name, char *const argv[], const int is_system));
 #endif
 
 /**
@@ -319,12 +334,20 @@ static int __lnb_is_forbidden_program
  */
 static int __lnb_is_forbidden_program (
 #ifdef LNB_ANSIC
-	const char * const name, char *const argv[], const int is_system)
+	const char * const name, char *const argv[], const int is_system
+# if ! ((defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK))
+	LNB_ATTR ((unused))
+# endif
+	)
 #else
 	name, argv, is_system)
 	const char * const name;
 	char *const argv[];
-	const int is_system;
+	const int is_system
+# if ! ((defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK))
+	LNB_ATTR ((unused))
+# endif
+	;
 #endif
 {
 #ifdef HAVE_MALLOC
@@ -337,28 +360,41 @@ static int __lnb_is_forbidden_program (
 # ifdef HAVE_MALLOC
 	char * __lnb_newlinkpath = NULL;
 # endif
+# if (defined HAVE_GETENV) && (defined HAVE_SYS_STAT_H)
+	char *path = NULL;
+#  ifdef HAVE_MALLOC
+	char *path_dir = NULL;
+#  endif
+# endif
 #endif
 #ifndef HAVE_MEMSET
 	size_t l;
 #endif
-#if (defined HAVE_GETENV) && (defined HAVE_MALLOC)
-	char *path = NULL;
-	char *path_dir = NULL;
-#endif
 	unsigned int i, j, k;
 	int ret = 0;
-	size_t linksize = sizeof (__lnb_linkpath);
-	size_t newlinksize = sizeof (__lnb_newlinkpath);
+	size_t linksize;
+	size_t newlinksize;
 
 	if ( name == NULL )
 	{
 		return 0;
 	}
 	j = strlen (name) + 1;
+#ifndef HAVE_MALLOC
+	linksize = sizeof (__lnb_linkpath);
+	newlinksize = sizeof (__lnb_newlinkpath);
+#endif
+
 #ifdef HAVE_MALLOC
 	__lnb_linkpath = (char *) malloc (j);
+# if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 	__lnb_newlinkpath = (char *) malloc (j);
-	if ( (__lnb_linkpath != NULL) && (__lnb_newlinkpath != NULL) )
+# endif
+	if ( (__lnb_linkpath != NULL)
+# if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
+		&& (__lnb_newlinkpath != NULL)
+# endif
+		)
 #endif
 	{
 #ifdef HAVE_MALLOC
@@ -366,28 +402,36 @@ static int __lnb_is_forbidden_program (
 		newlinksize = j;
 # ifdef HAVE_MEMSET
 		memset (__lnb_linkpath, 0, j);
+#  if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 		memset (__lnb_newlinkpath, 0, j);
+#  endif
 # else
 		for ( l = 0; l < j; l++ )
 		{
 			__lnb_linkpath[l] = '\0';
+#  if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 			__lnb_newlinkpath[l] = '\0';
+#  endif
 		}
 # endif
-		strncpy (__lnb_linkpath, name, strlen (name));
+		strncpy (__lnb_linkpath, name, j);
 #else
 # ifdef HAVE_MEMSET
 		memset (__lnb_linkpath, 0, linksize);
+#  if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 		memset (__lnb_newlinkpath, 0, newlinksize);
+#  endif
 # else
 		for ( l = 0; l < linksize; l++ )
 		{
 			__lnb_linkpath[l] = '\0';
 		}
+#  if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 		for ( l = 0; l < newlinksize; l++ )
 		{
 			__lnb_newlinkpath[l] = '\0';
 		}
+#  endif
 # endif
 		strncpy (__lnb_linkpath, name, linksize - 1);
 #endif
@@ -467,8 +511,8 @@ static int __lnb_is_forbidden_program (
 				}
 				strncat (__lnb_newlinkpath, __lnb_linkpath, newlinksize-strlen (__lnb_newlinkpath));
 				strncpy (__lnb_linkpath, __lnb_newlinkpath, linksize);
+# endif /* (defined HAVE_GETENV) && (defined HAVE_SYS_STAT_H) */
 			}
-# endif
 		}
 # ifdef HAVE_MALLOC
 		j = strlen (__lnb_linkpath) + 1;
@@ -495,7 +539,7 @@ static int __lnb_is_forbidden_program (
 			}
 			res = stat (__lnb_linkpath, &st);
 		}
-#endif
+#endif /* (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK) */
 		for ( j = 0; j < sizeof (programs)/sizeof (programs[0]); j++)
 		{
 			if ( strstr (name, programs[j]) != NULL )
@@ -538,10 +582,12 @@ static int __lnb_is_forbidden_program (
 		}
 	} /* if ( __lnb_linkpath != NULL && __lnb_newlinkpath != NULL ) */
 #ifdef HAVE_MALLOC
+# if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 	if ( __lnb_newlinkpath != NULL )
 	{
 		free (__lnb_newlinkpath);
 	}
+# endif
 	if ( __lnb_linkpath != NULL )
 	{
 		free (__lnb_linkpath);

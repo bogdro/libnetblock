@@ -1,7 +1,7 @@
 /*
  * A library library which blocks programs from accessing the network.
  *
- * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *

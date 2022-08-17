@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(libnetblock, 0.4, bogdandr@op.pl)
+AC_INIT(libnetblock, 0.5, bogdandr@op.pl)
 AM_INIT_AUTOMAKE
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile doc/libnetblock.texi
 	libnetblock.spec src/lnb_cfg.h src/libnetblock.h src/lnb_public.c
@@ -151,8 +151,7 @@ AC_DEFINE_PATH_STYLE()
 # ==================== Checks for library functions.
 AC_FUNC_MALLOC
 AC_CHECK_FUNC([malloc],
-	AC_DEFINE([HAVE_MALLOC],[1],[Whether you have the malloc function.]),
-	[AC_MSG_ERROR([[I need the malloc() function.]])])
+	AC_DEFINE([HAVE_MALLOC],[1],[Whether you have the malloc function.]))
 
 AC_CHECK_FUNCS([memset readlink getenv openat openat64])
 
@@ -192,6 +191,7 @@ if (test "x$GCC" = "xyes" ); then
 	AX_C_CHECK_FLAG([-Wlogical-op], [CFLAGS="$CFLAGS -Wlogical-op"], [CFLAGS="$CFLAGS"])
 	AX_C_CHECK_FLAG([-fstack-protector-all], [CFLAGS="$CFLAGS -fstack-protector-all"], [CFLAGS="$CFLAGS"])
 	AX_C_CHECK_FLAG([-O2], [CFLAGS="$CFLAGS -O2"], [CFLAGS="$CFLAGS"])
+	AX_C_CHECK_FLAG([-O3], [CFLAGS="$CFLAGS -O3"], [CFLAGS="$CFLAGS"])
         AX_C_CHECK_FLAG([-Waggregate-return], [CFLAGS="$CFLAGS -Waggregate-return"], [CFLAGS="$CFLAGS"])
         AX_C_CHECK_FLAG([-Wwrite-strings], [CFLAGS="$CFLAGS -Wwrite-strings"], [CFLAGS="$CFLAGS"])
 

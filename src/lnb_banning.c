@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- private file and program banning functions.
  *
- * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2013 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -43,6 +43,14 @@
 # include <unistd.h>	/* readlink() */
 #endif
 
+#ifdef HAVE_STDLIB_H
+# include <stdlib.h>	/* getenv, malloc */
+#else
+# ifdef HAVE_MALLOC_H
+#  include <malloc.h>
+# endif
+#endif
+
 #include "lnb_priv.h"
 #include "libnetblock.h"
 
@@ -54,7 +62,7 @@ static const char __lnb_banfilename[] = LNB_BANNING_USERFILE;
 
 #ifndef LNB_ANSIC
 static char *
-__lnb_get_exename LNB_PARAMS((char * const exename, const size_t size));
+__lnb_get_exename LNB_PARAMS ((char * const exename, const size_t size));
 #endif
 
 /**
@@ -73,24 +81,30 @@ __lnb_get_exename (
 	const size_t size;
 #endif
 {
+#ifndef HAVE_MEMSET
 	size_t i;
+#endif
 #ifdef HAVE_READLINK
 	ssize_t res;
 #endif
 #ifdef HAVE_ERRNO_H
 	int err = 0;
 #endif
+#ifdef HAVE_MEMSET
+	memset (exename, 0, size);
+#else
 	for ( i = 0; i < size; i++ )
 	{
 		exename[i] = '\0';
 	}
+#endif
 	/* get the name of the current executable */
 #ifdef HAVE_ERRNO_H
 	err = errno;
 #endif
 #ifdef HAVE_READLINK
 	res = readlink ("/proc/self/exe", exename, size - 1);
-	if (res == -1)
+	if ( res == -1 )
 	{
 		exename[0] = '\0';
 	}
@@ -111,7 +125,7 @@ __lnb_get_exename (
 
 #ifndef LNB_ANSIC
 static int
-__lnb_is_banned_in_file LNB_PARAMS((const char * const exename, const char * const ban_file_name));
+__lnb_is_banned_in_file LNB_PARAMS ((const char * const exename, const char * const ban_file_name));
 #endif
 
 /**
