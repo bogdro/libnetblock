@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(libnetblock, 0.2, bogdandr@op.pl)
+AC_INIT(libnetblock, 0.3, bogdandr@op.pl)
 AM_INIT_AUTOMAKE
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile doc/libnetblock.texi
 	libnetblock.spec src/lnb_cfg.h src/libnetblock.h src/lnb_public.c

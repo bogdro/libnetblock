@@ -4,15 +4,17 @@ Requirements for compiling the full version:
 - a non-root account. Please, NEVER compile or 'make' anything as root.
 - a working C compiler
 - development package for the C library (like glibc-devel and glibc-headers)
-  with the sys/stat.h and dlfcn.h
+  with the sys/stat.h and dlfcn.h header files
 - libdl, the dynamic loading library, with its development package
   (unless the required functions are in the C library)
 - the 'make' program
 
 Type './configure' to configure the library for your system.
-If you want to enable the public interface of LibHideIP, configure the
+If you want to enable the public interface of LibNetBlock, configure the
  library with
         ./configure --enable-public-interface
+ The public interface is compatible with SWIG (http://www.swig.org), so
+ you can make native bindings to LibNetBlock for any supported language.
 
 Type 'make' to compile the library.
 

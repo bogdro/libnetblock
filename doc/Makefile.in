@@ -34,8 +34,9 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 subdir = doc
-DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/libnetblock.texi.in texinfo.tex
+DIST_COMMON = $(libnetblock_TEXINFOS) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/libnetblock.texi.in \
+	texinfo.tex
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/ac_define_path_style.m4 \
 	$(top_srcdir)/m4/ax_c_check_flag.m4 \
@@ -201,7 +202,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 info_TEXINFOS = libnetblock.texi
-libhideip_TEXINFOS = libnetblock.texi
+libnetblock_TEXINFOS = libnetblock.texi
 man_MANS = libnetblock.3
 EXTRA_DIST = $(man_MANS) libnetblock.texi.in libnetblock.info
 all: all-am
@@ -292,10 +293,10 @@ clean-libtool:
 	    rm -rf $(@:.html=); else rm -Rf $(@:.html=.htp) $@; fi; \
 	  exit 1; \
 	fi
-$(srcdir)/libnetblock.info: libnetblock.texi 
-libnetblock.dvi: libnetblock.texi 
-libnetblock.pdf: libnetblock.texi 
-libnetblock.html: libnetblock.texi 
+$(srcdir)/libnetblock.info: libnetblock.texi $(libnetblock_TEXINFOS)
+libnetblock.dvi: libnetblock.texi $(libnetblock_TEXINFOS)
+libnetblock.pdf: libnetblock.texi $(libnetblock_TEXINFOS)
+libnetblock.html: libnetblock.texi $(libnetblock_TEXINFOS)
 .dvi.ps:
 	TEXINPUTS="$(am__TEXINFO_TEX_DIR)$(PATH_SEPARATOR)$$TEXINPUTS" \
 	$(DVIPS) -o $@ $<

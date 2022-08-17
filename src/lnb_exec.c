@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- execution functions' replacements.
  *
- * Copyright (C) 2011 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -107,7 +107,7 @@ static const char *programs[] =
 
 /* The programs LibNetBlock conditionally forbids to execute (when they're used to get
    the contents of important files). */
-static const char *viewing_programs[] =
+static const char * viewing_programs[] =
 {
 	/* plain viewers: */
 	"cat",
@@ -146,22 +146,150 @@ static const char *viewing_programs[] =
 	/* diff tools: */
 	"diff",		/* also mathes "diff3" and "sdiff" */
 
-	/* text programming/manipulation tools: */
+	/* text programming/manipulation tools and interpreters: */
 	"ed",		/* matches "sed", too */
 	"awk",		/* matches "nawk" and "gawk", too */
 	"perl",
 	"python",
+	"ruby",
+	"lua",
+	"php",
+	"tcl",
+	"gcl",
+	"sbcl",
+	"lisp",
+
+	/* shells (blocking "sh" can catch too many programs): */
+	"bash",
+	"zsh",
+	"csh",
+	"ksh"
 };
 
 static const char * __lnb_valuable_files[] =
 {
-	VALUABLE_FILES
+	"if_inet6",
+	"ipv6_route",
+	"hosts",
+	"ifcfg-",
+	"hostname",
+	"mactab",
+	"/dev/net",
+	"/dev/udp",
+	"/dev/tcp"
 };
 
 #ifndef HAVE_MALLOC
 static char __lnb_linkpath[LNB_MAXPATHLEN];
 static char __lnb_newlinkpath[LNB_MAXPATHLEN];
 #endif
+
+/* =============================================================== */
+
+/**
+ * Tells if the file with the given name is forbidden to be opened.
+ * \param name The name of the file to check.
+ * \return 1 if forbidden, 0 otherwise.
+ */
+int __lnb_is_forbidden_file (
+#ifdef LNB_ANSIC
+	const char * const name)
+#else
+	name)
+	const char * const name;
+#endif
+{
+#ifdef HAVE_MALLOC
+	char * __lnb_linkpath;
+#endif
+#if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
+	int res;
+	struct stat st;
+# ifdef HAVE_MALLOC
+	char * __lnb_newlinkpath;
+# endif
+#endif
+#ifndef HAVE_MEMSET
+	size_t i;
+#endif
+	unsigned int j;
+	int ret = 0;
+
+	if ( name == NULL )
+	{
+		return 0;
+	}
+	j = strlen (name) + 1;
+#ifdef HAVE_MALLOC
+	__lnb_linkpath = (char *) malloc ( j );
+	__lnb_newlinkpath = (char *) malloc ( j );
+	if ( (__lnb_linkpath != NULL) && (__lnb_newlinkpath != NULL) )
+#endif
+	{
+#ifdef HAVE_MALLOC
+# ifdef HAVE_MEMSET
+		memset (__lnb_linkpath, 0, j);
+		memset (__lnb_newlinkpath, 0, j);
+# else
+		for ( i = 0; i < j; i++ )
+		{
+			__lnb_linkpath[i] = '\0';
+			__lnb_newlinkpath[i] = '\0';
+		}
+# endif
+		strncpy (__lnb_linkpath, name, strlen (name));
+#else
+# ifdef HAVE_MEMSET
+		memset (__lnb_linkpath, 0, sizeof (__lnb_linkpath));
+		memset (__lnb_newlinkpath, 0, sizeof (__lnb_newlinkpath));
+# else
+		for ( i = 0; i < sizeof (__lnb_linkpath); i++ )
+		{
+			__lnb_linkpath[i] = '\0';
+		}
+		for ( i = 0; i < sizeof (__lnb_newlinkpath); i++ )
+		{
+			__lnb_newlinkpath[i] = '\0';
+		}
+# endif
+		strncpy (__lnb_linkpath, name, sizeof (__lnb_linkpath) - 1);
+#endif
+#if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
+# ifdef HAVE_MALLOC
+		j = strlen (name) + 1;
+# else
+		j = sizeof (__lnb_newlinkpath);
+# endif
+		res = stat (name, &st);
+		while ( res >= 0 )
+		{
+			if ( S_ISLNK (st.st_mode) )
+			{
+				res = readlink (__lnb_linkpath, __lnb_newlinkpath, j - 1 );
+				if ( res < 0 ) break;
+				__lnb_newlinkpath[res] = '\0';
+				strncpy (__lnb_linkpath, __lnb_newlinkpath, (size_t)res);
+				__lnb_linkpath[res] = '\0';
+			}
+			else break;
+			res = stat (__lnb_linkpath, &st);
+		}
+#endif
+		for ( j=0; j < sizeof (__lnb_valuable_files)/sizeof (__lnb_valuable_files[0]); j++)
+		{
+			if ( strstr (__lnb_linkpath, __lnb_valuable_files[j]) != NULL )
+			{
+				ret = 1;
+				break;
+			}
+		}
+	}
+#ifdef HAVE_MALLOC
+	if ( __lnb_newlinkpath != NULL ) free (__lnb_newlinkpath);
+	if ( __lnb_linkpath != NULL ) free (__lnb_linkpath);
+#endif
+	return ret;
+}
 
 /* =============================================================== */
 
@@ -215,7 +343,7 @@ static int __lnb_is_forbidden_program (
 #ifdef HAVE_MALLOC
 	__lnb_linkpath = (char *) malloc ( j );
 	__lnb_newlinkpath = (char *) malloc ( j );
-	if ( __lnb_linkpath != NULL && __lnb_newlinkpath != NULL )
+	if ( (__lnb_linkpath != NULL) && (__lnb_newlinkpath != NULL) )
 #endif
 	{
 #ifdef HAVE_MALLOC
@@ -255,21 +383,21 @@ static int __lnb_is_forbidden_program (
 			first_char = strchr (name, ' ');
 			if ( first_char != NULL )
 			{
-				strncpy (__lnb_linkpath, name, LNB_MIN((size_t)(first_char - name), linksize - 1));
+				strncpy (__lnb_linkpath, name, LNB_MIN ((size_t)(first_char - name), linksize - 1));
 			}
 			else
 			{
 				i = strlen (name);
-				strncpy (__lnb_linkpath, name, LNB_MIN(i, linksize));
+				strncpy (__lnb_linkpath, name, LNB_MIN (i, linksize));
 			}
-			if ( strncmp(__lnb_linkpath, LNB_PATH_SEP, 1) != 0 )
+			if ( strncmp (__lnb_linkpath, LNB_PATH_SEP, 1) != 0 )
 			{
 				/* add path, so we have the full path to the oject and can check its type. */
 # if (defined HAVE_GETENV) && (defined HAVE_SYS_STAT_H)
 				path = getenv ("PATH");
 				if ( path != NULL )
 				{
-					first_char = strchr (path, ':');
+					first_char = strchr (path, LNB_FILE_SEP);
 					if ( first_char != NULL )
 					{
 #  if (defined HAVE_MALLOC)
@@ -278,15 +406,15 @@ static int __lnb_is_forbidden_program (
 						{
 							do
 							{
-								strncpy (path_dir, path, LNB_MIN((size_t)(first_char - path), LNB_MAXPATHLEN));
+								strncpy (path_dir, path, LNB_MIN ((size_t)(first_char - path), LNB_MAXPATHLEN));
 								strncat (path_dir, __lnb_linkpath, LNB_MAXPATHLEN-strlen (path_dir));
-								strncat (path_dir, LNB_PATH_SEP, LNB_MIN(LNB_MAXPATHLEN-strlen (path_dir), 1));
+								strncat (path_dir, LNB_PATH_SEP, LNB_MIN (LNB_MAXPATHLEN-strlen (path_dir), 1));
 								res = stat (path_dir, &st);
 								if ( res >= 0 ) break;	/* object was found */
 								path = &first_char[1];
-								first_char = strchr (path, ':');
+								first_char = strchr (path, LNB_FILE_SEP);
 
-							} while (first_char != NULL);
+							} while ( first_char != NULL );
 						}
 #  endif
 					}
@@ -304,10 +432,16 @@ static int __lnb_is_forbidden_program (
 						free (path_dir);
 					}
 #  else
-					if ( first_char != NULL ) strncpy (__lnb_newlinkpath, path,
-						LNB_MIN((size_t)(first_char - path), newlinksize - 1));
-					else strncpy (__lnb_newlinkpath, path,
-						LNB_MIN(strlen (path) + 1, newlinksize - 1));
+					if ( first_char != NULL )
+					{
+						strncpy (__lnb_newlinkpath, path,
+							LNB_MIN ((size_t)(first_char - path), newlinksize - 1));
+					}
+					else
+					{
+						strncpy (__lnb_newlinkpath, path,
+							LNB_MIN (strlen (path) + 1, newlinksize - 1));
+					}
 #  endif
 				}
 				strncat (__lnb_newlinkpath, __lnb_linkpath, newlinksize-strlen (__lnb_newlinkpath));
@@ -359,31 +493,21 @@ static int __lnb_is_forbidden_program (
 			{
 				if ( strstr (__lnb_linkpath, viewing_programs[i]) != NULL )
 				{
-					for ( j=0; (ret == 0)
-						&& (j < sizeof (__lnb_valuable_files)/sizeof (__lnb_valuable_files[0]));
-						j++)
+					k = 0;
+					while ( (argv[k] != NULL) && (ret == 0) )
 					{
-						k = 0;
-						while ( (argv[k] != NULL) && (ret == 0) )
+						if ( __lnb_is_forbidden_file (argv[k]) != 0 )
 						{
-							if ( strstr (argv[k], __lnb_valuable_files[j]) != NULL )
-							{
-								ret = 1;
-								break;
-							}
+							ret = 1;
+							break;
 						}
 					}
 				}
 			}
 		}
-		for ( j = 0; (ret == 0)
-			&& (j < sizeof (__lnb_valuable_files)/sizeof (__lnb_valuable_files[0])); j++)
+		if ( __lnb_is_forbidden_file (__lnb_linkpath) != 0 )
 		{
-			if ( strstr (__lnb_linkpath, __lnb_valuable_files[j]) != NULL )
-			{
-				ret = 1;
-				break;
-			}
+			ret = 1;
 		}
 	} /* if ( __lnb_linkpath != NULL && __lnb_newlinkpath != NULL ) */
 #ifdef HAVE_MALLOC
@@ -432,7 +556,7 @@ execve (
 		return (*__lnb_real_execve_location ()) (filename, argv, envp);
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < 2) )
+	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
@@ -487,7 +611,7 @@ system (
 		return (*__lnb_real_system_location ()) (command);
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < 2) )
+	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;

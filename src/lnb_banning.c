@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- private file and program banning functions.
  *
- * Copyright (C) 2011 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -78,7 +78,10 @@ __lnb_get_exename (
 #ifdef HAVE_ERRNO_H
 	int err = 0;
 #endif
-	for ( i=0; i < size; i++ ) exename[i] = '\0';
+	for ( i = 0; i < size; i++ )
+	{
+		exename[i] = '\0';
+	}
 	/* get the name of the current executable */
 #ifdef HAVE_ERRNO_H
 	err = errno;
@@ -113,6 +116,9 @@ __lnb_check_prog_ban (
 {
 	FILE    *fp;
 	int	ret = 0;	/* DEFAULT: NO, this program is not banned */
+#ifdef HAVE_ERRNO_H
+	int err = 0;
+#endif
 
 	/* Is this process on the list of applications to ignore? */
 	__lnb_get_exename (__lnb_exename, LNB_MAXPATHLEN);
@@ -125,30 +131,36 @@ __lnb_check_prog_ban (
 
 	if ( __lnb_real_fopen_location () != NULL )
 	{
+#ifdef HAVE_ERRNO_H
+		err = errno;
+#endif
 		fp = (*__lnb_real_fopen_location ()) (SYSCONFDIR LNB_PATH_SEP "libnetblock.progban", "r");
-		if (fp != NULL)
+		if ( fp != NULL )
 		{
 			while ( fgets (__lnb_omitfile, sizeof (__lnb_omitfile), fp) != NULL )
 			{
 				__lnb_omitfile[LNB_MAXPATHLEN - 1] = '\0';
 
-				if ( __lnb_omitfile[0] != '\0' /*(strlen (__lnb_omitfile) > 0)*/
+				if ( (__lnb_omitfile[0] != '\0') /*(strlen (__lnb_omitfile) > 0)*/
 					&& (__lnb_omitfile[0] != '\n')
 					&& (__lnb_omitfile[0] != '\r') )
 				{
 					/*if (strncmp (omitfile, exename, sizeof (omitfile)) == 0)*/
 					/* NOTE the reverse parameters */
 					/* char *strstr(const char *haystack, const char *needle); */
-					if (strstr (__lnb_exename, __lnb_omitfile) != NULL)
+					if ( strstr (__lnb_exename, __lnb_omitfile) != NULL )
 					{
 						/* needle found in haystack */
-						fclose (fp);
 						ret = 1;	/* YES, this program is banned */
+						break;
 					}
 				}
 			}
 			fclose (fp);
 		}
+#ifdef HAVE_ERRNO_H
+		errno = err;
+#endif
 	}
 	return ret;
 }

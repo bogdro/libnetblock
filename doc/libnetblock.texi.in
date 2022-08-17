@@ -33,7 +33,7 @@ This manual is for libnetblock, version @VERSION@
 
 @c ==================================================================
 
-    Copyright (c)  2011 Bogdan Drozdowski
+    Copyright (c)  2011-2012 Bogdan Drozdowski
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2
@@ -47,6 +47,7 @@ Free Documentation License" in the "Copying" chapter.
 * What is libnetblock?::	About the library.
 * How to compile?::		How to compile the library.
 * Installing::			Installation of the library.
+* Developing::			Programming with the library.
 * Manual configuration::	Configuration.
 * Author::			How to contact me.
 * Copying::			License - your rights and freedoms.
@@ -116,8 +117,9 @@ opening functions.
 
 Type @command{./configure} to configure LibNetBlock for your system.
 
-If you want to enable the public interface of LibHideIP, configure the
-library with @command{./configure --enable-public-interface}.
+If you want to enable the public interface of LibNetBlock, configure the
+library with @command{./configure --enable-public-interface}. See the
+chapter on developing to learn how to use LibNetBlock (@ref{Developing}).
 
 Documentation comes compiled (and can be copied right away), but can be changed
 and recompiled, if you have the @command{makeinfo} program (@command{texinfo} package).
@@ -149,7 +151,7 @@ To create an RPM package (the new way):
 
 
 
-@node Installing, Manual configuration, How to compile?, Top
+@node Installing, Developing, How to compile?, Top
 @chapter Making the library work
 
 LibNetBlock has no magic in it, it won't intercept calls to the mentioned functions
@@ -210,7 +212,68 @@ Then recompile and reinstall the library.
 
 @c ==================================================================
 
-@node Manual configuration, Author, Installing, Top
+
+
+@node Developing, Manual configuration, Installing, Top
+@chapter Programming with the library
+
+LibNetBlock comes with a development package. You can use the following
+public functions and constants:
+
+@itemize
+@item void libnetblock_enable(void) - enables LibNetBlock for the program
+that calls this function
+@item const char * libnetblock_version(void) - returns the runtime version
+of the library the program is using
+@item LNB_VERSION is the compile-time preprocessor string constant containing
+the version of the library the program is compiled against
+@end itemize
+
+If you're using C or C++ (or any language that can parse C header files),
+you can use the header file directly. Simply type:
+
+	#include <libnetblock.h>
+
+and compile the program with the library, e.g.:
+
+	gcc -o your_prog your_prog.c -lnetblock -ldl
+
+If you want to use LibNetBlock with some other programming language,
+you can generate bindings to LibNetBlock for that language. You can use
+SWIG (@url{http://www.swig.org}) for this purpose. The header file is compatible
+with SWIG, so you can simply run:
+
+	swig -<your_lang> [<other options>] /path/to/libnetblock.h
+
+e.g.
+
+	swig -php -o lnb_wrap_php.c /usr/include/libnetblock.h
+
+You can then compile the generated wrapper files:
+
+	gcc -fpic -c lnb_wrap_*.c
+
+and link them into one or separate shared libraries:
+
+	gcc -shared lnb_wrap_*.o -lnetblock -o lnb_wrapper.so
+
+After this, you can link your program with the wrapper library and LibNetBlock:
+
+	gcc -o your_prog your_prog.c lnb_wrapper.so -lnetblock -ldl
+
+or use the library in other languages, as shown in the SWIG examples.
+
+LibNetBlock will not contain the interfaces compiled-in, because there may
+be incompatibilities between languages or even between different versions
+of the same language, causing compile-time or other conflicts and
+unnecessary dependencies.
+
+By using SWIG yourself, you can be sure that such problems will not occur.
+
+
+@c ==================================================================
+
+@node Manual configuration, Author, Developing, Top
 @chapter Manual configuration
 
 You can use the configuration file $@{sysconfdir@}/libnetblock.progban to
@@ -236,9 +299,9 @@ bogdro (at) rudy . mif . pg . gda . pl
 
 
 or look at my website:@*
-[EN] http://rudy.mif.pg.gda.pl/~bogdro/soft/@*
-[EN] http://rudy.mif.pg.gda.pl/~bogdro/inne/@*
-[PL] http://rudy.mif.pg.gda.pl/~bogdro/@*
+[EN] @url{http://rudy.mif.pg.gda.pl/~bogdro/soft/}@*
+[EN] @url{http://rudy.mif.pg.gda.pl/~bogdro/inne/}@*
+[PL] @url{http://rudy.mif.pg.gda.pl/~bogdro/}@*
 
 @c ==================================================================
 

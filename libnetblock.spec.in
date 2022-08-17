@@ -20,7 +20,7 @@ BuildRequires:	gcc, glibc, glibc-devel, glibc-headers, make
 
 %description
 
-LibNetBlock is a library which intercepts and blocks system calls
+LibNetBlock is a preloadable library which intercepts and blocks system calls
 that are used to access the network.
 
 %prep
@@ -56,7 +56,7 @@ DESTDIR="$RPM_BUILD_ROOT" %{__make} install
 %defattr(-,root,root)
 /usr/local/lib/libnetblock.so
 /usr/local/lib/libnetblock.so.1
-/usr/local/lib/libnetblock.so.1.1.0
+/usr/local/lib/libnetblock.so.1.1.1
 /usr/local/lib/libnetblock.la
 %doc /usr/share/info/libnetblock.info.gz
 %doc /usr/share/man/man3/libnetblock.3.gz
@@ -71,7 +71,7 @@ DESTDIR="$RPM_BUILD_ROOT" %{__make} install
 
 %package devel
 
-Summary:	Library for blocking network access
+Summary:	Library for blocking network access - development package
 Release:	1
 URL:		http://rudy.mif.pg.gda.pl/~bogdro/soft/
 License:	GPLv3+
@@ -91,7 +91,7 @@ Requires:	%{name} = %{version}
 %description devel
 
 This is the development package for libnetblock.
-LibNetBlock is a library which intercepts and blocks system calls
+LibNetBlock is a preloadable library which intercepts and blocks system calls
 that are used to access the network.
 
 %changelog

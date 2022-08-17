@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- libpcap functions' replacements.
  *
- * Copyright (C) 2011 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
@@ -91,7 +91,7 @@ pcap_create (
 		return NULL;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < 2) )
+	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 		return (*__lnb_real_pcap_create_location ()) (source, errbuf);
 	}
@@ -127,7 +127,7 @@ pcap_open_live (
 		return NULL;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < 2) )
+	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 		return (*__lnb_real_pcap_open_live_location ()) (device, snaplen, promisc, to_ms, errbuf);
 	}

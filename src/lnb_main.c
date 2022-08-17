@@ -1,7 +1,7 @@
 /*
  * A library library which blocks programs from accessing the network.
  *
- * Copyright (C) 2011 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -46,7 +46,7 @@
 
 #include "lnb_priv.h"
 
-static int	__lnb_is_initialized		= 0;
+static int	__lnb_is_initialized		= LNB_INIT_STAGE_NOT_INITIALIZED;
 
 /* --- Pointers to original functions. */
 /* network-related functions: */
@@ -80,7 +80,7 @@ __lnb_main (
 #endif
 )
 {
-	if ( __lnb_is_initialized == 0 )
+	if ( __lnb_is_initialized == LNB_INIT_STAGE_NOT_INITIALIZED )
 	{
 		/* Get pointers to the original functions: */
 
@@ -117,7 +117,7 @@ __lnb_main (
 		*(void **) (&__lnb_real_pcap_create)      = dlsym  (RTLD_NEXT, "pcap_create");
 		*(void **) (&__lnb_real_pcap_open_live)   = dlsym  (RTLD_NEXT, "pcap_open_live");
 
-		__lnb_is_initialized = 2;
+		__lnb_is_initialized = LNB_INIT_STAGE_FULLY_INITIALIZED;
 
 	}	/* is_initialized == 0 */
 	return 0;

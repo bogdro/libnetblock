@@ -2,7 +2,7 @@
  * A library library which blocks programs from accessing the network.
  *	-- network functions' replacements.
  *
- * Copyright (C) 2011 Bogdan Drozdowski, bogdandr (at) op.pl
+ * Copyright (C) 2011-2012 Bogdan Drozdowski, bogdandr (at) op.pl
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *
@@ -51,6 +51,43 @@
 
 #include "lnb_priv.h"
 
+static int __lnb_allowed_socket_types[] =
+{
+	AF_UNIX, AF_LOCAL
+};
+
+/* =============================================================== */
+
+#ifndef LNB_ANSIC
+static int __lnb_is_allowed_socket PARAMS((const int socket_type));
+#endif
+
+/**
+ * Tells if the given socket type is forbidden to use.
+ * \param socket_type The socket type to check.
+ * \return 1 if forbidden, 0 otherwise.
+ */
+static int __lnb_is_allowed_socket (
+#ifdef LNB_ANSIC
+	const int socket_type)
+#else
+	socket_type)
+	const int socket_type;
+#endif
+{
+	size_t i;
+	for ( i = 0;
+		i < sizeof (__lnb_allowed_socket_types) / sizeof (__lnb_allowed_socket_types[0]);
+		i++ )
+	{
+		if ( __lnb_allowed_socket_types[i] == socket_type )
+		{
+			return 1;
+		}
+	}
+	return 0;
+}
+
 /* =============================================================== */
 
 int
@@ -78,7 +115,15 @@ socket (
 		return -1;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < 2) )
+	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	{
+#ifdef HAVE_ERRNO_H
+		errno = 0;
+#endif
+		return (*__lnb_real_socket_location ()) (domain, type, protocol);
+	}
+
+	if ( __lnb_is_allowed_socket (domain) == 1 )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = 0;
@@ -119,7 +164,7 @@ recvmsg (
 		return -1;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < 2) )
+	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = 0;
@@ -160,7 +205,7 @@ sendmsg (
 		return -1;
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < 2) )
+	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = 0;
@@ -213,10 +258,18 @@ bind (
 		return (*__lnb_real_bind_location ()) (sockfd, my_addr, addrlen);
 	}
 
-	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < 2) )
+	if ( (__lnb_check_prog_ban () != 0) || (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 #ifdef HAVE_ERRNO_H
 		errno = err;
+#endif
+		return (*__lnb_real_bind_location ()) (sockfd, my_addr, addrlen);
+	}
+
+	if ( __lnb_is_allowed_socket (my_addr->sa_family) == 1 )
+	{
+#ifdef HAVE_ERRNO_H
+		errno = 0;
 #endif
 		return (*__lnb_real_bind_location ()) (sockfd, my_addr, addrlen);
 	}
