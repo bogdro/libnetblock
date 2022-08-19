@@ -20,15 +20,14 @@ TODO*
 
 *.info
 *~
-libnetblock.3
 libnetblock.pc
 libnetblock.spec
 libtool
-# libnetblock.h
+libnetblock.h
 lnb_cfg.h
 lnb_paths.h
 lnb_priv.h
-# lnb_public.c
+lnb_public.c
 
 lnbtest
 lnbtest_banning
