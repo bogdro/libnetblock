@@ -25,13 +25,6 @@
 
 #include "lnb_cfg.h"
 
-#define _BSD_SOURCE 1
-#define _XOPEN_SOURCE 500
-#define _POSIX_C_SOURCE 200809L
-#define _DEFAULT_SOURCE 1
-#define _ATFILE_SOURCE 1
-#define _GNU_SOURCE 1
-
 #ifdef HAVE_UNISTD_H
 # include <unistd.h>	/* execve(), readlink() */
 #endif
