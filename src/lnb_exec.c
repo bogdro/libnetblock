@@ -244,6 +244,21 @@ static char * __lnb_get_target_link_path (
 		return NULL;
 	}
 
+# ifdef HAVE_CANONICALIZE_FILE_NAME
+	current_name = canonicalize_file_name (name);
+	if ( current_name != NULL )
+	{
+		return current_name;
+	}
+# endif
+# ifdef HAVE_REALPATH
+	current_name = realpath (name, NULL);
+	if ( current_name != NULL )
+	{
+		return current_name;
+	}
+# endif
+
 	current_name = LNB_STRDUP (name);
 	if ( current_name != NULL )
 	{
