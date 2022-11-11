@@ -1,14 +1,14 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.59)
-AC_INIT(libnetblock, 1.4, bogdro@users.sourceforge.net)
+AC_PREREQ([2.71])
+AC_INIT([LibNetBlock], [1.5], [bogdro@users.sourceforge.net], [libnetblock], [https://libnetblock.sourceforge.io])
 AM_INIT_AUTOMAKE
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile test/Makefile
 	doc/libnetblock.texi libnetblock.spec src/lnb_cfg.h
 	src/libnetblock.h src/lnb_public.c libnetblock.pc])
 AC_CONFIG_SRCDIR([src/lnb_net.c])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 # ==================== configure arguments
@@ -60,12 +60,12 @@ if (test "x$user_files" = "xyes"); then
 		[Whether or not to enable additional ban files located in users' home directories.])
 fi
 
-# ==================== Checks for programs.
+#' ==================== Checks for programs.
 AC_LANG(C)
 AC_PROG_CC
 AM_PROG_CC_C_O
 AM_CONDITIONAL(ISGCC, test "x$GCC" = "xyes")
-AC_PROG_LIBTOOL
+LT_INIT
 
 # ==================== Checks for libraries.
 libdl=yes
@@ -117,7 +117,15 @@ AC_CHECK_DECL([RTLD_NEXT],[AC_DEFINE([HAVE_DECL_RTLD_NEXT], [1], [Whether RTLD_N
 	#endif
 	])
 
-AC_HEADER_STDC
+# AC_ HEADER_ STDC
+# m4_warn([obsolete],
+# [The preprocessor macro `STDC_HEADERS' is obsolete.
+#   Except in unusual embedded environments, you can safely include all
+#   ISO C90 headers unconditionally.])dnl
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
 
 AC_CHECK_HEADERS([stdlib.h string.h unistd.h errno.h malloc.h\
 	sys/types.h sys/socket.h netinet/in.h fcntl.h stdint.h \
@@ -179,7 +187,6 @@ AM_CONDITIONAL([LNB_TESTS_ENABLED], [test "x$have_check" = "xyes"])
 if (test "x$have_check" = "xyes"); then
 
 	AC_CHECK_HEADERS([arpa/inet.h sys/un.h])
-
 fi
 
 # ==================== Checks for compiler options.
