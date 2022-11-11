@@ -73,10 +73,6 @@
 #  include <sys/types.h>	/* size_t */
 # endif
 
-# ifndef HAVE_SSIZE_T
-typedef int ssize_t;
-# endif
-
 # ifdef HAVE_STDLIB_H
 #  include <stdlib.h>		/* sys/socket.h */
 # endif

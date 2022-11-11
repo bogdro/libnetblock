@@ -7,6 +7,9 @@
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #undef HAVE_ARPA_INET_H
 
+/* Define to 1 if you have the `canonicalize_file_name' function. */
+#undef HAVE_CANONICALIZE_FILE_NAME
+
 /* Whether RTLD_NEXT is defined */
 #undef HAVE_DECL_RTLD_NEXT
 
@@ -67,9 +70,6 @@
 /* Define to 1 if you have the `memset' function. */
 #undef HAVE_MEMSET
 
-/* Define to 1 if the system has the type `mode_t'. */
-#undef HAVE_MODE_T
-
 /* Define to 1 if you have the <netinet/in.h> header file. */
 #undef HAVE_NETINET_IN_H
 
@@ -88,17 +88,14 @@
 /* Define to 1 if you have the `readlink' function. */
 #undef HAVE_READLINK
 
-/* Define to 1 if the system has the type `size_t'. */
-#undef HAVE_SIZE_T
+/* Define to 1 if you have the `realpath' function. */
+#undef HAVE_REALPATH
 
 /* Define to 1 if you have the `snprintf' function. */
 #undef HAVE_SNPRINTF
 
 /* Define to 1 if the system has the type `socklen_t'. */
 #undef HAVE_SOCKLEN_T
-
-/* Define to 1 if the system has the type `ssize_t'. */
-#undef HAVE_SSIZE_T
 
 /* Define to 1 if you have the `stat' function. */
 #undef HAVE_STAT
@@ -200,11 +197,17 @@
 /* Define to rpl_malloc if the replacement function should be used. */
 #undef malloc
 
+/* Define to `int' if <sys/types.h> does not define. */
+#undef mode_t
+
 /* Define to `long int' if <sys/types.h> does not define. */
 #undef off_t
 
 /* Define to `unsigned int' if <sys/types.h> does not define. */
 #undef size_t
+
+/* Define to `int' if <sys/types.h> does not define. */
+#undef ssize_t
 
 /* Define to empty if the keyword `volatile' does not work. Warning: valid
    code using `volatile' can become incorrect without. Disable with care. */

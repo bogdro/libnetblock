@@ -155,10 +155,12 @@ AC_CHECK_HEADER(pcap.h,AC_DEFINE([HAVE_PCAP_H],[1],
 # ==================== Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_VOLATILE
+AC_TYPE_MODE_T
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
+AC_TYPE_SSIZE_T
 
-AC_CHECK_TYPES([size_t, mode_t, socklen_t, ssize_t],,,
+AC_CHECK_TYPES([socklen_t],,,
 	[
 	#ifdef HAVE_SYS_TYPES_H
 	#include <sys/types.h>
@@ -176,7 +178,8 @@ AC_CHECK_FUNC([malloc],
 	AC_DEFINE([HAVE_MALLOC],[1],[Whether you have the malloc function.]))
 
 AC_CHECK_FUNCS([memset memcpy readlink getenv openat openat64 lstat symlink \
-	execveat fexecve snprintf strdup stat stat64 lstat64])
+	execveat fexecve snprintf strdup stat stat64 lstat64 realpath \
+	canonicalize_file_name])
 
 have_check=no
 #ACTION-IF-NOT-FOUND is required, otherwise 'configure' fails
@@ -237,6 +240,8 @@ if (test "x$GCC" = "xyes" ); then
         AX_C_CHECK_FLAG([-Wno-nonnull-compare], [CFLAGS="$CFLAGS -Wno-nonnull-compare"], [CFLAGS="$CFLAGS"])
         AX_C_CHECK_FLAG([-Wstringop-truncation], [CFLAGS="$CFLAGS -Wstringop-truncation"], [CFLAGS="$CFLAGS"])
         AX_C_CHECK_FLAG([-Wduplicated-branches], [CFLAGS="$CFLAGS -Wduplicated-branches"], [CFLAGS="$CFLAGS"])
+        AX_C_CHECK_FLAG([-fstack-check], [CFLAGS="$CFLAGS -fstack-check"], [CFLAGS="$CFLAGS"])
+        AX_C_CHECK_FLAG([-fanalyzer], [CFLAGS="$CFLAGS -fanalyzer"], [CFLAGS="$CFLAGS"])
 
         # required for the compiler, which is used by libtool instead of the linker
 	AX_C_CHECK_FLAG([-Wl,-z -Wl,noexecstack], [CFLAGS="$CFLAGS -Wl,-z -Wl,noexecstack"], [CFLAGS="$CFLAGS"])
@@ -260,7 +265,7 @@ if (test "x$public_if" = "xyes"); then
 
 else
 
-	echo " *	Public interface: no (disabled by command line)"
+	echo " *	Public interface: no (default/disabled by command line)"
 
 fi
 
