@@ -911,7 +911,7 @@ uninstall-am: uninstall-pkgconfigDATA
 .PRECIOUS: Makefile
 
 
-pack:	doc/libnetblock.info dist-gzip
+x-pack:	doc/libnetblock.info dist-gzip
 	tar zxf libnetblock-@VERSION@.tar.gz
 	echo '\input texinfo'			 > libnetblock-@VERSION@/doc/libnetblock.texi
 	echo '@setfilename libnetblock.info'	>> libnetblock-@VERSION@/doc/libnetblock.texi
@@ -920,7 +920,7 @@ pack:	doc/libnetblock.info dist-gzip
 	tar zcf libnetblock-@VERSION@.tar.gz libnetblock-@VERSION@
 	rm -fr libnetblock-@VERSION@
 
-.PHONY: pack
+.PHONY: x-pack
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

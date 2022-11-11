@@ -47,6 +47,7 @@ nodist_libnetblock_la_SOURCES += lnb_public.c
 libnetblock_la_DISTCLEANFILES += lnb_public.c
 endif
 
-randomnames: clean
+x-randomnames: clean
 	./randomize_names_gawk.sh
 
+.PHONY: x-randomnames

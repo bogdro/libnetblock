@@ -30,7 +30,7 @@ EXTRA_DIST = libnetblock.spec.in doc/libnetblock.3 m4/ax_c_check_flag.m4 \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libnetblock.pc
 
-pack:	doc/libnetblock.info dist-gzip
+x-pack:	doc/libnetblock.info dist-gzip
 	tar zxf libnetblock-@VERSION@.tar.gz
 	echo '\input texinfo'			 > libnetblock-@VERSION@/doc/libnetblock.texi
 	echo '@setfilename libnetblock.info'	>> libnetblock-@VERSION@/doc/libnetblock.texi
@@ -39,4 +39,4 @@ pack:	doc/libnetblock.info dist-gzip
 	tar zcf libnetblock-@VERSION@.tar.gz libnetblock-@VERSION@
 	rm -fr libnetblock-@VERSION@
 
-.PHONY: pack
+.PHONY: x-pack
