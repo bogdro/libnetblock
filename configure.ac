@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.71])
 AC_INIT([LibNetBlock], [1.5], [bogdro@users.sourceforge.net], [libnetblock], [https://libnetblock.sourceforge.io])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([-Wall])
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile test/Makefile
 	doc/libnetblock.texi libnetblock.spec src/lnb_cfg.h
 	src/libnetblock.h src/lnb_public.c libnetblock.pc])
@@ -64,6 +64,7 @@ fi
 AC_LANG(C)
 AC_PROG_CC
 AM_PROG_CC_C_O
+AM_PROG_AR
 AM_CONDITIONAL(ISGCC, test "x$GCC" = "xyes")
 LT_INIT
 
