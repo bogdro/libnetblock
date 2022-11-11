@@ -259,6 +259,7 @@ static char * __lnb_get_target_link_path (
 	}
 # endif
 
+	/* find the real path manually: */
 	current_name = LNB_STRDUP (name);
 	if ( current_name != NULL )
 	{
@@ -314,6 +315,9 @@ static char * __lnb_get_target_link_path (
 			lnk_res = readlink (current_name, __lnb_newlinkpath, (size_t)lsize);
 			if ( (lnk_res < 0) || (lnk_res > lsize) )
 			{
+# ifdef HAVE_MALLOC
+				free (__lnb_newlinkpath);
+# endif /* HAVE_MALLOC */
 				break;
 			}
 			__lnb_newlinkpath[lnk_res] = '\0';
@@ -347,10 +351,17 @@ static char * __lnb_get_target_link_path (
 				free (__lnb_newlinkdir);
 # endif /* HAVE_MALLOC */
 			}
+			res = strcmp (current_name, __lnb_newlinkpath);
 # ifdef HAVE_MALLOC
 			free (current_name);
 # endif /* HAVE_MALLOC */
 			current_name = __lnb_newlinkpath;
+
+			if ( res == 0 )
+			{
+				/* the old and new names are the same - a link pointing to itself */
+				break;
+			}
 # ifdef HAVE_LSTAT64
 			res = lstat64 (current_name, &st);
 # else
@@ -360,13 +371,15 @@ static char * __lnb_get_target_link_path (
 			res = -1;
 #  endif
 # endif
-		}
+		} /* while ( res >= 0 ) */
 		return current_name;
 	}
 	else
 	{
-		/* memory not allocated - return the original */
-		return name;
+		/* NOTE: memory not allocated - return NULL to avoid returning
+		 * a local variable from __lhip_get_target_link_path_fd()
+	 	 */
+		return NULL /*name*/;
 	}
 #else
 	return name;
@@ -445,6 +458,7 @@ int __lnb_is_forbidden_file (
 	__lnb_linkpath = __lnb_get_target_link_path (name_copy);
 #else
 	strncpy (__lnb_linkpath, name, sizeof (__lnb_linkpath)-1);
+	__lnb_linkpath[sizeof (__lnb_linkpath) - 1] = '\0';
 	strncpy (__lnb_linkpath, __lnb_get_target_link_path (__lnb_linkpath), sizeof (__lnb_linkpath)-1);
 	__lnb_linkpath[sizeof (__lnb_linkpath) - 1] = '\0';
 #endif
@@ -458,7 +472,7 @@ int __lnb_is_forbidden_file (
 	}
 #ifdef HAVE_MALLOC
 	free (name_copy);
-	if ( (__lnb_linkpath != NULL) && (__lnb_linkpath != name) )
+	if ( (__lnb_linkpath != NULL) /*&& (__lnb_linkpath != name)*/ )
 	{
 		free ((void *)__lnb_linkpath);
 	}
@@ -553,11 +567,13 @@ static int __lnb_is_forbidden_program (
 	struct stat st;
 #  endif
 # endif
-	char *first_char = NULL;
+	char *first_char;
 # if (defined HAVE_GETENV) && (defined HAVE_SYS_STAT_H)
-	char *path = NULL;
+	char *path;
+	size_t path_len;
+	size_t new_path_len;
 #  ifdef HAVE_MALLOC
-	char *path_dir = NULL;
+	char *path_dir;
 #  endif
 # endif
 #endif
@@ -579,10 +595,7 @@ static int __lnb_is_forbidden_program (
 	j = LNB_MAXPATHLEN;
 #endif
 	{
-		for ( i = 0; i < j + 1; i++ )
-		{
-			__lnb_linkpath[i] = '\0';
-		}
+		LNB_MEMSET (__lnb_linkpath, 0, j + 1);
 
 		strncpy (__lnb_linkpath, name, j);
 		__lnb_linkpath[j] = '\0';
@@ -615,10 +628,7 @@ static int __lnb_is_forbidden_program (
 						path_dir = (char *) malloc (j + 1);
 						if ( path_dir != NULL )
 						{
-							for ( i = 0; i < j + 1; i++ )
-							{
-								path_dir[i] = '\0';
-							}
+							LNB_MEMSET (path_dir, 0, j + 1);
 
 							do
 							{
@@ -649,14 +659,16 @@ static int __lnb_is_forbidden_program (
 					}
 					else
 					{
+						path_len = strlen (path);
+						new_path_len = strlen (__lnb_linkpath);
 						path_dir = (char *) malloc (
-							strlen (path) + 1 + strlen (__lnb_linkpath) + 1);
+							path_len + 1 + new_path_len + 1);
 						if ( path_dir != NULL )
 						{
-							strncpy (path_dir, path, strlen (path) + 1);
-							path_dir[strlen (path) + 1] = '\0';
+							strncpy (path_dir, path, path_len + 1);
+							path_dir[path_len + 1] = '\0';
 							__lnb_append_path (path_dir, __lnb_linkpath, j);
-							path_dir[strlen (path) + 1 + strlen (__lnb_linkpath)] = '\0';
+							path_dir[path_len + 1 + new_path_len] = '\0';
 						}
 					}
 					/* path_dir, if not NULL, contains "PATH/name" */
