@@ -39,6 +39,7 @@
 #  define HAVE_LIBDL			1
 #  define HAVE_LIBDL_DLSYM		1
 #  define HAVE_LIBDL_DLVSYM		1
+#  define HAVE_LINUX_FCNTL_H		1
 #  define HAVE_LSTAT			1
 #  define HAVE_LSTAT64			1
 #  define HAVE_MALLOC			1

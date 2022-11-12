@@ -128,9 +128,9 @@ AC_CHECK_DECL([RTLD_NEXT],[AC_DEFINE([HAVE_DECL_RTLD_NEXT], [1], [Whether RTLD_N
 AC_CHECK_INCLUDES_DEFAULT
 AC_PROG_EGREP
 
-AC_CHECK_HEADERS([stdlib.h string.h unistd.h errno.h malloc.h\
+AC_CHECK_HEADERS([stdlib.h string.h unistd.h errno.h malloc.h \
 	sys/types.h sys/socket.h netinet/in.h fcntl.h stdint.h \
-	inttypes.h])
+	inttypes.h linux/fcntl.h])
 
 has_sys_stat_h=yes
 AC_CHECK_HEADER([sys/stat.h],AC_DEFINE([HAVE_SYS_STAT_H],[1],

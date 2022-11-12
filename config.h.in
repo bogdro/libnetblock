@@ -52,6 +52,9 @@
 /* Define to 1 if you have the `pcap' library (-lpcap). */
 #undef HAVE_LIBPCAP
 
+/* Define to 1 if you have the <linux/fcntl.h> header file. */
+#undef HAVE_LINUX_FCNTL_H
+
 /* Define to 1 if you have the `lstat' function. */
 #undef HAVE_LSTAT
 
