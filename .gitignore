@@ -30,6 +30,7 @@ lnb_public.c
 
 lnbtest
 lnbtest_banning
+lnbtest_exec
 lnbtest_net
 lnbtest_opens
 lnbtest_other
