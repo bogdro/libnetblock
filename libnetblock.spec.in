@@ -33,11 +33,9 @@ BuildRequires:	gcc, glibc, glibc-devel, make
 %configure --enable-static --enable-shared --enable-public-interface
 
 %build
-# % make - deprecated
 %make_build
 
 %install
-# % makeinstall_std - deprecated
 %make_install
 
 %preun
@@ -48,12 +46,11 @@ ldconfig
 #install-info
 
 %postun -p /sbin/ldconfig
-#ldconfig
 
 %clean
-# % {__rm} -rf $RPM_BUILD_ROOT
+#  {__rm} -rf $RPM_BUILD_ROOT
 
-# % define _unpackaged_files_terminate_build 0
+#  define _unpackaged_files_terminate_build 0
 %files
 
 %defattr(-,root,root)
