@@ -56,6 +56,9 @@ static int __lnb_allowed_socket_types[] =
 };
 
 #ifdef TEST_COMPILE
+# ifdef LNB_ANSIC
+#  define WAS_LNB_ANSIC
+# endif
 # undef LNB_ANSIC
 #endif
 
@@ -213,6 +216,11 @@ sendmsg (
 
 /* =============================================================== */
 
+/* problem with type portability - skip checking these functions */
+#if (defined TEST_COMPILE) && (defined WAS_LNB_ANSIC)
+# define LNB_ANSIC 1
+#endif
+
 int
 bind (
 #ifdef LNB_ANSIC
@@ -260,3 +268,7 @@ bind (
 	LNB_SET_ERRNO_PERM();
 	return -1;
 }
+
+#ifdef TEST_COMPILE
+# undef LHIP_ANSIC
+#endif
