@@ -179,7 +179,7 @@ AC_CHECK_FUNC([malloc],
 
 AC_CHECK_FUNCS([memset memcpy readlink getenv openat openat64 lstat symlink \
 	execveat fexecve snprintf strdup stat stat64 lstat64 realpath \
-	canonicalize_file_name])
+	canonicalize_file_name fopen64 freopen64 open64])
 
 have_check=no
 #ACTION-IF-NOT-FOUND is required, otherwise 'configure' fails
