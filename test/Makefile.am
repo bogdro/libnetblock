@@ -28,32 +28,35 @@ check_PROGRAMS = lnbtest_banning lnbtest_exec lnbtest_net lnbtest_opens lnbtest_
 #nobase_include_HEADERS = lnbtest_common.h
 #nodist_include_HEADERS = lnbtest_common.h
 EXTRA_DIST = lnbtest_common.h
+LNBTEST_COMMON_SRC = lnbtest_common.c lnbtest_common.h
+LNBTEST_COMMON_CFLAGS = @CHECK_CFLAGS@ -DHAVE_CONFIG_H -I $(top_builddir)/src
+LNBTEST_COMMON_LIB = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
 
-lnbtest_banning_SOURCES = lnbtest_banning.c lnbtest_common.c lnbtest_common.h
-lnbtest_banning_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-lnbtest_banning_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+lnbtest_banning_SOURCES = lnbtest_banning.c $(LNBTEST_COMMON_SRC)
+lnbtest_banning_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+lnbtest_banning_LDADD = $(LNBTEST_COMMON_LIB)
 
-lnbtest_exec_SOURCES = lnbtest_exec.c lnbtest_common.c lnbtest_common.h
-lnbtest_exec_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-lnbtest_exec_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+lnbtest_exec_SOURCES = lnbtest_exec.c $(LNBTEST_COMMON_SRC)
+lnbtest_exec_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+lnbtest_exec_LDADD = $(LNBTEST_COMMON_LIB)
 
-lnbtest_net_SOURCES = lnbtest_net.c lnbtest_common.c lnbtest_common.h
-lnbtest_net_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-lnbtest_net_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+lnbtest_net_SOURCES = lnbtest_net.c $(LNBTEST_COMMON_SRC)
+lnbtest_net_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+lnbtest_net_LDADD = $(LNBTEST_COMMON_LIB)
 
-lnbtest_opens_SOURCES = lnbtest_opens.c lnbtest_common.c lnbtest_common.h
-lnbtest_opens_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-lnbtest_opens_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+lnbtest_opens_SOURCES = lnbtest_opens.c $(LNBTEST_COMMON_SRC)
+lnbtest_opens_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+lnbtest_opens_LDADD = $(LNBTEST_COMMON_LIB)
 
-lnbtest_pcap_SOURCES = lnbtest_pcap.c lnbtest_common.c lnbtest_common.h
-lnbtest_pcap_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-lnbtest_pcap_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+lnbtest_pcap_SOURCES = lnbtest_pcap.c $(LNBTEST_COMMON_SRC)
+lnbtest_pcap_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+lnbtest_pcap_LDADD = $(LNBTEST_COMMON_LIB)
 
-lnbtest_other_SOURCES = lnbtest_other.c lnbtest_common.c lnbtest_common.h
-lnbtest_other_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-lnbtest_other_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+lnbtest_other_SOURCES = lnbtest_other.c $(LNBTEST_COMMON_SRC)
+lnbtest_other_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+lnbtest_other_LDADD = $(LNBTEST_COMMON_LIB)
 
-zcompile: $(TESTS)
-.PHONY: zcompile
+x-compile: $(TESTS)
+.PHONY: x-compile
 
 endif

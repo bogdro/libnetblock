@@ -138,11 +138,14 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__lnbtest_banning_SOURCES_DIST = lnbtest_banning.c lnbtest_common.c \
 	lnbtest_common.h
+@LNB_TESTS_ENABLED_TRUE@am__objects_1 = lnbtest_banning-lnbtest_common.$(OBJEXT)
 @LNB_TESTS_ENABLED_TRUE@am_lnbtest_banning_OBJECTS = lnbtest_banning-lnbtest_banning.$(OBJEXT) \
-@LNB_TESTS_ENABLED_TRUE@	lnbtest_banning-lnbtest_common.$(OBJEXT)
+@LNB_TESTS_ENABLED_TRUE@	$(am__objects_1)
 lnbtest_banning_OBJECTS = $(am_lnbtest_banning_OBJECTS)
-@LNB_TESTS_ENABLED_TRUE@lnbtest_banning_DEPENDENCIES =  \
+@LNB_TESTS_ENABLED_TRUE@am__DEPENDENCIES_1 =  \
 @LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/libnetblock.la
+@LNB_TESTS_ENABLED_TRUE@lnbtest_banning_DEPENDENCIES =  \
+@LNB_TESTS_ENABLED_TRUE@	$(am__DEPENDENCIES_1)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
@@ -153,56 +156,64 @@ lnbtest_banning_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	-o $@
 am__lnbtest_exec_SOURCES_DIST = lnbtest_exec.c lnbtest_common.c \
 	lnbtest_common.h
+@LNB_TESTS_ENABLED_TRUE@am__objects_2 =  \
+@LNB_TESTS_ENABLED_TRUE@	lnbtest_exec-lnbtest_common.$(OBJEXT)
 @LNB_TESTS_ENABLED_TRUE@am_lnbtest_exec_OBJECTS =  \
 @LNB_TESTS_ENABLED_TRUE@	lnbtest_exec-lnbtest_exec.$(OBJEXT) \
-@LNB_TESTS_ENABLED_TRUE@	lnbtest_exec-lnbtest_common.$(OBJEXT)
+@LNB_TESTS_ENABLED_TRUE@	$(am__objects_2)
 lnbtest_exec_OBJECTS = $(am_lnbtest_exec_OBJECTS)
 @LNB_TESTS_ENABLED_TRUE@lnbtest_exec_DEPENDENCIES =  \
-@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/libnetblock.la
+@LNB_TESTS_ENABLED_TRUE@	$(am__DEPENDENCIES_1)
 lnbtest_exec_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(lnbtest_exec_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am__lnbtest_net_SOURCES_DIST = lnbtest_net.c lnbtest_common.c \
 	lnbtest_common.h
+@LNB_TESTS_ENABLED_TRUE@am__objects_3 =  \
+@LNB_TESTS_ENABLED_TRUE@	lnbtest_net-lnbtest_common.$(OBJEXT)
 @LNB_TESTS_ENABLED_TRUE@am_lnbtest_net_OBJECTS =  \
 @LNB_TESTS_ENABLED_TRUE@	lnbtest_net-lnbtest_net.$(OBJEXT) \
-@LNB_TESTS_ENABLED_TRUE@	lnbtest_net-lnbtest_common.$(OBJEXT)
+@LNB_TESTS_ENABLED_TRUE@	$(am__objects_3)
 lnbtest_net_OBJECTS = $(am_lnbtest_net_OBJECTS)
 @LNB_TESTS_ENABLED_TRUE@lnbtest_net_DEPENDENCIES =  \
-@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/libnetblock.la
+@LNB_TESTS_ENABLED_TRUE@	$(am__DEPENDENCIES_1)
 lnbtest_net_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(lnbtest_net_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am__lnbtest_opens_SOURCES_DIST = lnbtest_opens.c lnbtest_common.c \
 	lnbtest_common.h
+@LNB_TESTS_ENABLED_TRUE@am__objects_4 = lnbtest_opens-lnbtest_common.$(OBJEXT)
 @LNB_TESTS_ENABLED_TRUE@am_lnbtest_opens_OBJECTS =  \
 @LNB_TESTS_ENABLED_TRUE@	lnbtest_opens-lnbtest_opens.$(OBJEXT) \
-@LNB_TESTS_ENABLED_TRUE@	lnbtest_opens-lnbtest_common.$(OBJEXT)
+@LNB_TESTS_ENABLED_TRUE@	$(am__objects_4)
 lnbtest_opens_OBJECTS = $(am_lnbtest_opens_OBJECTS)
 @LNB_TESTS_ENABLED_TRUE@lnbtest_opens_DEPENDENCIES =  \
-@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/libnetblock.la
+@LNB_TESTS_ENABLED_TRUE@	$(am__DEPENDENCIES_1)
 lnbtest_opens_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(lnbtest_opens_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am__lnbtest_other_SOURCES_DIST = lnbtest_other.c lnbtest_common.c \
 	lnbtest_common.h
+@LNB_TESTS_ENABLED_TRUE@am__objects_5 = lnbtest_other-lnbtest_common.$(OBJEXT)
 @LNB_TESTS_ENABLED_TRUE@am_lnbtest_other_OBJECTS =  \
 @LNB_TESTS_ENABLED_TRUE@	lnbtest_other-lnbtest_other.$(OBJEXT) \
-@LNB_TESTS_ENABLED_TRUE@	lnbtest_other-lnbtest_common.$(OBJEXT)
+@LNB_TESTS_ENABLED_TRUE@	$(am__objects_5)
 lnbtest_other_OBJECTS = $(am_lnbtest_other_OBJECTS)
 @LNB_TESTS_ENABLED_TRUE@lnbtest_other_DEPENDENCIES =  \
-@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/libnetblock.la
+@LNB_TESTS_ENABLED_TRUE@	$(am__DEPENDENCIES_1)
 lnbtest_other_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(lnbtest_other_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 am__lnbtest_pcap_SOURCES_DIST = lnbtest_pcap.c lnbtest_common.c \
 	lnbtest_common.h
+@LNB_TESTS_ENABLED_TRUE@am__objects_6 =  \
+@LNB_TESTS_ENABLED_TRUE@	lnbtest_pcap-lnbtest_common.$(OBJEXT)
 @LNB_TESTS_ENABLED_TRUE@am_lnbtest_pcap_OBJECTS =  \
 @LNB_TESTS_ENABLED_TRUE@	lnbtest_pcap-lnbtest_pcap.$(OBJEXT) \
-@LNB_TESTS_ENABLED_TRUE@	lnbtest_pcap-lnbtest_common.$(OBJEXT)
+@LNB_TESTS_ENABLED_TRUE@	$(am__objects_6)
 lnbtest_pcap_OBJECTS = $(am_lnbtest_pcap_OBJECTS)
 @LNB_TESTS_ENABLED_TRUE@lnbtest_pcap_DEPENDENCIES =  \
-@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/libnetblock.la
+@LNB_TESTS_ENABLED_TRUE@	$(am__DEPENDENCIES_1)
 lnbtest_pcap_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(lnbtest_pcap_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
@@ -620,24 +631,27 @@ top_srcdir = @top_srcdir@
 #nobase_include_HEADERS = lnbtest_common.h
 #nodist_include_HEADERS = lnbtest_common.h
 @LNB_TESTS_ENABLED_TRUE@EXTRA_DIST = lnbtest_common.h
-@LNB_TESTS_ENABLED_TRUE@lnbtest_banning_SOURCES = lnbtest_banning.c lnbtest_common.c lnbtest_common.h
-@LNB_TESTS_ENABLED_TRUE@lnbtest_banning_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-@LNB_TESTS_ENABLED_TRUE@lnbtest_banning_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
-@LNB_TESTS_ENABLED_TRUE@lnbtest_exec_SOURCES = lnbtest_exec.c lnbtest_common.c lnbtest_common.h
-@LNB_TESTS_ENABLED_TRUE@lnbtest_exec_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-@LNB_TESTS_ENABLED_TRUE@lnbtest_exec_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
-@LNB_TESTS_ENABLED_TRUE@lnbtest_net_SOURCES = lnbtest_net.c lnbtest_common.c lnbtest_common.h
-@LNB_TESTS_ENABLED_TRUE@lnbtest_net_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-@LNB_TESTS_ENABLED_TRUE@lnbtest_net_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
-@LNB_TESTS_ENABLED_TRUE@lnbtest_opens_SOURCES = lnbtest_opens.c lnbtest_common.c lnbtest_common.h
-@LNB_TESTS_ENABLED_TRUE@lnbtest_opens_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-@LNB_TESTS_ENABLED_TRUE@lnbtest_opens_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
-@LNB_TESTS_ENABLED_TRUE@lnbtest_pcap_SOURCES = lnbtest_pcap.c lnbtest_common.c lnbtest_common.h
-@LNB_TESTS_ENABLED_TRUE@lnbtest_pcap_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-@LNB_TESTS_ENABLED_TRUE@lnbtest_pcap_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
-@LNB_TESTS_ENABLED_TRUE@lnbtest_other_SOURCES = lnbtest_other.c lnbtest_common.c lnbtest_common.h
-@LNB_TESTS_ENABLED_TRUE@lnbtest_other_CFLAGS = @CHECK_CFLAGS@ -I $(top_builddir)/src
-@LNB_TESTS_ENABLED_TRUE@lnbtest_other_LDADD = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+@LNB_TESTS_ENABLED_TRUE@LNBTEST_COMMON_SRC = lnbtest_common.c lnbtest_common.h
+@LNB_TESTS_ENABLED_TRUE@LNBTEST_COMMON_CFLAGS = @CHECK_CFLAGS@ -DHAVE_CONFIG_H -I $(top_builddir)/src
+@LNB_TESTS_ENABLED_TRUE@LNBTEST_COMMON_LIB = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+@LNB_TESTS_ENABLED_TRUE@lnbtest_banning_SOURCES = lnbtest_banning.c $(LNBTEST_COMMON_SRC)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_banning_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_banning_LDADD = $(LNBTEST_COMMON_LIB)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_exec_SOURCES = lnbtest_exec.c $(LNBTEST_COMMON_SRC)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_exec_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_exec_LDADD = $(LNBTEST_COMMON_LIB)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_net_SOURCES = lnbtest_net.c $(LNBTEST_COMMON_SRC)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_net_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_net_LDADD = $(LNBTEST_COMMON_LIB)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_opens_SOURCES = lnbtest_opens.c $(LNBTEST_COMMON_SRC)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_opens_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_opens_LDADD = $(LNBTEST_COMMON_LIB)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_pcap_SOURCES = lnbtest_pcap.c $(LNBTEST_COMMON_SRC)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_pcap_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_pcap_LDADD = $(LNBTEST_COMMON_LIB)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_other_SOURCES = lnbtest_other.c $(LNBTEST_COMMON_SRC)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_other_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_other_LDADD = $(LNBTEST_COMMON_LIB)
 all: all-am
 
 .SUFFIXES:
@@ -1358,8 +1372,8 @@ uninstall-am:
 .PRECIOUS: Makefile
 
 
-@LNB_TESTS_ENABLED_TRUE@zcompile: $(TESTS)
-@LNB_TESTS_ENABLED_TRUE@.PHONY: zcompile
+@LNB_TESTS_ENABLED_TRUE@x-compile: $(TESTS)
+@LNB_TESTS_ENABLED_TRUE@.PHONY: x-compile
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
