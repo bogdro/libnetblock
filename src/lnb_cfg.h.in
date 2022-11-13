@@ -35,6 +35,7 @@
 #  define HAVE_DLSYM			1
 #  define HAVE_DLVSYM			1
 #  define HAVE_ERRNO_H			1
+#  define HAVE_EXECVEAT			1
 #  define HAVE_FCNTL_H			1
 #  define HAVE_FOPEN64			1
 #  define HAVE_FREOPEN64		1
