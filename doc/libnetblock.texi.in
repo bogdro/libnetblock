@@ -70,7 +70,7 @@ LibNetBlock is a set of replacements for those function that could be
 used to access the network. These functions include: @samp{socket},
 @samp{sendmsg} + @samp{recvmsg}, @samp{execve} (thus the whole @samp{exec*}
 family) with the @samp{system} function (can be used to launch bad programs),
-@samp{bind}, a bunch of file opening functions (@samp{fopen}, @samp{fopen64},
+the @samp{bind} family, a bunch of file opening functions (@samp{fopen}, @samp{fopen64},
 @samp{open}, @samp{open64}, @samp{freopen}, @samp{freopen64}, @samp{openat},
 @samp{openat64}) which can be used to access files under @file{/dev/net} and
 @file{/proc}, some of the function from the @file{libpcap} library, to
@@ -113,6 +113,8 @@ any system headers. Compile-time errors may occur otherwise. Remember to link yo
 program with LibNetBlock - adding @option{-lnetblock} (optionally preceded with
 @option{-L $@{libdir@}}) to GCC is enough. See the
 chapter on developing to learn how to use LibNetBlock (@ref{Developing}).
+
+LibNetBlock's homepage is @url{https://libnetblock.sourceforge.io}.
 
 @c ==================================================================
 
