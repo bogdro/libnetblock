@@ -312,10 +312,10 @@ static char * __lnb_get_target_link_path (
 			{
 				break;
 			}
+			LNB_MEMSET (__lnb_newlinkpath, 0, dirname_len + 1 + (size_t)lsize + 1);
 # else /* ! HAVE_MALLOC */
-			lsize = sizeof (__lnb_newlinkpath);
+			LNB_MEMSET (__lnb_newlinkpath, 0, sizeof (__lnb_newlinkpath));
 # endif /* HAVE_MALLOC */
-			LNB_MEMSET (__lnb_newlinkpath, 0, (size_t)lsize);
 			lnk_res = readlink (current_name, __lnb_newlinkpath, (size_t)lsize);
 			if ( (lnk_res < 0) || (lnk_res > lsize) )
 			{
@@ -381,7 +381,7 @@ static char * __lnb_get_target_link_path (
 	else
 	{
 		/* NOTE: memory not allocated - return NULL to avoid returning
-		 * a local variable from __lhip_get_target_link_path_fd()
+		 * a local variable from __lnb_get_target_link_path_fd()
 	 	 */
 		return NULL /*name*/;
 	}
