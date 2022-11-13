@@ -7,6 +7,12 @@
 /* Define to 1 if you have the <arpa/inet.h> header file. */
 #undef HAVE_ARPA_INET_H
 
+/* Define to 1 if you have the `bindresvport' function. */
+#undef HAVE_BINDRESVPORT
+
+/* Define to 1 if you have the `bindresvport6' function. */
+#undef HAVE_BINDRESVPORT6
+
 /* Define to 1 if you have the `canonicalize_file_name' function. */
 #undef HAVE_CANONICALIZE_FILE_NAME
 

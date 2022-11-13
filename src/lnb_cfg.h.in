@@ -27,6 +27,8 @@
 #  include <config.h>
 # else
 #  define HAVE_ARPA_INET_H		1
+#  define HAVE_BINDRESVPORT		1
+#  define HAVE_BINDRESVPORT6		1
 #  define HAVE_CANONICALIZE_FILE_NAME	1
 #  define HAVE_DECL_RTLD_NEXT		1
 #  define HAVE_DLFCN_H			1
