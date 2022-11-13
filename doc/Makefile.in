@@ -176,7 +176,6 @@ TEXINFOS = libnetblock.texi
 TEXI2DVI = texi2dvi
 TEXI2PDF = $(TEXI2DVI) --pdf --batch
 MAKEINFOHTML = $(MAKEINFO) --html
-AM_MAKEINFOHTMLFLAGS = $(AM_MAKEINFOFLAGS)
 DVIPS = dvips
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
@@ -346,6 +345,7 @@ info_TEXINFOS = libnetblock.texi
 libnetblock_TEXINFOS = libnetblock.texi
 man_MANS = libnetblock.3
 EXTRA_DIST = $(man_MANS) libnetblock.texi.in libnetblock.info
+AM_MAKEINFOHTMLFLAGS = --css-ref=../sf_bogdro.css
 all: all-am
 
 .SUFFIXES:

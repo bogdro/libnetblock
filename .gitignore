@@ -19,6 +19,7 @@ TODO*
 *.so.*
 
 *.info
+*.html
 *~
 libnetblock.pc
 libnetblock.spec

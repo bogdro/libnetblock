@@ -30,8 +30,6 @@ You should have received a copy of the GNU Lesser General Public License
 
 Requirements for compiling:
 
-- a non-root account. Please, NEVER compile or 'make' anything as root.
-
 - a working C compiler (C++ compilers won't work due to variable casts)
 
 - development package for the C library (like glibc-devel and glibc-headers)
@@ -111,7 +109,7 @@ Thus, a typical build sequence with less detection would be
 
         ./configure
         cd src
-        ./randomize_names_gawk.sh (or 'make randomnames')
+        ./randomize_names_gawk.sh (or 'make x-randomnames')
         cd ..
         make
 
@@ -123,6 +121,14 @@ Type 'info libnetblock' (after installation) or 'info doc/libnetblock.info'
 
 =======================================================
 
+Building an RPM package:
+
+1) copy the libnetblock.spec file to $HOME/rpmbuild/SPECS
+2) copy the source package libnetblock-XX.tar.gz to $HOME/rpmbuild/SOURCES
+3) type
+	rpmbuild -ba $HOME/rpmbuild/SPECS/libnetblock.spec
+4) get the RPMs from $HOME/rpmbuild/RPMS/ and $HOME/rpmbuild/SRPMS
+
 Building an RPM package (the old way):
 
 1) copy the libnetblock.spec file to /usr/src/redhat/SPECS
@@ -130,11 +136,3 @@ Building an RPM package (the old way):
 3) type
 	rpmbuild -ba /usr/src/redhat/SPECS/libnetblock.spec
 4) get the RPMs from /usr/src/redhat/RPMS/ and /usr/src/redhat/SRPMS
-
-Building an RPM package (the new way):
-
-1) copy the libnetblock.spec file to $HOME/rpmbuild/SPECS
-2) copy the source package libnetblock-XX.tar.gz to $HOME/rpmbuild/SOURCES
-3) type
-	rpmbuild -ba $HOME/rpmbuild/SPECS/libnetblock.spec
-4) get the RPMs from $HOME/rpmbuild/RPMS/ and $HOME/rpmbuild/SRPMS
