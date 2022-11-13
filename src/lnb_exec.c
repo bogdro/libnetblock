@@ -615,7 +615,7 @@ static int __lnb_is_forbidden_program (
 				/* space found - copy everything before it as the program name */
 				strncpy (__lnb_linkpath, name,
 					LNB_MIN ((size_t)(first_char - name), j));
-				__lnb_linkpath[first_char - name] = '\0';
+				__lnb_linkpath[LNB_MIN ((size_t)(first_char - name), j)] = '\0';
 			}
 			__lnb_linkpath[j] = '\0';
 			if ( strncmp (__lnb_linkpath, LNB_PATH_SEP, strlen(LNB_PATH_SEP)) != 0 )
