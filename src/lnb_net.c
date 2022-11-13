@@ -272,3 +272,105 @@ bind (
 #ifdef TEST_COMPILE
 # undef LNB_ANSIC
 #endif
+
+/* =============================================================== */
+
+#ifdef TEST_COMPILE
+# undef LNB_ANSIC
+#endif
+
+int
+bindresvport (
+#ifdef LNB_ANSIC
+	int sockfd, struct sockaddr_in *my_addr)
+#else
+	sockfd, my_addr)
+	int sockfd;
+	struct sockaddr_in *my_addr;
+#endif
+{
+	LNB_MAKE_ERRNO_VAR(err);
+
+	__lnb_main ();
+#ifdef LNB_DEBUG
+	fprintf (stderr, "libnetblock: bindresvport()\n");
+	fflush (stderr);
+#endif
+
+	if ( __lnb_real_bindresvport_location () == NULL )
+	{
+		LNB_SET_ERRNO_MISSING();
+		return -1;
+	}
+
+	if ( my_addr == NULL )
+	{
+		LNB_SET_ERRNO (err);
+		return (*__lnb_real_bindresvport_location ()) (sockfd, my_addr);
+	}
+
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage() != LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	{
+		LNB_SET_ERRNO (err);
+		return (*__lnb_real_bindresvport_location ()) (sockfd, my_addr);
+	}
+
+	if ( __lnb_is_allowed_socket (my_addr->sin_family) == 1 )
+	{
+		LNB_SET_ERRNO(err);
+		return (*__lnb_real_bindresvport_location ()) (sockfd, my_addr);
+	}
+
+	LNB_SET_ERRNO_PERM();
+	return -1;
+}
+
+/* =============================================================== */
+
+int
+bindresvport6 (
+#ifdef LNB_ANSIC
+	int sockfd, struct sockaddr_in6 *my_addr)
+#else
+	sockfd, my_addr)
+	int sockfd;
+	struct sockaddr_in6 *my_addr;
+#endif
+{
+	LNB_MAKE_ERRNO_VAR(err);
+
+	__lnb_main ();
+#ifdef LNB_DEBUG
+	fprintf (stderr, "libnetblock: bindresvport6()\n");
+	fflush (stderr);
+#endif
+
+	if ( __lnb_real_bindresvport6_location () == NULL )
+	{
+		LNB_SET_ERRNO_MISSING();
+		return -1;
+	}
+
+	if ( my_addr == NULL )
+	{
+		LNB_SET_ERRNO (err);
+		return (*__lnb_real_bindresvport6_location ()) (sockfd, my_addr);
+	}
+
+	if ( (__lnb_check_prog_ban () != 0)
+		|| (__lnb_get_init_stage() != LNB_INIT_STAGE_FULLY_INITIALIZED) )
+	{
+		LNB_SET_ERRNO (err);
+		return (*__lnb_real_bindresvport6_location ()) (sockfd, my_addr);
+	}
+
+	if ( __lnb_is_allowed_socket (my_addr->sin6_family) == 1 )
+	{
+		LNB_SET_ERRNO(err);
+		return (*__lnb_real_bindresvport6_location ()) (sockfd, my_addr);
+	}
+
+	LNB_SET_ERRNO_PERM();
+	return -1;
+}

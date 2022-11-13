@@ -120,6 +120,8 @@ typedef ssize_t (*ss_i_csmp_i)			LNB_PARAMS ((int s, const struct msghdr *msg, i
 typedef int (*i_cssp_sl)			LNB_PARAMS ((int sockfd, const struct sockaddr *my_addr,
 							socklen_t addrlen));
 typedef int (*i_i_ia2)				LNB_PARAMS ((int d, int type, int protocol, int sv[2]));
+typedef int (*i_i_ssa)				LNB_PARAMS ((int s, struct sockaddr_in *sin));
+typedef int (*i_i_ssa6)				LNB_PARAMS ((int s, struct sockaddr_in6 *sin));
 
 /* file-related functions: */
 typedef FILE*	(*fp_cp_cp)			LNB_PARAMS ((const char * const name, const char * const mode));
@@ -149,6 +151,8 @@ extern GCC_WARN_UNUSED_RESULT i_i_i_i		__lnb_real_socket_location LNB_PARAMS ((v
 extern GCC_WARN_UNUSED_RESULT ss_i_smp_i	__lnb_real_recvmsg_location LNB_PARAMS ((void));
 extern GCC_WARN_UNUSED_RESULT ss_i_csmp_i	__lnb_real_sendmsg_location LNB_PARAMS ((void));
 extern GCC_WARN_UNUSED_RESULT i_cssp_sl		__lnb_real_bind_location LNB_PARAMS ((void));
+extern GCC_WARN_UNUSED_RESULT i_i_ssa		__lnb_real_bindresvport_location LNB_PARAMS ((void));
+extern GCC_WARN_UNUSED_RESULT i_i_ssa6		__lnb_real_bindresvport6_location LNB_PARAMS ((void));
 
 /* file-related functions: */
 extern GCC_WARN_UNUSED_RESULT fp_cp_cp		__lnb_real_fopen64_location LNB_PARAMS ((void));

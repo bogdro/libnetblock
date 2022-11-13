@@ -56,6 +56,8 @@ static i_i_i_i				__lnb_real_socket		= NULL;
 static ss_i_smp_i			__lnb_real_recvmsg		= NULL;
 static ss_i_csmp_i			__lnb_real_sendmsg		= NULL;
 static i_cssp_sl			__lnb_real_bind			= NULL;
+static i_i_ssa				__lnb_real_bindresvport		= NULL;
+static i_i_ssa6				__lnb_real_bindresvport6	= NULL;
 
 /* file-related functions: */
 static fp_cp_cp				__lnb_real_fopen64		= NULL;
@@ -184,6 +186,8 @@ __lnb_main (LNB_VOID)
 		*(void **) (&__lnb_real_recvmsg)          = dlsym (RTLD_NEXT, "recvmsg");
 		*(void **) (&__lnb_real_sendmsg)          = dlsym (RTLD_NEXT, "sendmsg");
 		*(void **) (&__lnb_real_bind)             = dlsym (RTLD_NEXT, "bind");
+		*(void **) (&__lnb_real_bindresvport)     = dlsym (RTLD_NEXT, "bindresvport");
+		*(void **) (&__lnb_real_bindresvport6)    = dlsym (RTLD_NEXT, "bindresvport6");
 		/* file-related functions: */
 #ifdef LNB_CANT_USE_VERSIONED_FOPEN
 		*(void **) (&__lnb_real_fopen64)          = dlsym  (RTLD_NEXT, "fopen64");
@@ -339,6 +343,20 @@ i_i_cp_i_ __lnb_real_openat_location (LNB_VOID)
 i_cssp_sl __lnb_real_bind_location (LNB_VOID)
 {
 	return __lnb_real_bind;
+}
+
+/* =============================================================== */
+
+i_i_ssa __lnb_real_bindresvport_location (LNB_VOID)
+{
+	return __lnb_real_bindresvport;
+}
+
+/* =============================================================== */
+
+i_i_ssa6 __lnb_real_bindresvport6_location (LNB_VOID)
+{
+	return __lnb_real_bindresvport6;
 }
 
 /* =============================================================== */
