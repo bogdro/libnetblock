@@ -270,5 +270,5 @@ bind (
 }
 
 #ifdef TEST_COMPILE
-# undef LHIP_ANSIC
+# undef LNB_ANSIC
 #endif
