@@ -23,8 +23,8 @@
 # Change this to whatever you wish (but it has to start with a letter or a '_')
 NEWNAMEPREFIX=__printf
 
-for i in `perl -ne 'if (/(__lnb[a-zA-Z0-9_]+)/o) {my $m=$1; if (! /^((\/\*)|#)/o) {print "$m\n";}}' \
-	 *.c *.h *.h.in | sort -u`; do
+for i in $(perl -ne 'if (/(__lnb[a-zA-Z0-9_]+)/o) {my $m=$1; if (! /^((\/\*)|#)/o) {print "$m\n";}}' \
+	 ./*.c ./*.h ./*.h.in | sort -u); do
 
-	sed -i "s/\b$i\b/$NEWNAMEPREFIX$RANDOM$RANDOM$RANDOM/g" *;
+	sed -i "s/\b$i\b/$NEWNAMEPREFIX$RANDOM$RANDOM$RANDOM/g" ./*;
 done
