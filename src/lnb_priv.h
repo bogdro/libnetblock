@@ -89,6 +89,10 @@ typedef int socklen_t;
 #  include <stdint.h>	/* intptr_t */
 # endif
 
+#ifdef HAVE_NETINET_IN_H
+# include <netinet/in.h>
+#endif
+
 # ifdef HAVE_PCAP_H
 #  include <pcap.h>
 # else
