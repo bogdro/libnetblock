@@ -130,7 +130,7 @@ AC_PROG_EGREP
 
 AC_CHECK_HEADERS([stdlib.h string.h unistd.h errno.h malloc.h \
 	sys/types.h sys/socket.h netinet/in.h fcntl.h stdint.h \
-	inttypes.h linux/fcntl.h])
+	inttypes.h linux/fcntl.h rpc/rpc.h rpc.h])
 
 has_sys_stat_h=yes
 AC_CHECK_HEADER([sys/stat.h],AC_DEFINE([HAVE_SYS_STAT_H],[1],

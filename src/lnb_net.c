@@ -48,7 +48,31 @@
 # include <sys/socket.h>
 #endif
 
+/* rpc.h: bindresvport() on FreeBSD */
+#ifdef HAVE_RPC_H
+# include <rpc.h>
+#endif
+
+#ifdef HAVE_RPC_RPC_H
+# include <rpc/rpc.h>
+#endif
+
 #include "lnb_priv.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifndef HAVE_BINDRESVPORT
+extern int bindresvport LNB_PARAMS ((int sockfd, struct sockaddr_in *sin));
+#endif
+#ifndef HAVE_BINDRESVPORT6
+extern int bindresvport6 LNB_PARAMS ((int sockfd, struct sockaddr_in6 *sin));
+#endif
+
+#ifdef __cplusplus
+}
+#endif
 
 static int __lnb_allowed_socket_types[] =
 {
