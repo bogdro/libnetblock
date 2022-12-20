@@ -20,5 +20,6 @@ script: touch configure aclocal.m4 Makefile.in src/Makefile.in doc/Makefile.in c
         sleep 1 &&
         touch doc/libnetblock.info &&
         sleep 1 &&
+        cat src/lnb_cfg.h.in &&
         make
 
