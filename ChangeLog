@@ -1,4 +1,80 @@
-2021-01-10	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2022-12-13	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
+
+	* LibNetBlock version 1.7
+	  Significant portability updates. LibNetBlock now compiles on FreeBSD
+	  and macOS. Intercepting new functions and improvements in the old.
+	  Improvements in banning. Code quality improvements, including fixes
+	  recommended by Codacy. Improvements in the build system. Significant
+	  improvements in the documentation. New unit tests. Other changes.
+	* configure.ac: Updated using Autoconf 2.71. Added checking for the
+	  canonicalize_file_name(), realpath(), bindresvport() and
+	  bindresvport6() functions. Added enabling all Automake warnings.
+	  Added calling AM_PROG_AR as recommended by Automake warnings. Use
+	  dedicated macros to check for the mode_t, size_t and ssize_t types.
+	  Changed the program's configured name, add URL in AC_INIT(). Added
+	  checking for the "-fanalyzer" and "-fstack-check" compiler options.
+	  Added checking for the rpc.h header which declares bindresvport()
+	  on FreeBSD.
+	* src/banning-generic.c (__banning_is_banned): Simplified some code,
+	  fixing warnings found by 'cppcheck'.
+	* src/lnb_exec.c (__lnb_get_target_link_path): Use realpath() or
+	  canonicalize_file_name() if available. Port fixes from LibHideIP:
+	  free memory when needed, avoid infinite loops, fixed buffer length
+	  and zeroing.
+	* src/lnb_exec.c (__lnb_is_forbidden_program): Port changes from
+	  LibHideIP: calculate lengths just once, don't set unused values, use
+	  LNB_MEMSET() instead of a loop, fixed zero-terminating the buffer.
+	* src/lnb_priv.h: Stopped redefining ssize_t - the new, dedicated
+	  macros do it for us.
+	* src/lnb_cfg.h.in: Added constants for the canonicalize_file_name()
+	  and realpath() functions and the rpc.h headers. Updated the package
+	  names. Added a flag for HAVE_EXECVEAT, now present in glibc.
+	* src/lnb_cfg.h.in, src/*.{c,h,in}: Moved the compatibility flags to 
+	  lnb_cfg.h.in and added compatibility flags to allow compiling on
+	  FreeBSD and macOS.
+	* src/lnb_exec.c (execve, fexecve, execveat): Check also if argv[0]
+	  is not a banned program name (for e.g. symlinks uname->coreutils).
+	* src/lnb_exec.c (execveat): Check also if the path is empty and
+	  AT_EMPTY_PATH is given - in that case it's the directory descriptor
+	  that will be executed, so check that for banning.
+	* src/lnb_opens.c: Intercept fopen64, freopen64, open64 and openat64
+	  only when present.
+	* src/lnb_net.c: Fixed test compilation without ANSI C.
+	* src/lnb_net.c (bindresvport, bindresvport6): New intercepted
+	  functions.
+	* src/lnb_main.c (__lnb_main, __lnb_real_bindresvport_location,
+	  __lnb_real_bindresvport6_location), src/lnb_cfg.h.in,
+	  src/lnb_priv.h: Added support for the newly-intercepted functions.
+	* src/*.{c,h,in}, test/*.{c,h}, */Makefile.am, doc/libnetblock.texi.in:
+	  Updated license blocks.
+	* m4/ax_gcc_warn_unused_result.m4: Updated for Autoconf 2.71.
+	* Makefile.am: Renamed 'pack' to 'x-pack'.
+	* src/Makefile.am: Renamed 'randomnames' to 'x-randomnames' and made
+	  it PHONY.
+	* src/randomize_names_*.sh: Apply fixes recommended by Codacy.
+	* test/lnbtest_exec.c: Added tests for executing links to forbidden
+	  programs, including the new test for execveat with an empty path.
+	  Added a #define for the directory containing the forbidden 'ifconfig'
+	  program. Checking if errno contains the expected value.
+	* test/lnbtest_net.c: Added tests for the intercepted bindresvport()
+	  and bindresvport6() functions.
+	* test/Makefile.am: Moved common elements to variables. Renamed
+	  'zcompile' to 'x-compile'. Added a flag to use config.h.
+	* libnetblock.spec.in: Removed commented-out deprecated lines and a
+	  comment causing problems in package uninstallation. Cleaning the rpm
+	  build root directory after building.
+	* README, INSTALL: Moved building RPMs the new way above the old way.
+	  Other small updates.
+	* doc/libnetblock.texi.in: Many improvements in the documentation: made
+	  URLs into proper links, use the TeXinfo @file, @samp, @command,
+	  @code and @verbatim properly, added a link to the home page on the
+	  "What is LibNetBlock" page, added "Reporting issues". Leave just the
+	  SourceForge website address. Other small changes.
+	* doc/libnetblock.3: Leave just the SourceForge website address.
+	* doc/Makefile.am: Added flags for generating the HTML documentation.
+	* doc/sf_bogdro.css: Added a CSS file for the HTML documentation.
+
+2021-01-10	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* LibNetBlock version 1.4
 	  Portability improvements. LibNetBlock should work better with some
@@ -40,11 +116,10 @@
 	  object in the /proc filesystem.
 	* test/Makefile.am: added the new lnbtest_other test, added a target
 	  to just compile the tests
-
 	* test/lnbtest_net.c: free()ing some of the test results to avoid
 	  memory leaking warnings from sanitizers
 
-2019-02-08	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2019-02-08	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* LibNetBlock version 1.3
 	  Added intercepting new functions. Fixed initialization code - fixed
@@ -108,7 +183,7 @@
 	  where /bin/cat is a symlink to 'coreutils')
 	* test/lnbtest_banning.c: a new unit test for testing banning
 
-2017-04-23	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2017-04-23	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* LibNetBlock version 1.0
 	  Fixes and improvements to code related with banning the library from
@@ -160,7 +235,7 @@
 	* test/lnbtest.c (test_freopen_banned, test_freopen_link_banned):
 	  fixed descriptor leak (only in the test itself).
 
-2015-09-06	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2015-09-06	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* LibNetBlock version 0.6
 	  Library marked as not requiring executable stack (security reasons).
@@ -194,7 +269,7 @@
 	* src/lnb_opens.c (freopen, freopen64): disallowing also to reopen
 	  the standard streams (stdin, stdout, stderr) to the banned files
 
-2013-06-02	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2013-06-02	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* LibNetBlock version 0.5
 	  Portability improvements (fixes for compilation without some header
@@ -214,7 +289,7 @@
 	* src/lnb_opens.c: removed including the unnecessary malloc.h file
 	* src/lnb_exec.c: added a missing "unused" attribute
 
-2012-09-30	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2012-09-30	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* LibNetBlock version 0.4
 	  Banning mechanism fixed and updated with new possibilities.
@@ -237,7 +312,7 @@
 	* README, INSTALL, doc/libnetblock.texi.in, doc/libnetblock.3: updated
 	  with new banning information. Minor corrections.
 
-2012-02-11	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2012-02-11	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* libnetblock version 0.3
 	  Made the header file SWIG-enabled, updated copyright, code cleanup,
@@ -255,7 +330,7 @@
 	* README, INSTALL: added information about SWIG, fixed typos
 	* doc/Makefile.am: fix typo
 
-2011-10-07	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2011-10-07	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* libnetblock version 0.2
 	  Added a file for pkg-config with library information. Verified that
@@ -273,7 +348,7 @@
 	* src/lnb_main.c: removed unused declaration of __lnb_end().
 	* Makefile.am: added the file for pkg-config.
 
-2011-06-16	Bogdan Drozdowski <bogdro@users.sourceforge.net>
+2011-06-16	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* libnetblock version 0.1
 	  Initial version. Intercepting: socket, sendmsg+recvmsg,
