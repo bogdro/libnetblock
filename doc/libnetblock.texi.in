@@ -1,7 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
 @setfilename libnetblock.info
-@settitle LibNetBlock manual @VERSION@
+@settitle LibNetBlock @VERSION@ manual
 @c %**end of header
 
 @dircategory Libraries
