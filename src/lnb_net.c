@@ -59,21 +59,6 @@
 
 #include "lnb_priv.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifndef HAVE_BINDRESVPORT
-extern int bindresvport LNB_PARAMS ((int sockfd, struct sockaddr_in *sin));
-#endif
-#ifndef HAVE_BINDRESVPORT6
-extern int bindresvport6 LNB_PARAMS ((int sockfd, struct sockaddr_in6 *sin));
-#endif
-
-#ifdef __cplusplus
-}
-#endif
-
 static int __lnb_allowed_socket_types[] =
 {
 	AF_UNIX, AF_LOCAL
@@ -299,27 +284,30 @@ bind (
 
 /* =============================================================== */
 
-#ifdef TEST_COMPILE
-# undef LNB_ANSIC
-#endif
+#if (defined HAVE_BINDRESVPORT) \
+	&& (!defined __sun) /* skip on SunOS - different arguments, subject to changes */
+
+# ifdef TEST_COMPILE
+#  undef LNB_ANSIC
+# endif
 
 int
 bindresvport (
-#ifdef LNB_ANSIC
+# ifdef LNB_ANSIC
 	int sockfd, struct sockaddr_in *my_addr)
-#else
+# else
 	sockfd, my_addr)
 	int sockfd;
 	struct sockaddr_in *my_addr;
-#endif
+# endif
 {
 	LNB_MAKE_ERRNO_VAR(err);
 
 	__lnb_main ();
-#ifdef LNB_DEBUG
+# ifdef LNB_DEBUG
 	fprintf (stderr, "libnetblock: bindresvport()\n");
 	fflush (stderr);
-#endif
+# endif
 
 	if ( __lnb_real_bindresvport_location () == NULL )
 	{
@@ -349,26 +337,30 @@ bindresvport (
 	LNB_SET_ERRNO_PERM();
 	return -1;
 }
+#endif /* (defined HAVE_BINDRESVPORT) && (!defined __sun) */
 
 /* =============================================================== */
 
+#if (defined HAVE_BINDRESVPORT6) \
+	&& (!defined __sun) /* skip on SunOS, just like bindresvport() */
+
 int
 bindresvport6 (
-#ifdef LNB_ANSIC
+# ifdef LNB_ANSIC
 	int sockfd, struct sockaddr_in6 *my_addr)
-#else
+# else
 	sockfd, my_addr)
 	int sockfd;
 	struct sockaddr_in6 *my_addr;
-#endif
+# endif
 {
 	LNB_MAKE_ERRNO_VAR(err);
 
 	__lnb_main ();
-#ifdef LNB_DEBUG
+# ifdef LNB_DEBUG
 	fprintf (stderr, "libnetblock: bindresvport6()\n");
 	fflush (stderr);
-#endif
+# endif
 
 	if ( __lnb_real_bindresvport6_location () == NULL )
 	{
@@ -398,3 +390,4 @@ bindresvport6 (
 	LNB_SET_ERRNO_PERM();
 	return -1;
 }
+#endif /* (defined HAVE_BINDRESVPORT6) && (!defined __sun) */
