@@ -66,7 +66,6 @@
 #define BANNING_MAKE_ERRNO_VAR(x) LNB_MAKE_ERRNO_VAR(x)
 #define BANNING_MAXPATHLEN LNB_MAXPATHLEN
 #define BANNING_PATH_SEP LNB_PATH_SEP
-#define BANNING_MKNAME(x) __lnb ## x
 #define BANNING_PARAMS(x) LNB_PARAMS(x)
 
 #ifndef HAVE_READLINK
@@ -111,7 +110,7 @@ __lnb_check_prog_ban (LNB_VOID)
 
 	ret = __banning_is_banned ("libnetblock.progban",
 		LNB_BANNING_USERFILE, LNB_BANNING_ENV,
-		__banning_exename);
+		__banning_exename, __lnb_real_fopen_location());
 #ifdef LNB_DEBUG
 	fprintf (stderr, "libnetblock: __lnb_check_prog_ban()=%d\n", ret);
 	fflush (stderr);
