@@ -40,6 +40,7 @@
 #  define HAVE_FOPEN64			1
 #  define HAVE_FREOPEN64		1
 #  define HAVE_GETENV			1
+#  define HAVE_GETPID			1
 #  define HAVE_INTTYPES_H		1
 #  define HAVE_LIBDL			1
 #  define HAVE_LIBDL_DLSYM		1

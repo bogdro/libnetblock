@@ -49,6 +49,9 @@
 /* Define to 1 if you have the `getenv' function. */
 #undef HAVE_GETENV
 
+/* Define to 1 if you have the `getpid' function. */
+#undef HAVE_GETPID
+
 /* Define to 1 if you have the <inttypes.h> header file. */
 #undef HAVE_INTTYPES_H
 
