@@ -2,7 +2,7 @@
  * LibNetBlock - A library which blocks programs from accessing the network.
  *	-- network functions' replacements.
  *
- * Copyright (C) 2011-2022 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
+ * Copyright (C) 2011-2024 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * Parts of this file are Copyright (C) Free Software Foundation, Inc.
  * License: GNU General Public License, v3+
  *

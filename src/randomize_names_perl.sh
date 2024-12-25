@@ -3,7 +3,7 @@
 # LibNetBlock - A library which blocks programs from accessing the network.
 #	-- a name randomizing script that uses Perl.
 #
-# Copyright (C) 2011-2022 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
+# Copyright (C) 2011-2024 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
 # License: GNU General Public License, v3+
 #
 # This program is free software; you can redistribute it and/or

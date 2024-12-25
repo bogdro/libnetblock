@@ -2,7 +2,7 @@
  * LibNetBlock - A library which blocks programs from accessing the network.
  *	-- unit test for packet capture functions.
  *
- * Copyright (C) 2015-2022 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
+ * Copyright (C) 2015-2024 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
  * This program is free software; you can redistribute it and/or
