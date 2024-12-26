@@ -118,10 +118,10 @@
 /* Define to 1 if you have the `realpath' function. */
 #undef HAVE_REALPATH
 
-/* Define to 1 if you have the <rpc.h> header file. */
+/* Whether you have the rpc.h header. */
 #undef HAVE_RPC_H
 
-/* Define to 1 if you have the <rpc/rpc.h> header file. */
+/* Whether you have the rpc/rpc.h header. */
 #undef HAVE_RPC_RPC_H
 
 /* Define to 1 if you have the `snprintf' function. */

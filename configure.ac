@@ -150,7 +150,14 @@ AC_PROG_EGREP
 
 AC_CHECK_HEADERS([stdlib.h string.h unistd.h errno.h malloc.h \
 	sys/types.h sys/socket.h netinet/in.h fcntl.h stdint.h \
-	inttypes.h linux/fcntl.h rpc/rpc.h rpc.h])
+	inttypes.h linux/fcntl.h])
+
+AC_CHECK_HEADER(rpc/rpc.h,AC_DEFINE([HAVE_RPC_RPC_H],[1],
+	[Whether you have the rpc/rpc.h header.]),
+	[
+	AC_CHECK_HEADER([rpc.h],AC_DEFINE([HAVE_RPC_H],[1],
+		[Whether you have the rpc.h header.]))
+	])
 
 has_sys_stat_h=yes
 AC_CHECK_HEADER([sys/stat.h],AC_DEFINE([HAVE_SYS_STAT_H],[1],
