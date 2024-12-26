@@ -2,6 +2,8 @@
  * LibNetBlock - A library which blocks programs from accessing the network.
  *	-- public header file.
  *
+ * @configure_input@
+ *
  * Copyright (C) 2011-2024 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
  * License: GNU General Public License, v3+
  *
