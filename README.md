@@ -3,7 +3,8 @@
 LibNetBlock - a library which blocks programs from accessing the network.
 
 The function replacements in LibNetBlock return an error instead of calling
-the original functions, thus access to the OS function is effectively blocked.
+the original operating system functions which allow various kinds of network
+access. Thus, access to the OS function is effectively blocked.
 
 Read the info documentation (type `info doc/libnetblock.info`) to get more
 information.
