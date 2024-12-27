@@ -314,10 +314,11 @@ static char * __lnb_get_target_link_path (
 				break;
 			}
 			LNB_MEMSET (__lnb_newlinkpath, 0, dirname_len + 1 + (size_t)lsize + 1);
+			lnk_res = readlink (current_name, __lnb_newlinkpath, (size_t)lsize);
 # else /* ! HAVE_MALLOC */
 			LNB_MEMSET (__lnb_newlinkpath, 0, sizeof (__lnb_newlinkpath));
+			lnk_res = readlink (current_name, __lnb_newlinkpath, sizeof (__lnb_newlinkpath) - 1);
 # endif /* HAVE_MALLOC */
-			lnk_res = readlink (current_name, __lnb_newlinkpath, (size_t)lsize);
 			if ( (lnk_res < 0) || (lnk_res > lsize) )
 			{
 # ifdef HAVE_MALLOC
