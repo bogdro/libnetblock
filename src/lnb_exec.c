@@ -475,12 +475,17 @@ int __lnb_is_forbidden_file (
 	strncpy (__lnb_linkpath, __lnb_get_target_link_path (__lnb_linkpath), sizeof (__lnb_linkpath)-1);
 	__lnb_linkpath[sizeof (__lnb_linkpath) - 1] = '\0';
 #endif
-	for ( j = 0; j < sizeof (__lnb_valuable_files)/sizeof (__lnb_valuable_files[0]); j++)
+#ifdef HAVE_MALLOC
+	if ( __lnb_linkpath != NULL )
+#endif
 	{
-		if ( strstr (__lnb_linkpath, __lnb_valuable_files[j]) != NULL )
+		for ( j = 0; j < sizeof (__lnb_valuable_files)/sizeof (__lnb_valuable_files[0]); j++)
 		{
-			ret = 1;
-			break;
+			if ( strstr (__lnb_linkpath, __lnb_valuable_files[j]) != NULL )
+			{
+				ret = 1;
+				break;
+			}
 		}
 	}
 #ifdef HAVE_MALLOC
@@ -734,13 +739,22 @@ static int __lnb_is_forbidden_program (
 				ret = 1;
 				break;
 			}
-			if ( strstr (__lnb_linkpath, programs[j]) != NULL )
+#ifdef HAVE_MALLOC
+			if ( __lnb_linkpath != NULL )
+#endif
 			{
-				ret = 1;
-				break;
+				if ( strstr (__lnb_linkpath, programs[j]) != NULL )
+				{
+					ret = 1;
+					break;
+				}
 			}
 		}
-		if ( (argv != NULL) && (ret == 0) )
+		if ( (argv != NULL) && (ret == 0)
+#ifdef HAVE_MALLOC
+			&& (__lnb_linkpath != NULL)
+#endif
+		)
 		{
 			/*
 			now check if the viewing programs aren't used to get the contents
@@ -770,7 +784,7 @@ static int __lnb_is_forbidden_program (
 		}
 	} /* if ( __lnb_linkpath != NULL && __lnb_newlinkpath != NULL ) */
 #ifdef HAVE_MALLOC
-	if ( (__lnb_linkpath != NULL) && (__lnb_linkpath != name) )
+	if ( (__lnb_linkpath != NULL) /*&& (__lnb_linkpath != name)*/ )
 	{
 		free ((void *)__lnb_linkpath);
 	}
