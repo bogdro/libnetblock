@@ -326,7 +326,6 @@ static char * __lnb_get_target_link_path (
 # endif /* HAVE_MALLOC */
 				break;
 			}
-			__lnb_newlinkpath[lnk_res] = '\0';
 			if ( (__lnb_newlinkpath[0] != '/') && (dirname_len > 0) )
 			{
 				/* The link's target is a relative path (no slash) in a
