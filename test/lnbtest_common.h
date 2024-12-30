@@ -32,7 +32,7 @@
 # define _DEFAULT_SOURCE 1
 # define _ISOC11_SOURCE		/* aligned_alloc() */
 
-#include "libnetblock.h"
+# include "libnetblock.h"
 
 # ifdef HAVE_CONFIG_H
 #  include <config.h>

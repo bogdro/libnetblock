@@ -84,6 +84,7 @@ static void teardown_test(void)
 {
 	unlink(LNB_TEST_FILENAME);
 	unlink(LNB_TEST_BANNED_FILENAME);
+	unlink(LNB_LINK_FILENAME);
 }
 
 TCase * lnbtest_add_fixtures(TCase * tests)
