@@ -341,17 +341,15 @@ static char * __lnb_get_target_link_path (
 					break;
 				}
 # endif /* HAVE_MALLOC */
-				strncpy (__lnb_newlinkdir, current_name, dirname_len);
+				__lnb_copy_string(__lnb_newlinkdir, current_name, dirname_len);
 				__lnb_newlinkdir[dirname_len] = '/';
 				__lnb_newlinkdir[dirname_len + 1] = '\0';
 				strncat (__lnb_newlinkdir, __lnb_newlinkpath,
 					(size_t)lsize + 1);
 				__lnb_newlinkdir[dirname_len + 1
 					+ (size_t)lsize] = '\0';
-				strncpy (__lnb_newlinkpath, __lnb_newlinkdir,
-					dirname_len + 1 + (size_t)lsize + 1);
-				__lnb_newlinkpath[dirname_len + 1 +
-					(size_t)lsize] = '\0';
+				__lnb_copy_string(__lnb_newlinkpath, __lnb_newlinkdir,
+					dirname_len + 1 + (size_t)lsize);
 # ifdef HAVE_MALLOC
 				free (__lnb_newlinkdir);
 # endif /* HAVE_MALLOC */
@@ -470,10 +468,8 @@ int __lnb_is_forbidden_file (
 	}
 	__lnb_linkpath = __lnb_get_target_link_path (name_copy);
 #else
-	strncpy (__lnb_linkpath, name, sizeof (__lnb_linkpath)-1);
-	__lnb_linkpath[sizeof (__lnb_linkpath) - 1] = '\0';
-	strncpy (__lnb_linkpath, __lnb_get_target_link_path (__lnb_linkpath), sizeof (__lnb_linkpath)-1);
-	__lnb_linkpath[sizeof (__lnb_linkpath) - 1] = '\0';
+	__lnb_copy_string (__lnb_linkpath, name, sizeof (__lnb_linkpath)-1);
+	__lnb_copy_string (__lnb_linkpath, __lnb_get_target_link_path (__lnb_linkpath), sizeof (__lnb_linkpath)-1);
 #endif
 #ifdef HAVE_MALLOC
 	if ( __lnb_linkpath != NULL )
@@ -616,8 +612,7 @@ static int __lnb_is_forbidden_program (
 	{
 		LNB_MEMSET (__lnb_linkpath, 0, j + 1);
 
-		strncpy (__lnb_linkpath, name, j);
-		__lnb_linkpath[j] = '\0';
+		__lnb_copy_string (__lnb_linkpath, name, j);
 #if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
 		if ( is_system )
 		{
@@ -628,9 +623,8 @@ static int __lnb_is_forbidden_program (
 			if ( first_char != NULL )
 			{
 				/* space found - copy everything before it as the program name */
-				strncpy (__lnb_linkpath, name,
+				__lnb_copy_string (__lnb_linkpath, name,
 					LNB_MIN ((size_t)(first_char - name), j));
-				__lnb_linkpath[LNB_MIN ((size_t)(first_char - name), j)] = '\0';
 			}
 			__lnb_linkpath[j] = '\0';
 			if ( strncmp (__lnb_linkpath, LNB_PATH_SEP, strlen(LNB_PATH_SEP)) != 0 )
@@ -651,10 +645,8 @@ static int __lnb_is_forbidden_program (
 
 							do
 							{
-								strncpy (path_dir, path,
+								__lnb_copy_string (path_dir, path,
 									LNB_MIN ((size_t)(first_char - path), j));
-								path_dir[LNB_MIN ((size_t)(first_char - path), j)]
-									= '\0';
 								__lnb_append_path (path_dir, __lnb_linkpath, j);
 								path_dir[j] = '\0';
 #   ifdef HAVE_STAT64
@@ -684,8 +676,7 @@ static int __lnb_is_forbidden_program (
 							path_len + 1 + new_path_len + 1);
 						if ( path_dir != NULL )
 						{
-							strncpy (path_dir, path, path_len + 1);
-							path_dir[path_len + 1] = '\0';
+							__lnb_copy_string (path_dir, path, path_len + 1);
 							__lnb_append_path (path_dir, __lnb_linkpath, j);
 							path_dir[path_len + 1 + new_path_len] = '\0';
 						}
@@ -693,24 +684,20 @@ static int __lnb_is_forbidden_program (
 					/* path_dir, if not NULL, contains "PATH/name" */
 					if ( path_dir != NULL )
 					{
-						strncpy (__lnb_linkpath, path_dir, j);
-						__lnb_linkpath[j] = '\0';
+						__lnb_copy_string (__lnb_linkpath, path_dir, j);
 						free (path_dir);
 					}
 #  else
 					if ( first_char != NULL )
 					{
-						strncpy (__lnb_newlinkpath, path,
+						__lnb_copy_string (__lnb_newlinkpath, path,
 							LNB_MIN ((size_t)(first_char - path),
 							sizeof (__lnb_newlinkpath) - 1));
-						__lnb_newlinkpath[LNB_MIN ((size_t)(first_char - path),
-							sizeof (__lnb_newlinkpath) - 1)] = '\0';
 					}
 					else
 					{
-						strncpy (__lnb_newlinkpath, path,
+						__lnb_copy_string (__lnb_newlinkpath, path,
 							sizeof (__lnb_newlinkpath) - 1);
-						__lnb_newlinkpath[sizeof (__lnb_newlinkpath) - 1] = '\0';
 					}
 					__lnb_append_path (__lnb_newlinkpath,
 						__lnb_linkpath, sizeof (__lnb_newlinkpath));
@@ -728,9 +715,8 @@ static int __lnb_is_forbidden_program (
 		free ((void *)__lnb_linkpath);
 		__lnb_linkpath = first_char;
 # else
-		strncpy (__lnb_linkpath, __lnb_get_target_link_path (__lnb_linkpath),
+		__lnb_copy_string (__lnb_linkpath, __lnb_get_target_link_path (__lnb_linkpath),
 			sizeof (__lnb_linkpath)-1);
-		__lnb_linkpath[sizeof (__lnb_linkpath) - 1] = '\0';
 # endif
 #endif /* (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK) */
 		for ( j = 0; j < sizeof (programs)/sizeof (programs[0]); j++)

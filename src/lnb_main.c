@@ -40,6 +40,13 @@
 
 #include <stddef.h>
 
+#ifdef HAVE_STRING_H
+# if (!defined STDC_HEADERS) && (defined HAVE_MEMORY_H)
+#  include <memory.h>
+# endif
+# include <string.h>
+#endif
+
 #include "lnb_priv.h"
 
 static int	__lnb_is_initialized		= LNB_INIT_STAGE_NOT_INITIALIZED;
@@ -86,6 +93,40 @@ static pp_ccp_i_i_i_cp			__lnb_real_pcap_open_live	= NULL;
 #ifdef TEST_COMPILE
 # undef LNB_ANSIC
 #endif
+
+/* =============================================================== */
+
+void __lnb_copy_string (
+#ifdef LNB_ANSIC
+	char * const dest, const char src[], const size_t len)
+#else
+	dest, src, len)
+	char * const dest;
+	const char src[];
+	const size_t len;
+#endif
+{
+#ifndef HAVE_STRING_H
+	size_t i;
+#endif
+	if ( (src == NULL) || (dest == NULL) )
+	{
+		return;
+	}
+#ifdef HAVE_STRING_H
+	strncpy (dest, src, len);
+#else
+	for ( i = 0; i < len; i++ )
+	{
+		if ( src[i] == '\0' )
+		{
+			break;
+		}
+		dest[i] = src[i];
+	}
+#endif
+	dest[len] = '\0';
+}
 
 /* =============================================================== */
 

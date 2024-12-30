@@ -222,6 +222,9 @@ extern char * __lnb_duplicate_string LNB_PARAMS ((const char src[]));
 #  define LNB_STRDUP __lnb_duplicate_string
 # endif
 
+extern void __lnb_copy_string LNB_PARAMS ((char * const dest,
+	const char src[], const size_t len));		/* lnb_main.c */
+
 # ifdef __cplusplus
 }
 # endif
