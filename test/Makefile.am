@@ -21,8 +21,10 @@
 
 if LNB_TESTS_ENABLED
 
-TESTS = lnbtest_banning lnbtest_exec lnbtest_net lnbtest_opens lnbtest_pcap lnbtest_other
-check_PROGRAMS = lnbtest_banning lnbtest_exec lnbtest_net lnbtest_opens lnbtest_pcap lnbtest_other
+TESTS = lnbtest_banning lnbtest_exec lnbtest_net lnbtest_opens \
+	lnbtest_pcap lnbtest_other
+check_PROGRAMS = lnbtest_banning lnbtest_exec lnbtest_net lnbtest_opens \
+	lnbtest_pcap lnbtest_other
 
 #nobase_nodist_include_HEADERS = lnbtest_common.h
 #nobase_include_HEADERS = lnbtest_common.h
@@ -30,7 +32,9 @@ check_PROGRAMS = lnbtest_banning lnbtest_exec lnbtest_net lnbtest_opens lnbtest_
 EXTRA_DIST = lnbtest_common.h
 LNBTEST_COMMON_SRC = lnbtest_common.c lnbtest_common.h
 LNBTEST_COMMON_CFLAGS = @CHECK_CFLAGS@ -DHAVE_CONFIG_H -I $(top_builddir)/src
-LNBTEST_COMMON_LIB = $(top_builddir)/src/libnetblock.la @CHECK_LIBS@ @LIBS@
+LNBTEST_COMMON_LIB = $(top_builddir)/src/lnb_main.o \
+	$(top_builddir)/src/lnb_banning.o \
+	@CHECK_LIBS@ @LIBS@
 
 lnbtest_banning_SOURCES = lnbtest_banning.c $(LNBTEST_COMMON_SRC)
 lnbtest_banning_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
@@ -38,19 +42,24 @@ lnbtest_banning_LDADD = $(LNBTEST_COMMON_LIB)
 
 lnbtest_exec_SOURCES = lnbtest_exec.c $(LNBTEST_COMMON_SRC)
 lnbtest_exec_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
-lnbtest_exec_LDADD = $(LNBTEST_COMMON_LIB)
+lnbtest_exec_LDADD = $(LNBTEST_COMMON_LIB) \
+	$(top_builddir)/src/lnb_exec.o
 
 lnbtest_net_SOURCES = lnbtest_net.c $(LNBTEST_COMMON_SRC)
 lnbtest_net_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
-lnbtest_net_LDADD = $(LNBTEST_COMMON_LIB)
+lnbtest_net_LDADD = $(LNBTEST_COMMON_LIB) \
+	$(top_builddir)/src/lnb_net.o
 
 lnbtest_opens_SOURCES = lnbtest_opens.c $(LNBTEST_COMMON_SRC)
 lnbtest_opens_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
-lnbtest_opens_LDADD = $(LNBTEST_COMMON_LIB)
+lnbtest_opens_LDADD = $(LNBTEST_COMMON_LIB) \
+	$(top_builddir)/src/lnb_opens.o \
+	$(top_builddir)/src/lnb_exec.o
 
 lnbtest_pcap_SOURCES = lnbtest_pcap.c $(LNBTEST_COMMON_SRC)
 lnbtest_pcap_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
-lnbtest_pcap_LDADD = $(LNBTEST_COMMON_LIB)
+lnbtest_pcap_LDADD = $(LNBTEST_COMMON_LIB) \
+	$(top_builddir)/src/lnb_pcap.o
 
 lnbtest_other_SOURCES = lnbtest_other.c $(LNBTEST_COMMON_SRC)
 lnbtest_other_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
