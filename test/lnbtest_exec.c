@@ -37,7 +37,9 @@ extern int fexecve LNB_PARAMS ((int fd, char *const argv[], char *const envp[]))
 }
 #endif
 
-#define IFCONFIG_DIR "/usr/bin"
+#ifndef IFCONFIG_DIR
+# define IFCONFIG_DIR "/usr/bin"
+#endif
 
 /* ====================== Execution functions */
 
