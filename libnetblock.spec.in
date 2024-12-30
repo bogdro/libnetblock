@@ -36,7 +36,7 @@ that are used to access the network.
 Summary:	%{lnb_summary}
 Name:		%{lnb_name}
 Version:	%{lnb_version}
-Release:	%{lnb_release}
+Release:	%{lnb_release}%{?dist}
 URL:		%{lnb_url}
 BugURL:		%{lnb_url}
 License:	%{lnb_lic}
@@ -95,7 +95,7 @@ ldconfig
 %package devel
 
 Summary:	%{lnb_summary} - development package
-Release:	%{lnb_release}
+Release:	%{lnb_release}%{?dist}
 URL:		%{lnb_url}
 BugURL:		%{lnb_url}
 License:	%{lnb_lic}
