@@ -595,7 +595,8 @@ static int __lnb_is_forbidden_program (
 #  endif
 # endif
 #endif
-	size_t i, j;
+	size_t i;
+	size_t j;
 	unsigned int k;
 	int ret = 0;
 
