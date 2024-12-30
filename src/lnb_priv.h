@@ -25,7 +25,9 @@
 
 # include "lnb_cfg.h"
 
-# undef LNB_ATTR
+# ifdef LNB_ATTR
+#  undef LNB_ATTR
+# endif
 # ifdef __GNUC__
 #  define LNB_ATTR(x)	__attribute__(x)
 # else
@@ -43,7 +45,9 @@
 /* LNB_PARAMS is a macro used to wrap function prototypes, so that
         compilers that don't understand ANSI C prototypes still work,
         and ANSI C compilers can issue warnings about type mismatches. */
-# undef LNB_PARAMS
+# ifdef LNB_PARAMS
+#  undef LNB_PARAMS
+# endif
 # if defined (__STDC__) || defined (_AIX) \
 	|| (defined (__mips) && defined (_SYSTYPE_SVR4)) \
 	|| defined (WIN32) || defined (__cplusplus)

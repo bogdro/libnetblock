@@ -73,13 +73,14 @@ static i_i_cp_i_			__lnb_real_openat		= NULL;
 static pp_ccp_cp			__lnb_real_pcap_create		= NULL;
 static pp_ccp_i_i_i_cp			__lnb_real_pcap_open_live	= NULL;
 
+#ifdef LNB_CANT_USE_VERSIONED_FOPEN
+# undef LNB_CANT_USE_VERSIONED_FOPEN
+#endif
 #if ((defined HAVE_DLSYM) || (defined HAVE_LIBDL_DLSYM))		\
 	&& (!defined HAVE_DLVSYM) && (!defined HAVE_LIBDL_DLVSYM)	\
 	|| (defined __GLIBC__ && (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ < 1)))
 # define LNB_CANT_USE_VERSIONED_FOPEN 1
 /*# warning Versioned fopen is unavailable, so LibNetBlock may crash on some glibc versions.*/
-#else
-# undef LNB_CANT_USE_VERSIONED_FOPEN
 #endif
 
 #ifdef TEST_COMPILE
