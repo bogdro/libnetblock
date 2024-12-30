@@ -43,7 +43,7 @@ START_TEST(test_pcap_create)
 	if (ret != NULL)
 	{
 		pcap_close(ret);
-		fail("test_pcap_create: capture created, but shouldn't have been\n");
+		ck_abort_msg("test_pcap_create: capture created, but shouldn't have been\n");
 	}
 }
 END_TEST
@@ -57,7 +57,7 @@ START_TEST(test_pcap_open_live)
 	if (ret != NULL)
 	{
 		pcap_close(ret);
-		fail("test_pcap_open_live: capture opened, but shouldn't have been\n");
+		ck_abort_msg("test_pcap_open_live: capture opened, but shouldn't have been\n");
 	}
 }
 END_TEST

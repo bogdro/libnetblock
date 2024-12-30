@@ -36,7 +36,7 @@ START_TEST(test_openat)
 	}
 	else
 	{
-		fail("test_openat: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_openat: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -51,7 +51,7 @@ START_TEST(test_openat_banned)
 	if (fd >= 0)
 	{
 		close(fd);
-		fail("test_openat_banned: file opened, but shouldn't have been (1)\n");
+		ck_abort_msg("test_openat_banned: file opened, but shouldn't have been (1)\n");
 	}
 # ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -64,19 +64,19 @@ START_TEST(test_openat_banned)
 		{
 			close(fd);
 			close(dirfd);
-			fail("test_openat_banned: file opened, but shouldn't have been (2)\n");
+			ck_abort_msg("test_openat_banned: file opened, but shouldn't have been (2)\n");
 		}
 		close(dirfd);
 # ifdef HAVE_ERRNO_H
 		if (errno != EPERM)
 		{
-			fail("test_openat_banned: file not opened, but errno invalid: errno=%d\n", errno);
+			ck_abort_msg("test_openat_banned: file not opened, but errno invalid: errno=%d\n", errno);
 		}
 # endif
 	}
 	else
 	{
-		fail("test_openat_banned: directory not opened, but should have been: errno=%d\n", errno);
+		ck_abort_msg("test_openat_banned: directory not opened, but should have been: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -91,7 +91,7 @@ START_TEST(test_openat_link)
 	r = symlink (LNB_TEST_FILENAME, LNB_LINK_FILENAME);
 	if (r != 0)
 	{
-		fail("test_openat_link: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_openat_link: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	fd = openat(AT_FDCWD, LNB_LINK_FILENAME, O_RDONLY);
 	if (fd >= 0)
@@ -100,13 +100,13 @@ START_TEST(test_openat_link)
 		r = unlink (LNB_LINK_FILENAME);
 		if (r != 0)
 		{
-			fail("test_openat_link: link could not have been deleted: errno=%d, r=%d\n", errno, r);
+			ck_abort_msg("test_openat_link: link could not have been deleted: errno=%d, r=%d\n", errno, r);
 		}
 	}
 	else
 	{
 		unlink (LNB_LINK_FILENAME);
-		fail("test_openat_link: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_openat_link: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -120,14 +120,14 @@ START_TEST(test_openat_link_banned)
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
-		fail("test_openat_link_banned: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_openat_link_banned: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	fd = openat(AT_FDCWD, LNB_TEST_BANNED_LINKNAME, O_RDONLY);
 	if (fd >= 0)
 	{
 		close(fd);
 		unlink (LNB_TEST_BANNED_LINKNAME);
-		fail("test_openat_link_banned: file opened, but shouldn't have been\n");
+		ck_abort_msg("test_openat_link_banned: file opened, but shouldn't have been\n");
 	}
 	r = errno;
 	unlink (LNB_TEST_BANNED_LINKNAME);
@@ -151,7 +151,7 @@ START_TEST(test_fopen)
 	}
 	else
 	{
-		fail("test_fopen: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_fopen: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -168,7 +168,7 @@ START_TEST(test_fopen_dev)
 	}
 	else
 	{
-		fail("test_fopen_dev: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_fopen_dev: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -185,7 +185,7 @@ START_TEST(test_fopen_proc)
 	}
 	else
 	{
-		fail("test_fopen_proc: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_fopen_proc: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -199,7 +199,7 @@ START_TEST(test_fopen_banned)
 	if (f != NULL)
 	{
 		fclose(f);
-		fail("test_fopen_banned: file opened, but shouldn't have been\n");
+		ck_abort_msg("test_fopen_banned: file opened, but shouldn't have been\n");
 	}
 #ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -217,7 +217,7 @@ START_TEST(test_fopen_link)
 	r = symlink (LNB_TEST_FILENAME, LNB_LINK_FILENAME);
 	if (r != 0)
 	{
-		fail("test_fopen_link: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_fopen_link: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	f = fopen(LNB_LINK_FILENAME, "r");
 	if (f != NULL)
@@ -229,7 +229,7 @@ START_TEST(test_fopen_link)
 	{
 		r = errno;
 		unlink (LNB_LINK_FILENAME);
-		fail("test_fopen_link: file not opened: errno=%d\n", r);
+		ck_abort_msg("test_fopen_link: file not opened: errno=%d\n", r);
 	}
 }
 END_TEST
@@ -243,14 +243,14 @@ START_TEST(test_fopen_link_banned)
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
-		fail("test_fopen_link_banned: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_fopen_link_banned: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	f = fopen(LNB_TEST_BANNED_LINKNAME, "r");
 	if (f != NULL)
 	{
 		unlink (LNB_TEST_BANNED_LINKNAME);
 		fclose(f);
-		fail("test_fopen_link_banned: file opened, but shouldn't have been\n");
+		ck_abort_msg("test_fopen_link_banned: file opened, but shouldn't have been\n");
 	}
 	r = errno;
 	unlink (LNB_TEST_BANNED_LINKNAME);
@@ -276,12 +276,12 @@ START_TEST(test_freopen)
 		}
 		else
 		{
-			fail("test_freopen: file not re-opened: errno=%d\n", errno);
+			ck_abort_msg("test_freopen: file not re-opened: errno=%d\n", errno);
 		}
 	}
 	else
 	{
-		fail("test_freopen: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_freopen: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -298,7 +298,7 @@ START_TEST(test_freopen_stdout)
 	}
 	else
 	{
-		fail("test_freopen_stdout: file not re-opened: errno=%d\n", errno);
+		ck_abort_msg("test_freopen_stdout: file not re-opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -317,7 +317,7 @@ START_TEST(test_freopen_banned)
 		if (f2 != NULL)
 		{
 			fclose(f2);
-			fail("test_freopen_banned: file opened, but shouldn't be\n");
+			ck_abort_msg("test_freopen_banned: file opened, but shouldn't be\n");
 		}
 		err = errno;
 		/* fclose(f); closed by freopen() */
@@ -327,7 +327,7 @@ START_TEST(test_freopen_banned)
 	}
 	else
 	{
-		fail("test_freopen_banned: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_freopen_banned: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -341,7 +341,7 @@ START_TEST(test_freopen_stdout_banned)
 	if (f != NULL)
 	{
 		fclose(f);
-		fail("test_freopen_stdout_banned: file opened, but shouldn't have been\n");
+		ck_abort_msg("test_freopen_stdout_banned: file opened, but shouldn't have been\n");
 	}
 #ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -359,7 +359,7 @@ START_TEST(test_freopen_link)
 	r = symlink (LNB_TEST_FILENAME, LNB_LINK_FILENAME);
 	if (r != 0)
 	{
-		fail("test_freopen_link: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_freopen_link: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	f = fopen(LNB_LINK_FILENAME, "r");
 	if (f != NULL)
@@ -374,13 +374,13 @@ START_TEST(test_freopen_link)
 		{
 			r = errno;
 			unlink (LNB_LINK_FILENAME);
-			fail("test_freopen_link: file not re-opened: errno=%d\n", r);
+			ck_abort_msg("test_freopen_link: file not re-opened: errno=%d\n", r);
 		}
 	}
 	else
 	{
 		unlink (LNB_LINK_FILENAME);
-		fail("test_freopen_link: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_freopen_link: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -395,7 +395,7 @@ START_TEST(test_freopen_link_banned)
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
-		fail("test_freopen_link_banned: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_freopen_link_banned: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	f = fopen(LNB_TEST_FILENAME, "r");
 	if (f != NULL)
@@ -405,7 +405,7 @@ START_TEST(test_freopen_link_banned)
 		{
 			fclose(f2);
 			unlink (LNB_TEST_BANNED_LINKNAME);
-			fail("test_freopen_link_banned: file opened, but shouldn't have been\n");
+			ck_abort_msg("test_freopen_link_banned: file opened, but shouldn't have been\n");
 		}
 		r = errno;
 		/*fclose(f); closed by freopen() */
@@ -417,7 +417,7 @@ START_TEST(test_freopen_link_banned)
 	else
 	{
 		unlink (LNB_TEST_BANNED_LINKNAME);
-		fail("test_freopen_link_banned: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_freopen_link_banned: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -431,14 +431,14 @@ START_TEST(test_freopen_link_banned_stdout)
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
-		fail("test_freopen_link_banned_stdout: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_freopen_link_banned_stdout: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	f = freopen(LNB_TEST_BANNED_LINKNAME, "r", stdout);
 	if (f != NULL)
 	{
 		fclose(f);
 		unlink (LNB_TEST_BANNED_LINKNAME);
-		fail("test_freopen_link_banned_stdout: file opened, but shouldn't have been\n");
+		ck_abort_msg("test_freopen_link_banned_stdout: file opened, but shouldn't have been\n");
 	}
 	r = errno;
 	unlink (LNB_TEST_BANNED_LINKNAME);
@@ -461,7 +461,7 @@ START_TEST(test_open)
 	}
 	else
 	{
-		fail("test_open: file not opened: errno=%d\n", errno);
+		ck_abort_msg("test_open: file not opened: errno=%d\n", errno);
 	}
 }
 END_TEST
@@ -475,7 +475,7 @@ START_TEST(test_open_banned)
 	if (fd >= 0)
 	{
 		close(fd);
-		fail("test_open_banned: file opened, but shouldn't have been\n");
+		ck_abort_msg("test_open_banned: file opened, but shouldn't have been\n");
 	}
 #ifdef HAVE_ERRNO_H
 	ck_assert_int_eq(errno, EPERM);
@@ -493,7 +493,7 @@ START_TEST(test_open_link)
 	r = symlink (LNB_TEST_FILENAME, LNB_LINK_FILENAME);
 	if (r != 0)
 	{
-		fail("test_open_link: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_open_link: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	fd = open(LNB_LINK_FILENAME, O_RDONLY);
 	if (fd >= 0)
@@ -505,7 +505,7 @@ START_TEST(test_open_link)
 	{
 		r = errno;
 		unlink (LNB_LINK_FILENAME);
-		fail("test_open_link: file not opened: errno=%d\n", r);
+		ck_abort_msg("test_open_link: file not opened: errno=%d\n", r);
 	}
 }
 END_TEST
@@ -519,14 +519,14 @@ START_TEST(test_open_link_banned)
 	r = symlink (LNB_TEST_BANNED_FILENAME, LNB_TEST_BANNED_LINKNAME);
 	if (r != 0)
 	{
-		fail("test_freopen_link: link could not have been created: errno=%d, r=%d\n", errno, r);
+		ck_abort_msg("test_freopen_link: link could not have been created: errno=%d, r=%d\n", errno, r);
 	}
 	fd = open(LNB_TEST_BANNED_LINKNAME, O_RDONLY);
 	if (fd >= 0)
 	{
 		close(fd);
 		unlink (LNB_TEST_BANNED_LINKNAME);
-		fail("test_open_link_banned: file opened, but shouldn't have been\n");
+		ck_abort_msg("test_open_link_banned: file opened, but shouldn't have been\n");
 	}
 	r = errno;
 	unlink (LNB_TEST_BANNED_LINKNAME);
