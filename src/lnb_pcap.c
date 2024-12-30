@@ -139,7 +139,7 @@ pcap_open_live (
 	fflush (stderr);
 #endif
 
-	if ( __lnb_real_pcap_open_live_location () == NULL )
+	if ( __lnb_real_pcap_open_live_loc () == NULL )
 	{
 		return NULL;
 	}
@@ -147,7 +147,7 @@ pcap_open_live (
 	if ( (__lnb_check_prog_ban () != 0)
 		|| (__lnb_get_init_stage () < LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
-		return (*__lnb_real_pcap_open_live_location ())
+		return (*__lnb_real_pcap_open_live_loc ())
 			(device, snaplen, promisc, to_ms, errbuf);
 	}
 

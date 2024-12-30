@@ -172,8 +172,8 @@ extern GCC_WARN_UNUSED_RESULT i_i_i_i		__lnb_real_socket_location LNB_PARAMS ((v
 extern GCC_WARN_UNUSED_RESULT ss_i_smp_i	__lnb_real_recvmsg_location LNB_PARAMS ((void));
 extern GCC_WARN_UNUSED_RESULT ss_i_csmp_i	__lnb_real_sendmsg_location LNB_PARAMS ((void));
 extern GCC_WARN_UNUSED_RESULT i_cssp_sl		__lnb_real_bind_location LNB_PARAMS ((void));
-extern GCC_WARN_UNUSED_RESULT i_i_ssa		__lnb_real_bindresvport_location LNB_PARAMS ((void));
-extern GCC_WARN_UNUSED_RESULT i_i_ssa6		__lnb_real_bindresvport6_location LNB_PARAMS ((void));
+extern GCC_WARN_UNUSED_RESULT i_i_ssa		__lnb_real_bindresvport_loc LNB_PARAMS ((void));
+extern GCC_WARN_UNUSED_RESULT i_i_ssa6		__lnb_real_bindresvport6_loc LNB_PARAMS ((void));
 
 /* file-related functions: */
 extern GCC_WARN_UNUSED_RESULT fp_cp_cp		__lnb_real_fopen64_location LNB_PARAMS ((void));
@@ -188,7 +188,7 @@ extern GCC_WARN_UNUSED_RESULT i_i_cp_i_		__lnb_real_openat_location LNB_PARAMS (
 
 /* libpcap functions: */
 extern GCC_WARN_UNUSED_RESULT pp_ccp_cp		__lnb_real_pcap_create_location LNB_PARAMS ((void));
-extern GCC_WARN_UNUSED_RESULT pp_ccp_i_i_i_cp	__lnb_real_pcap_open_live_location LNB_PARAMS ((void));
+extern GCC_WARN_UNUSED_RESULT pp_ccp_i_i_i_cp	__lnb_real_pcap_open_live_loc LNB_PARAMS ((void));
 
 /* The library functions: */
 extern int					__lnb_main LNB_PARAMS ((void));

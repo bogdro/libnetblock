@@ -309,7 +309,7 @@ bindresvport (
 	fflush (stderr);
 # endif
 
-	if ( __lnb_real_bindresvport_location () == NULL )
+	if ( __lnb_real_bindresvport_loc () == NULL )
 	{
 		LNB_SET_ERRNO_MISSING();
 		return -1;
@@ -318,20 +318,20 @@ bindresvport (
 	if ( my_addr == NULL )
 	{
 		LNB_SET_ERRNO (err);
-		return (*__lnb_real_bindresvport_location ()) (sockfd, my_addr);
+		return (*__lnb_real_bindresvport_loc ()) (sockfd, my_addr);
 	}
 
 	if ( (__lnb_check_prog_ban () != 0)
 		|| (__lnb_get_init_stage() != LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 		LNB_SET_ERRNO (err);
-		return (*__lnb_real_bindresvport_location ()) (sockfd, my_addr);
+		return (*__lnb_real_bindresvport_loc ()) (sockfd, my_addr);
 	}
 
 	if ( __lnb_is_allowed_socket (my_addr->sin_family) == 1 )
 	{
 		LNB_SET_ERRNO(err);
-		return (*__lnb_real_bindresvport_location ()) (sockfd, my_addr);
+		return (*__lnb_real_bindresvport_loc ()) (sockfd, my_addr);
 	}
 
 	LNB_SET_ERRNO_PERM();
@@ -362,7 +362,7 @@ bindresvport6 (
 	fflush (stderr);
 # endif
 
-	if ( __lnb_real_bindresvport6_location () == NULL )
+	if ( __lnb_real_bindresvport6_loc () == NULL )
 	{
 		LNB_SET_ERRNO_MISSING();
 		return -1;
@@ -371,20 +371,20 @@ bindresvport6 (
 	if ( my_addr == NULL )
 	{
 		LNB_SET_ERRNO (err);
-		return (*__lnb_real_bindresvport6_location ()) (sockfd, my_addr);
+		return (*__lnb_real_bindresvport6_loc ()) (sockfd, my_addr);
 	}
 
 	if ( (__lnb_check_prog_ban () != 0)
 		|| (__lnb_get_init_stage() != LNB_INIT_STAGE_FULLY_INITIALIZED) )
 	{
 		LNB_SET_ERRNO (err);
-		return (*__lnb_real_bindresvport6_location ()) (sockfd, my_addr);
+		return (*__lnb_real_bindresvport6_loc ()) (sockfd, my_addr);
 	}
 
 	if ( __lnb_is_allowed_socket (my_addr->sin6_family) == 1 )
 	{
 		LNB_SET_ERRNO(err);
-		return (*__lnb_real_bindresvport6_location ()) (sockfd, my_addr);
+		return (*__lnb_real_bindresvport6_loc ()) (sockfd, my_addr);
 	}
 
 	LNB_SET_ERRNO_PERM();

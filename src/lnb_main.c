@@ -348,14 +348,14 @@ i_cssp_sl __lnb_real_bind_location (LNB_VOID)
 
 /* =============================================================== */
 
-i_i_ssa __lnb_real_bindresvport_location (LNB_VOID)
+i_i_ssa __lnb_real_bindresvport_loc (LNB_VOID)
 {
 	return __lnb_real_bindresvport;
 }
 
 /* =============================================================== */
 
-i_i_ssa6 __lnb_real_bindresvport6_location (LNB_VOID)
+i_i_ssa6 __lnb_real_bindresvport6_loc (LNB_VOID)
 {
 	return __lnb_real_bindresvport6;
 }
@@ -369,7 +369,7 @@ pp_ccp_cp __lnb_real_pcap_create_location (LNB_VOID)
 
 /* =============================================================== */
 
-pp_ccp_i_i_i_cp __lnb_real_pcap_open_live_location (LNB_VOID)
+pp_ccp_i_i_i_cp __lnb_real_pcap_open_live_loc (LNB_VOID)
 {
 	return __lnb_real_pcap_open_live;
 }
