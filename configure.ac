@@ -23,6 +23,7 @@
 
 AC_PREREQ([2.71])
 AC_INIT([LibNetBlock], [1.7], [bogdro@users.sourceforge.net], [libnetblock], [https://libnetblock.sourceforge.io])
+AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([-Wall])
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile test/Makefile
 	doc/libnetblock.texi libnetblock.spec src/lnb_cfg.h

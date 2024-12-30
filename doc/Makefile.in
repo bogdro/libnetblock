@@ -167,7 +167,8 @@ am__v_texidevnull_ = $(am__v_texidevnull_@AM_DEFAULT_V@)
 am__v_texidevnull_0 = > /dev/null
 am__v_texidevnull_1 = 
 INFO_DEPS = $(srcdir)/libnetblock.info
-am__TEXINFO_TEX_DIR = $(srcdir)
+TEXINFO_TEX = $(top_srcdir)/build-aux/texinfo.tex
+am__TEXINFO_TEX_DIR = $(top_srcdir)/build-aux
 DVIS = libnetblock.dvi
 PDFS = libnetblock.pdf
 PSS = libnetblock.ps
@@ -215,7 +216,8 @@ NROFF = nroff
 MANS = $(man_MANS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 am__DIST_COMMON = $(libnetblock_TEXINFOS) $(srcdir)/Makefile.in \
-	$(srcdir)/libnetblock.texi.in texinfo.tex
+	$(srcdir)/libnetblock.texi.in \
+	$(top_srcdir)/build-aux/texinfo.tex
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
