@@ -45,7 +45,7 @@ START_TEST(test_symb_func)
 	void * ptr;
 
 	LNB_PROLOG_FOR_TEST();
-	ptr = dlsym (RTLD_NEXT, "generic_fopen");
+	ptr = dlsym (RTLD_NEXT, "generic_fopen"); /* requires lnb_opens.o in Makefile.am */
 	if (ptr != NULL)
 	{
 		ck_abort_msg("test_symb_func: symbol found\n");

@@ -205,7 +205,9 @@ am__lnbtest_other_SOURCES_DIST = lnbtest_other.c lnbtest_common.c \
 @LNB_TESTS_ENABLED_TRUE@	$(am__objects_5)
 lnbtest_other_OBJECTS = $(am_lnbtest_other_OBJECTS)
 @LNB_TESTS_ENABLED_TRUE@lnbtest_other_DEPENDENCIES =  \
-@LNB_TESTS_ENABLED_TRUE@	$(am__DEPENDENCIES_1)
+@LNB_TESTS_ENABLED_TRUE@	$(am__DEPENDENCIES_1) \
+@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/lnb_opens.o \
+@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/lnb_exec.o
 lnbtest_other_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(lnbtest_other_CFLAGS) \
 	$(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
@@ -670,7 +672,10 @@ top_srcdir = @top_srcdir@
 
 @LNB_TESTS_ENABLED_TRUE@lnbtest_other_SOURCES = lnbtest_other.c $(LNBTEST_COMMON_SRC)
 @LNB_TESTS_ENABLED_TRUE@lnbtest_other_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
-@LNB_TESTS_ENABLED_TRUE@lnbtest_other_LDADD = $(LNBTEST_COMMON_LIB)
+@LNB_TESTS_ENABLED_TRUE@lnbtest_other_LDADD = $(LNBTEST_COMMON_LIB) \
+@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/lnb_opens.o \
+@LNB_TESTS_ENABLED_TRUE@	$(top_builddir)/src/lnb_exec.o
+
 all: all-am
 
 .SUFFIXES:

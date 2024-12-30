@@ -63,7 +63,9 @@ lnbtest_pcap_LDADD = $(LNBTEST_COMMON_LIB) \
 
 lnbtest_other_SOURCES = lnbtest_other.c $(LNBTEST_COMMON_SRC)
 lnbtest_other_CFLAGS = $(LNBTEST_COMMON_CFLAGS)
-lnbtest_other_LDADD = $(LNBTEST_COMMON_LIB)
+lnbtest_other_LDADD = $(LNBTEST_COMMON_LIB) \
+	$(top_builddir)/src/lnb_opens.o \
+	$(top_builddir)/src/lnb_exec.o
 
 x-compile: $(TESTS)
 .PHONY: x-compile
