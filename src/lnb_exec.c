@@ -207,7 +207,7 @@ extern int fexecve LNB_PARAMS ((int fd, char *const argv[], char *const envp[]))
 
 #ifndef LNB_ANSIC
 static char * __lnb_get_target_link_path
-	LNB_PARAMS ((char * const name));
+	LNB_PARAMS ((const char * const name));
 #endif
 
 /**
@@ -218,10 +218,10 @@ static char * __lnb_get_target_link_path
  */
 static char * __lnb_get_target_link_path (
 #ifdef LNB_ANSIC
-	char * const name)
+	const char * const name)
 #else
 	name)
-	char * const name;
+	const char * const name;
 #endif
 {
 #if (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK)
@@ -241,7 +241,7 @@ static char * __lnb_get_target_link_path (
 	char * __lnb_newlinkpath;
 	char * __lnb_newlinkdir;
 # endif
-	char * last_slash;
+	const char * last_slash;
 	size_t dirname_len;
 
 	if ( name == NULL )
@@ -587,7 +587,7 @@ static int __lnb_is_forbidden_program (
 # endif
 	char *first_char;
 # if (defined HAVE_GETENV) && (defined HAVE_SYS_STAT_H)
-	char *path;
+	const char *path;
 	size_t path_len;
 	size_t new_path_len;
 #  ifdef HAVE_MALLOC
