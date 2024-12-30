@@ -19,47 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define _POSIX_C_SOURCE 200809L
-#define _XOPEN_SOURCE 600
-#define _LARGEFILE64_SOURCE 1
-#define _BSD_SOURCE 1
-#define _SVID_SOURCE 1
-#define _DEFAULT_SOURCE 1
-#define _GNU_SOURCE 1
-
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
-
-#include "libnetblock.h"
-#include <check.h>
 #include "lnbtest_common.h"
-
-#ifdef HAVE_ERRNO_H
-# include <errno.h>
-#else
-static int errno = -1;
-#endif
-
-
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-
-#include <stdio.h>
-
-#ifdef HAVE_STDLIB_H
-# include <stdlib.h>
-#endif
-
-#ifdef HAVE_FCNTL_H
-# include <fcntl.h>
-#else
-# define O_RDONLY	0
-# define O_WRONLY	1
-# define O_RDWR		2
-# define O_TRUNC	01000
-#endif
 
 #ifdef __cplusplus
 extern "C" {

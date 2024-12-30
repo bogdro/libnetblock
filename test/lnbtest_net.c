@@ -19,36 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define _POSIX_C_SOURCE 200112L
-#define _XOPEN_SOURCE 600
-#define _LARGEFILE64_SOURCE 1
-#define _BSD_SOURCE 1
-#define _SVID_SOURCE 1
-#define _DEFAULT_SOURCE 1
-
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
-
-#include "libnetblock.h"
-#include <check.h>
 #include "lnbtest_common.h"
-
-#ifdef HAVE_SYS_TYPES_H
-# include <sys/types.h>
-#endif
-
-#ifdef HAVE_ERRNO_H
-# include <errno.h>
-#else
-static int errno = -1;
-#endif
-
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-
-#include <stdio.h>
 
 #ifdef HAVE_NETDB_H
 # include <netdb.h>

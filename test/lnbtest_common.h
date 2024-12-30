@@ -22,6 +22,58 @@
 #ifndef LNBTEST_COMMON_HEADER
 # define LNBTEST_COMMON_HEADER 1
 
+# define _POSIX_C_SOURCE 200809L
+# define _XOPEN_SOURCE 600
+# define _LARGEFILE64_SOURCE 1
+# define _GNU_SOURCE 1
+# define _ATFILE_SOURCE 1
+# define _BSD_SOURCE 1
+# define _SVID_SOURCE 1
+# define _DEFAULT_SOURCE 1
+# define _ISOC11_SOURCE		/* aligned_alloc() */
+
+#include "libnetblock.h"
+
+# ifdef HAVE_CONFIG_H
+#  include <config.h>
+# endif
+
+# include <stdio.h>
+
+# ifdef HAVE_UNISTD_H
+#  include <unistd.h>
+# endif
+
+# ifdef HAVE_ERRNO_H
+#  include <errno.h>
+# else
+static int errno = -1;
+# endif
+
+# ifdef HAVE_STDLIB_H
+#  include <stdlib.h>
+# endif
+
+# ifdef HAVE_STRING_H
+#  if (!defined STDC_HEADERS) && (defined HAVE_MEMORY_H)
+#   include <memory.h>
+#  endif
+#  include <string.h>
+# endif
+
+# ifdef HAVE_FCNTL_H
+#  include <fcntl.h>
+# else
+#  define O_RDONLY	0
+#  define O_WRONLY	1
+#  define O_RDWR		2
+#  define O_TRUNC	01000
+# endif
+
+# ifdef HAVE_SYS_TYPES_H
+#  include <sys/types.h>
+# endif
+
 # include <check.h>
 
 /* compatibility with older check versions */
