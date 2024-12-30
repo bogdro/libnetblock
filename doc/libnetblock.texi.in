@@ -83,7 +83,7 @@ There is @strong{NO NEED} to rebuild your software, because LibNetBlock is
 a pre-loadable library, meaning you just need to @strong{RUN} the software
 with LibNetBlock loaded.
 
-Intercepting the raw @samp{syscall()} function is impossible, because the
+Intercepting the raw @samp{syscall} function is impossible, because the
 number of parameters varies from one syscall to another.
 
 However, there are limitations. LibNetBlock can do nothing if:
@@ -366,7 +366,7 @@ specify which programs should LibNetBlock not mess with. Put each entry on its o
 If additional banning files haven't been disabled (@ref{How to compile?}), they can
 be located in users' home directories (e.g. @file{/home/user1/.libnetblock.progban}).
 You can also put the file in any location and set the environment variable
-@code{LIBNETBLOCK_BANFILE} to point at that file, e.g.
+@env{LIBNETBLOCK_BANFILE} to point at that file, e.g.
 
 	@samp{export LIBNETBLOCK_BANFILE=/opt/config/libnetblock.progban}
 
