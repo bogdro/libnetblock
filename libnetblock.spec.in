@@ -33,6 +33,10 @@ that are used to access the network.
 %define lnb_lic GPLv3+
 %define lnb_summary Library for blocking network access
 
+# Settings (/usr/lib/rpm/macros.d/macros.spec-helper, /usr/lib/rpm/macros)
+%define dont_remove_libtool_files 1
+# define _unpackaged_files_terminate_build 0
+
 Summary:	%{lnb_summary}
 Name:		%{lnb_name}
 Version:	%{lnb_version}
@@ -75,7 +79,6 @@ libtool --finish %{_libdir}
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
 
-#  define _unpackaged_files_terminate_build 0
 %files
 
 %defattr(-,root,root)
