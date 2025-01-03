@@ -122,7 +122,7 @@ static const char * viewing_programs[] =
 	"coreutils",
 
 	/* editors: */
-	"vi",	/* also mathes "vim" */
+	"vi",	/* also matches "vim" */
 	"emacs",
 	"joe",
 	"jed",
@@ -138,7 +138,7 @@ static const char * viewing_programs[] =
 	"fold",
 	"head",
 	"tail",
-	"split",	/* also mathes "csplit" */
+	"split",	/* also matches "csplit" */
 	"sort",
 	"uniq",
 	"comm",
@@ -146,10 +146,10 @@ static const char * viewing_programs[] =
 	"paste",
 	"join",
 	"tr",
-	"expand",	/* also mathes "unexpand" */
+	"expand",	/* also matches "unexpand" */
 
 	/* diff tools: */
-	"diff",		/* also mathes "diff3" and "sdiff" */
+	"diff",		/* also matches "diff3" and "sdiff" */
 
 	/* text programming/manipulation tools and interpreters: */
 	"ed",		/* matches "sed", too */
@@ -389,7 +389,10 @@ static char * __lnb_get_target_link_path (
 		return NULL /*name*/;
 	}
 #else
-	return name;
+	/* NOTE: return a copy to avoid returning a local variable
+	 * from __lnb_get_target_link_path_fd()
+	 */
+	return LNB_STRDUP (name) /*name*/;
 #endif /* (defined HAVE_SYS_STAT_H) && (defined HAVE_READLINK) && (defined HAVE_LSTAT) */
 }
 
