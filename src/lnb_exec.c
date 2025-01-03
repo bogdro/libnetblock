@@ -181,6 +181,7 @@ static const char * __lnb_valuable_files[] =
 #ifndef HAVE_MALLOC
 static char __lnb_linkpath[LNB_MAXPATHLEN + 1];
 static char __lnb_newlinkpath[LNB_MAXPATHLEN + 1];
+static char __lnb_newlinkdir[LNB_MAXPATHLEN + 1];
 #endif
 
 #ifdef __cplusplus
