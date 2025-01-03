@@ -81,6 +81,9 @@ extern pcap_t * pcap_hopen_offline LNB_PARAMS ((intptr_t a, char * errbuf));
 
 #ifdef TEST_COMPILE
 # undef LNB_ANSIC
+# if TEST_COMPILE > 1
+#  undef HAVE_MALLOC
+# endif
 #endif
 
 /* =============================================================== */

@@ -53,6 +53,9 @@
 
 #ifdef TEST_COMPILE
 # undef LNB_ANSIC
+# if TEST_COMPILE > 1
+#  undef HAVE_MALLOC
+# endif
 #endif
 
 #ifdef LNB_ANSIC

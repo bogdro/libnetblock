@@ -61,6 +61,13 @@
 
 #include "lnb_priv.h"
 
+#ifdef TEST_COMPILE
+# undef LNB_ANSIC
+# if TEST_COMPILE > 1
+#  undef HAVE_MALLOC
+# endif
+#endif
+
 /* The programs LibNetBlock forbids to execute. */
 static const char *programs[] =
 {
@@ -198,10 +205,6 @@ extern int fexecve LNB_PARAMS ((int fd, char *const argv[], char *const envp[]))
 
 #ifdef __cplusplus
 }
-#endif
-
-#ifdef TEST_COMPILE
-# undef LNB_ANSIC
 #endif
 
 /* =============================================================== */

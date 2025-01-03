@@ -69,6 +69,9 @@ static int __lnb_allowed_socket_types[] =
 #  define WAS_LNB_ANSIC
 # endif
 # undef LNB_ANSIC
+# if TEST_COMPILE > 1
+#  undef HAVE_MALLOC
+# endif
 #endif
 
 /* =============================================================== */

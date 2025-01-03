@@ -92,6 +92,9 @@ static pp_ccp_i_i_i_cp			__lnb_real_pcap_open_live	= NULL;
 
 #ifdef TEST_COMPILE
 # undef LNB_ANSIC
+# if TEST_COMPILE > 1
+#  undef HAVE_MALLOC
+# endif
 #endif
 
 /* =============================================================== */

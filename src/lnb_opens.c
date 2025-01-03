@@ -109,6 +109,9 @@ extern int open64 LNB_PARAMS ((const char * const path, const int flags, ... ));
 #  define WAS_LNB_ANSIC
 # endif
 # undef LNB_ANSIC
+# if TEST_COMPILE > 1
+#  undef HAVE_MALLOC
+# endif
 #endif
 
 /* ======================================================= */
