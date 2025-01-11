@@ -83,8 +83,8 @@ libtool --finish %{_libdir}
 
 %defattr(-,root,root)
 %{_libdir}/libnetblock.so
-%{_libdir}/libnetblock.so.4
-%{_libdir}/libnetblock.so.4.0.0
+%{_libdir}/libnetblock.so.5
+%{_libdir}/libnetblock.so.5.0.0
 %{_libdir}/libnetblock.la
 %doc %{_infodir}/libnetblock.info%_extension
 %doc %{_mandir}/man3/libnetblock.3%_extension
