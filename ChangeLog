@@ -1,3 +1,71 @@
+2025-01-03	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
+
+	* LibNetBlock version 1.8
+	  Fixed compile errors. Checking for more compile warnings. Portability
+	  updates - LibNetBlock now compiles on Solaris/SunOS. Added support
+	  for systems with a less advanced /proc filesystem. Code quality
+	  updates. Updates in the build system. Updates in unit tests and new
+	  tests. Documentation updates.
+	* configure.ac: Check for the getpid() function. If rpc/rpc.h is
+	  found, don't check for rpc.h. Check for the -Wnull-dereference,
+	  -Wunused-parameter, -Walloc-zero, and -Wdangling-else compiler
+	  options. Add the auxiliary build directory build-aux and move some
+	  of the build helper files there.
+	* src/lnb_net.c (bindresvport, bindresvport6): Declare conditionally
+	  and not on SunOS where the parameters are different and subject to
+	  change.
+	* src/banning-generic.c, src/lnb_banning.c: Fixed compiling after name
+	  randomization.
+	* src/lnb_opens.c: Fixed argument types of va_arg.
+	* src/lnb_exec.c (__lnb_is_forbidden_file,
+	  __lnb_is_forbidden_program): Fixed potential NULL pointer accesses
+	  when memory couldn't be allocated and memory leaks.
+	* src/lnb_exec.c (__lnb_get_target_link_path_fd),
+	  src/banning-generic.c (__banning_get_exename): Use the current PID
+	  first, for systems where /proc/self doesn't exist.
+	* src/lnb_exec.c (__lnb_get_target_link_path): Better buffer limit
+	  checking. Removed unnecessary setting the final zero byte. Use the
+	  off64_t type when calling stat64().
+	* src/lnb_exec.c: Added a variable that was missing without malloc().
+	* src/lnb_cfg.h.in: Added a flag to allow compiling on Solaris/SunOS.
+	  Added the _ALL_SOURCE and _NETBSD_SOURCE flags.
+	* src/lnb_main.c (__lnb_copy_string), src/lnb_priv.h, src/lnb_exec.c:
+	  Replaced strncpy with a dedicated function where applicable.
+	* src/{libnetblock.h.in,lnb_cfg.h.in,lnb_public.c.in}: Mark files as
+	  generated in header comments.
+	* src/*.c: Added a flag to disable malloc() for compile checking.
+	* src/*.c, src/lnb_priv.h: Many code quality updates (SonarCloud):
+	  #undef macros only if defined, write only one declaration per line,
+	  use the 'const' qualifier more, simplify code, shorten names.
+	* test/lnbtest_exec.c: Allow passing the directory of 'ifconfig'.
+	* test/lnbtest_opens.c (test_fopen_proc): Use another file in /proc.
+	* test/lnbtest_opens.c (test_open_dev, test_open_proc): Added tests
+	  for opening files in /proc and /dev using open().
+	* test/lnbtest_common.c (teardown_test): Delete the test symlink
+	  after each test.
+	* test/*.c: Moved common includes and defines to lnbtest_common.h.
+	  Replaced the deprecated fail() with ck_abort_msg().
+	* test/Makefile.am: Link tests directly to the object files, not the
+	  built library, for better coverage measuring.
+	* libnetblock.spec.in:  Added "texinfo" to BuildRequires. Added the
+	  %{?dist} tag to 'Release:', as recommended by the Fedora packaging
+	  guidelines:
+	  https://docs.fedoraproject.org/en-US/packaging-guidelines/DistTag/.
+	  Fixed running 'ldconfig'. Added a flag to keep libtool files. Added
+	  running 'libtool finish' during installation. Simplified cleaning
+	  /etc/ld.so.preload in pre-uninstall.
+	* doc/libnetblock.texi.in: Fixed the manual title. Added information
+	  about using FMSec (https://fmsec.sourceforge.io) to load LibNetBlock
+	  for single programs. Small syntax updates.
+	* INSTALL-LNB.txt: Renamed from "INSTALL", which autotools overwrite.
+	* INSTALL, compile, depcomp, doc/texinfo.tex, missing, test-driver,
+	  config.guess, config.sub, install-sh, ltmain.sh, m4/libtool.m4,
+	  m4/ltsugar.m4: Forced update using new Autotools.
+	* src/*.c, src/*.h, src/*.h.in, src/*.c.in, test/*.c, **/Makefile.am,
+	  libnetblock.spec.in, configure.ac: Added or updated the license
+	  block and copyright.
+	* m4/ac_prototype.m4: Removed unused file.
+
 2022-12-13	Bogdan Drozdowski <bogdro /at- users . sourceforge . net>
 
 	* LibNetBlock version 1.7

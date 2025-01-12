@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 #
 # LibNetBlock - A library which blocks programs from accessing the network.
-#	-- Makefile.am, part of the build system.
+#	-- configure.ac, part of the build system.
 #
 # Copyright (C) 2007-2024 Bogdan Drozdowski, bogdro (at) users . sourceforge . net
 # License: GNU General Public License, v3+
@@ -22,7 +22,7 @@
 #
 
 AC_PREREQ([2.71])
-AC_INIT([LibNetBlock], [1.7], [bogdro@users.sourceforge.net], [libnetblock], [https://libnetblock.sourceforge.io])
+AC_INIT([LibNetBlock],[1.8],[bogdro@users.sourceforge.net],[libnetblock],[https://libnetblock.sourceforge.io])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([-Wall])
 AC_CONFIG_FILES([Makefile src/Makefile doc/Makefile test/Makefile
