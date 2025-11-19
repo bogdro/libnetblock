@@ -9,11 +9,13 @@ access. Thus, access to the OS function is effectively blocked.
 Read the info documentation (type `info doc/libnetblock.info`) to get more
 information.
 
-Project homepage: <https://libnetblock.sourceforge.io/>.
-
 Author: Bogdan Drozdowski, bogdro (at) users . sourceforge . net
 
 License: GPLv3+
+
+Project homepage: <https://libnetblock.sourceforge.io/>.
+
+[![Build Status](https://app.travis-ci.com/bogdro/libnetblock.svg?token=T93Xpo2K5F4sXcUCVsd5&branch=dev)](https://app.travis-ci.com/bogdro/libnetblock)
 
 ## WARNING ##
 
